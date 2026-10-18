@@ -297,6 +297,12 @@ body[data-type="map"] .controls button{width:auto;flex:1;min-width:120px;min-hei
 @media(max-width:600px){.route-lines{top:15px;height:204px}.route-lines .desktop-route{display:none}.route-lines .mobile-route{display:block}}
 @media(max-height:700px) and (max-width:600px){.route-lines{top:10px;height:179px}}
 
+
+/* Audio controls stay available on both the story and route map. */
+.audio-dock{position:fixed;right:12px;bottom:8px;z-index:8;display:flex;gap:5px;background:var(--paper);border:1px solid var(--line);padding:4px;box-shadow:0 2px 8px #26373818}
+.audio-dock button{background:var(--button);border:1px solid var(--line);padding:6px 10px;min-height:34px;font-size:13px}
+.audio-setting{display:flex;align-items:center;gap:14px;margin:24px 0;font-size:18px}.audio-setting input{flex:1;min-width:60px;accent-color:var(--accent)}
+.below{padding-bottom:52px}
 </style>
 </head>
 <body>
@@ -363,11 +369,160 @@ body[data-type="map"] .controls button{width:auto;flex:1;min-width:120px;min-hei
   global.QiushiCore=Object.freeze({normalizeName,createInitialState,applyEffect,recordJournal,applyOnce,resolveEnding});
 })(globalThis);
 </script>
+
+<div class="audio-dock" role="group" aria-label="声音控制">
+<button id="audio-toggle" type="button" aria-pressed="false">声音：开</button>
+<button id="audio-settings" type="button" aria-haspopup="dialog">音量</button>
+</div>
+<dialog class="dialog" id="audio-dialog" aria-labelledby="audio-title">
+<div class="dialog-head"><h2 id="audio-title">声音设置</h2><button id="audio-close" type="button">返回故事</button></div>
+<label class="audio-setting" for="audio-volume">总音量 <input id="audio-volume" type="range" min="0" max="100" value="70"><output id="audio-volume-value" for="audio-volume">70%</output></label>
+<p class="field-note">音乐随剧情切换。首次点击或按键后启用声音；切到后台时暂停。静音与音量会保存在本机。</p>
+<p id="audio-status" class="field-note" role="status">等待开始西行。</p>
+</dialog>
+
+<script id="qiushi-audio">
+(function(){
+'use strict';
+const files={
+ history:'背景音乐/atlasaudio-historical-519440.mp3',
+ books:'背景音乐/mondamusic-historical-history-historical-597253.mp3',
+ piano:'背景音乐/alexgrohl-history-piano-535025.mp3',
+ cinema:'背景音乐/nastelbom-epic-cinematic-473268.mp3',
+ inspire:'背景音乐/solvikmusic-epic-inspiring-611151.mp3',
+ tragic:'背景音乐/jonasblakewood-epic-epic-music-562863.mp3',
+ anthem:'校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3',
+ click:'按钮/dragon-studio-button-press-382713.mp3',
+ page:'翻书声/creatorshome-turn-a-page-336933.mp3',
+ shutter:'相机转场/dragon-studio-camera-shutter-effect-390310.mp3',
+ cannon:'炮声/universfield-cannon-shot-352459.mp3',
+ siren:'防空警报/lazychillzone-air-raid-siren-225303.mp3',
+ rain:'雨声/boons_freak-rain-sound-188158.mp3',
+ fireworks:'胜利庆祝/alex_jauk-firecrackers-178799.mp3'
+};
+const cues={"start":{"music":null,"volume":0.2},"scene-002":{"music":null,"volume":0.2},"interaction-1":{"music":"history","volume":0.15},"scene-004":{"music":"history","volume":0.05},"scene-005":{"music":null,"volume":0.2,"cut":true,"fx":["shutter"]},"chapter1-start":{"music":"books","volume":0.25,"fx":["cannon"]},"scene-007":{"music":"books","volume":0.22},"scene-008":{"music":"books","volume":0.22},"interaction-2":{"music":"books","volume":0.22},"scene-010":{"music":"history","volume":0.2},"scene-011":{"music":"history","volume":0.2},"scene-012":{"music":"history","volume":0.2},"scene-013":{"music":"history","volume":0.2},"interaction-3":{"music":"history","volume":0.2},"scene-015":{"music":"history","volume":0.2},"name-confirm":{"music":"history","volume":0.2},"scene-017":{"music":"history","volume":0.2},"scene-018":{"music":"piano","volume":0.2},"interaction-4":{"music":"piano","volume":0.2},"scene-020":{"music":"piano","volume":0.2,"fx":["cannon"]},"scene-021":{"music":null,"volume":0.2,"cut":true},"chapter2-news":{"music":"cinema","volume":0.22,"fx":["cannon","siren"]},"chapter2-start":{"music":"cinema","volume":0.22},"scene-023":{"music":"piano","volume":0.2},"scene-024":{"music":"piano","volume":0.2},"scene-025":{"music":"piano","volume":0.03},"scene-026":{"music":"piano","volume":0.03},"scene-027":{"music":"piano","volume":0.03},"scene-028":{"music":"piano","volume":0.03},"scene-029":{"music":"piano","volume":0.03},"scene-030":{"music":"piano","volume":0.03},"scene-031":{"music":"piano","volume":0.03},"scene-032":{"music":"piano","volume":0.03},"scene-033":{"music":"piano","volume":0.03},"scene-034":{"music":"piano","volume":0.03},"scene-035":{"music":"piano","volume":0.03},"scene-036":{"music":"piano","volume":0.03},"scene-036-pause":{"music":"piano","volume":0.03},"scene-037":{"music":"piano","volume":0.4},"scene-038":{"music":"piano","volume":0.4},"scene-039":{"music":"piano","volume":0.4},"scene-040":{"music":"piano","volume":0.4},"scene-041":{"music":null,"volume":0.2,"cut":true,"fx":["siren"]},"scene-042":{"music":"piano","volume":0.22},"scene-043":{"music":"piano","volume":0.22},"scene-044":{"music":"books","volume":0.2},"scene-045":{"music":"books","volume":0.2},"scene-046":{"music":"books","volume":0.2},"choice-1":{"music":"books","volume":0.2},"scene-048":{"music":"books","volume":0.12,"fx":["siren"]},"scene-049":{"music":"books","volume":0.12},"scene-050":{"music":"tragic","volume":0.2},"scene-051":{"music":"tragic","volume":0.2},"scene-052":{"music":"tragic","volume":0.2},"scene-053":{"music":"tragic","volume":0.2},"choice-2":{"music":"tragic","volume":0.03},"choice2-join-reply":{"music":"tragic","volume":0.2},"choice2-join-departure":{"music":"tragic","volume":0.2},"scene-055":{"music":"cinema","volume":0.6,"fx":["shutter"],"settle":0.2},"chapter3-start":{"music":"history","volume":0.2},"scene-057":{"music":"piano","volume":0.2},"interaction-5":{"music":"piano","volume":0.2},"scene-059":{"music":"inspire","volume":0.25},"scene-060":{"music":"inspire","volume":0.25},"scene-061":{"music":"inspire","volume":0.25},"scene-062":{"music":"inspire","volume":0.25},"interaction-6":{"music":"inspire","volume":0.25},"scene-064":{"music":"inspire","volume":0.25},"scene-065":{"music":"piano","volume":0.2},"scene-066":{"music":"piano","volume":0.2},"chengjiang-xiaoman-looks-up":{"music":"piano","volume":0.2},"scene-067":{"music":"piano","volume":0.2},"chengjiang-offer-school":{"music":"piano","volume":0.2},"scene-068":{"music":"piano","volume":0.2},"chengjiang-grip-broom":{"music":"piano","volume":0.2},"scene-069":{"music":"piano","volume":0.2},"scene-070":{"music":"piano","volume":0.2},"chengjiang-hold-sleeve":{"music":"piano","volume":0.2},"scene-071":{"music":"piano","volume":0.2},"scene-072":{"music":"piano","volume":0.04},"scene-073":{"music":"piano","volume":0.04},"protect-branch":{"music":"piano","volume":0.04},"protect-rain":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"interaction-7":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"scene-077":{"music":"books","volume":0.2},"chapter4-start":{"music":"cinema","volume":0.2,"fx":["cannon","siren"]},"chapter4-he-narration":{"music":"cinema","volume":0.2},"scene-079":{"music":"history","volume":0.18},"scene-080":{"music":"history","volume":0.18},"choice-3":{"music":"history","volume":0.03},"scene-082":{"music":"inspire","volume":0.25},"scene-083":{"music":"inspire","volume":0.25},"scene-084":{"music":"inspire","volume":0.25},"interaction-8":{"music":"inspire","volume":0.25},"anthem-meeting-context":{"music":"inspire","volume":0.25},"scene-086":{"music":"inspire","volume":0.25},"scene-087":{"music":"piano","volume":0.05},"scene-088":{"music":"piano","volume":0.05},"scene-089":{"music":"piano","volume":0.05},"scene-090":{"music":"piano","volume":0.05},"scene-091":{"music":"anthem","volume":0.3},"scene-092":{"music":"cinema","volume":0.2,"fx":["siren","cannon"],"bombing":true},"scene-093":{"music":null,"volume":0.2,"cut":true},"scene-094":{"music":null,"volume":0.2,"cut":true},"choice-4":{"music":null,"volume":0.2,"cut":true},"chapter5-start":{"music":"history","volume":0.22},"audit-guizhou-hezhi":{"music":"history","volume":0.22},"scene-097":{"music":"history","volume":0.22},"scene-098":{"music":"piano","volume":0.2},"interaction-9":{"music":"piano","volume":0.2},"scene-100":{"music":"piano","volume":0.2},"scene-101":{"music":"piano","volume":0.2},"scene-102":{"music":null,"volume":0.2,"cut":true},"scene-103":{"music":"piano","volume":0.2},"scene-104":{"music":"piano","volume":0.2},"scene-105":{"music":"piano","volume":0.2},"interaction-10":{"music":"piano","volume":0.2},"scene-107":{"music":"piano","volume":0.45},"scene-108":{"music":"piano","volume":0.45},"scene-109":{"music":"inspire","volume":0.45},"scene-110":{"music":"inspire","volume":0.45},"scene-111":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"scene-112":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-future-memory":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"choice-5":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-stop":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-silent":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-lift-case":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-silent-reply":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-gone":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-117":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.35,"delay":650},"scene-118":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.3},"scene-119":{"music":"inspire","volume":0.8,"ambient":"fireworks","ambientVolume":0.25},"scene-120":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-121":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-122":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-123":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-124":{"music":"inspire","volume":0.08,"fx":["shutter"]},"chapter6-start":{"music":"anthem","volume":0.45},"interaction-11":{"music":"anthem","volume":0.45},"scene-127":{"music":"anthem","volume":0.45},"montage":{"music":"piano","volume":0.6},"ending":{"music":"piano","volume":0.2},"audit-farewell-chase":{"music":"piano","volume":0.2},"scene-130":{"music":"piano","volume":0.2},"scene-131":{"music":"piano","volume":0.2},"scene-132":{"music":"history","volume":0.2,"fx":["page"]},"scene-133":{"music":"history","volume":0.2,"fx":["page"]},"scene-134":{"music":"history","volume":0.2,"fx":["page"]},"scene-135":{"music":"history","volume":0.2,"fx":["page"]},"scene-136":{"music":"history","volume":0.2,"fx":["page"]},"scene-137":{"music":null,"volume":0.2,"cut":true},"scene-138":{"music":null,"volume":0.2,"cut":true},"scene-139":{"music":null,"volume":0.2,"fx":["page"]},"scene-140":{"music":"piano","volume":0.08},"scene-141":{"music":"piano","volume":0.08},"reflection":{"music":"anthem","volume":0.8}};
+const $=id=>document.getElementById(id),key='qiushi-xixing:audio:v1';
+let settings={muted:false,volume:.7};
+try{const saved=JSON.parse(localStorage.getItem(key));if(saved&&typeof saved.muted==='boolean'&&Number.isFinite(saved.volume))settings={muted:saved.muted,volume:Math.max(0,Math.min(1,saved.volume))};}catch(_){}
+let context,master,unlocked=false,desired={},nodeKey='',sceneToken=0,sequence=0;
+const channels={music:null,ambient:null},live=new Set(),effects=new Set(),timers=new Set();
+function status(message){$('audio-status').textContent=message;}
+function enabled(){return unlocked&&!settings.muted&&settings.volume>0&&!document.hidden;}
+function updateUI(){
+ $('audio-toggle').textContent=settings.muted?'声音：关':'声音：开';
+ $('audio-toggle').setAttribute('aria-pressed',String(settings.muted));
+ $('audio-toggle').setAttribute('aria-label',settings.muted?'取消静音':'静音');
+ $('audio-volume').value=Math.round(settings.volume*100);$('audio-volume-value').textContent=Math.round(settings.volume*100)+'%';
+ if(master)master.gain.setValueAtTime(settings.volume,context.currentTime);
+}
+function save(){try{localStorage.setItem(key,JSON.stringify(settings));}catch(_){}updateUI();}
+function schedule(fn,ms){const token=sceneToken;const t=setTimeout(()=>{timers.delete(t);if(token===sceneToken&&enabled())fn();},ms);timers.add(t);}
+function cancelCues(){sceneToken++;for(const t of timers)clearTimeout(t);timers.clear();for(const r of [...effects])dispose(r);}
+function dispose(r){
+ if(!r||r.disposed)return;r.disposed=true;clearTimeout(r.cleanup);cancelAnimationFrame(r.fade);
+ r.audio.pause();r.audio.removeAttribute('src');r.audio.load();r.source?.disconnect();r.gain?.disconnect();live.delete(r);effects.delete(r);
+}
+function ramp(r,target,seconds=1.5){
+ if(!r||r.disposed)return;
+ // Web Audio gain works on mobile browsers where media.volume may be fixed.
+ if(r.gain){const g=r.gain.gain;g.cancelScheduledValues(context.currentTime);g.setValueAtTime(g.value,context.currentTime);g.linearRampToValueAtTime(target,context.currentTime+seconds);}
+ else{cancelAnimationFrame(r.fade);const from=r.audio.volume,start=performance.now(),duration=seconds*1000;const tick=now=>{if(r.disposed)return;const t=duration?Math.min(1,(now-start)/duration):1;r.audio.volume=Math.max(0,Math.min(1,from+(target*settings.volume-from)*t));if(t<1)r.fade=requestAnimationFrame(tick);};r.fade=requestAnimationFrame(tick);}
+}
+function retire(r,seconds){if(!r)return;if(!seconds){dispose(r);return;}ramp(r,0,seconds);r.cleanup=setTimeout(()=>dispose(r),seconds*1000+60);}
+function make(id,loop,rate=1){
+ const audio=new Audio();audio.preload='none';audio.loop=loop;audio.defaultPlaybackRate=rate;
+ // Only one anthem recording was supplied. Slow playback gives the farewell a distinct character.
+ if(rate!==1){audio.preservesPitch=false;audio.webkitPreservesPitch=false;}
+ const r={audio,id,rate,disposed:false,serial:++sequence};
+ if(context){r.source=context.createMediaElementSource(audio);r.gain=context.createGain();r.gain.gain.value=0;r.source.connect(r.gain);r.gain.connect(master);}else audio.volume=0;
+ audio.src='./qiushi_bgm/'+files[id].split('/').map(encodeURIComponent).join('/');
+ audio.playbackRate=rate;
+ audio.addEventListener('error',()=>{if(!r.disposed){status('有音频未能加载，请确认 qiushi_bgm 文件夹与网页一同上传。');console.warn('音频加载失败：',files[id]);dispose(r);}});
+ live.add(r);return r;
+}
+function play(r){
+ const result=r.audio.play();
+ if(result)result.catch(error=>{if(r.disposed||error.name==='AbortError')return;if(error.name==='NotAllowedError'){status('浏览器暂未允许播放，请点击“声音”按钮重试。');}else{status('音频暂不可用，可继续阅读，稍后通过声音按钮重试。');console.warn('音频播放失败：',r.id,error.name);} });
+}
+function switchChannel(name,id,volume,cut=false,rate=1){
+ const previous=channels[name];
+ if(!enabled()||!id){channels[name]=null;retire(previous,cut?0:1.5);return;}
+ if(previous&&!previous.disposed&&previous.id===id&&previous.rate===rate){ramp(previous,volume);if(previous.audio.paused)play(previous);return;}
+ // Bound overlap even if the player skips quickly through many scenes.
+ for(const r of [...live])if(r.channel===name&&r!==previous)dispose(r);
+ retire(previous,cut?0:1.5);
+ const r=make(id,true,rate);r.channel=name;channels[name]=r;play(r);ramp(r,volume,cut?0:1.5);
+}
+function sync(cut=false){
+ switchChannel('music',desired.music,desired.volume??.2,cut||desired.cut,desired.rate||1);
+ switchChannel('ambient',desired.ambient,desired.ambientVolume??.2,cut||desired.cut);
+}
+function stop(){for(const r of [...live])dispose(r);channels.music=channels.ambient=null;}
+function fx(id,volume){
+ if(!enabled()||!files[id])return;
+ // Keep UI effects short and avoid stacks after rapid clicking.
+ for(const r of [...effects])if(r.id===id)dispose(r);
+ if(effects.size>=4)dispose(effects.values().next().value);
+ const levels={click:.16,page:.22,shutter:.55,cannon:.3,siren:.24};
+ const r=make(id,false);effects.add(r);play(r);ramp(r,volume??levels[id]??.25,0);
+ r.audio.addEventListener('ended',()=>dispose(r),{once:true});
+ r.cleanup=setTimeout(()=>dispose(r),['siren','cannon'].includes(id)?7000:2500);
+}
+function change(cue,keyValue,entry=true){
+ const fresh=nodeKey!==keyValue;
+ if(fresh){cancelCues();nodeKey=keyValue;}
+ desired={...cue};
+ if(fresh&&cue.delay&&enabled()){stop();schedule(()=>sync(),cue.delay);}else sync();
+ if(fresh&&entry){
+  for(const id of cue.fx||[])fx(id);
+  if(cue.bombing){schedule(()=>fx('cannon',.25),1500);schedule(()=>fx('cannon',.2),3200);schedule(()=>{desired={cut:true};cancelCues();sync(true);},4500);}
+  if(cue.settle!==undefined)schedule(()=>{desired.volume=cue.settle;sync();},3000);
+ }
+}
+function unlock(){
+ if(!context&&!unlocked){try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){context=new AC();master=context.createGain();master.gain.value=settings.volume;master.connect(context.destination);}}catch(_){context=null;}}
+ const first=!unlocked;unlocked=true;
+ if(context?.state==='suspended')context.resume().catch(()=>status('请点击声音按钮启用音频。'));
+ if(first){sync();status('已启用声音，音乐将随剧情进入。');}
+}
+function gesture(event){
+ if(event.type==='keydown'&&(event.repeat||event.ctrlKey||event.metaKey||event.altKey||['Tab','Shift','Control','Alt','Meta','Escape'].includes(event.key)))return;
+ unlock();
+}
+document.addEventListener('click',event=>{
+ gesture(event);
+ const b=event.target.closest('button,input[type="radio"]');
+ if(b&&!b.disabled&&!b.closest('.audio-dock,#audio-dialog,#journal-dialog')&&b.id!=='journal-button')fx('click');
+},true);
+document.addEventListener('keydown',gesture,true);
+$('audio-toggle').addEventListener('click',()=>{unlock();settings.muted=!settings.muted;save();if(settings.muted){cancelCues();stop();status('已静音。');}else{sync();status('声音已开启。');}});
+$('audio-settings').addEventListener('click',()=>{$('audio-dialog').showModal();});
+$('audio-close').addEventListener('click',()=>{$('audio-dialog').close();});
+$('audio-volume').addEventListener('input',event=>{unlock();settings.volume=Number(event.target.value)/100;save();if(enabled())sync();else{cancelCues();stop();}});
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){cancelCues();for(const r of [...live])if(r===channels.music||r===channels.ambient)r.audio.pause();else dispose(r);}
+ else if(enabled()){context?.resume().catch(()=>{});sync();}
+});
+window.addEventListener('pagehide',()=>{cancelCues();stop();});
+window.addEventListener('pageshow',()=>{if(enabled())sync();});
+globalThis.QiushiAudio={
+ enter(n,state){const cue={...(cues[n.id]||{})};if(n.id==='interaction-10'&&state.lampLit)cue.volume=.45;if(n.id==='ending'&&state.ending==='qiushi')Object.assign(cue,{music:'anthem',volume:.6,rate:.9});change(cue,n.id);},
+ title(){change({},'title',false);},map(){change({music:'history',volume:.15},'map',false);},
+ exhibit(id){if(id==='diary')fx('page');if(id==='map'){desired={music:'history',volume:.05};sync();}},
+ lamp(){desired={music:'piano',volume:.45};sync();},
+ montage(index,ending){desired={music:'piano',volume:ending==='anonymous'?.15:.6};sync();fx('page');fx('shutter',.2);},
+ page(n,index,count){if(n?.id==='scene-092'&&count>1&&index===count-1){cancelCues();desired={cut:true};sync(true);}},fx
+};
+updateUI();
+})();
+
+</script>
 <script id="game-engine">(function() {
 'use strict';
 const story=JSON.parse(document.getElementById('story-data').textContent);
 const nodes=new Map(story.nodes.map(n=>[n.id,n]));
 const C=globalThis.QiushiCore;
+const sound=globalThis.QiushiAudio;
 let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null;
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
@@ -460,6 +615,7 @@ function resumeJourney(){
  else {view.mode='story';renderCurrent();autoSave();}
 }
 function drawMap(){
+ sound.map();
  clearTimer();clearView();$('scene').hidden=true;$('route-map').hidden=false;
  document.body.dataset.type='map';document.body.dataset.node='route-map';
  const currentIndex=chapterIndex(current),done=journey.completed.length;
@@ -519,7 +675,7 @@ $('scene').classList.remove('flash','quake');if(n.id==='scene-005'){void $('scen
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
 function writeText(n){if(n.speaker)content.append(el('p','speaker',n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker));const p=el('p','story-text',n.text);p.tabIndex=-1;content.append(p);}
-function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
+function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){sound.fx('page');notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
 function readableText(value){
 return text(value).replace(/([。！？；][”’」』]?)(?![”’」』。！？；\n]|$)/g,'$1\n');
 }
@@ -548,6 +704,7 @@ const pages=textPages(paragraph?paragraph.textContent:'');let page=Math.min(view
 function draw(){
 view.page=page;
 if(paragraph)paragraph.textContent=pages[page];
+sound.page(current,page,pages.length);
 document.body.dataset.advance='ready';document.body.dataset.page=String(page+1);document.body.dataset.pages=String(pages.length);
 $('reading-hint').textContent=(pages.length>1?(page+1)+' / '+pages.length+' · ':'')+'按任意键继续 · 点击文字区';
 }
@@ -569,7 +726,7 @@ if(!skipBoundary&&current&&from>=0&&((to>from)||(n.id==='montage'&&!journey.fina
 playing=true;state.nodeId=n.id;current=n;view=freshView(n.id);renderCurrent();autoSave();
 }
 function renderCurrent(){
-const n=current;clearView();$('scene').hidden=false;$('route-map').hidden=true;
+const n=current;sound.enter(n,n.type==='ending'?{...state,ending:C.resolveEnding(state)}:state);clearView();$('scene').hidden=false;$('route-map').hidden=true;
 document.body.dataset.node=n.id;document.body.dataset.type=n.type||'text';setScene(n);
 $('reading-hint').textContent='请选择或完成当前操作';
 if(n.type!=='action')apply('enter:'+n.id,n.effects,n.journal);
@@ -580,7 +737,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':for(const option of n.choices){const b=btn(option.text,()=>{remember('choice:'+n.id+':'+option.id,option.text,'当时的选择');apply('choice:'+n.id+':'+option.id,option.effects,option.journal);if(option.feedback)feedback(option.feedback,option.next||n.next);else go(option.next||n.next);});b.dataset.choice=option.id;controls.append(b);}break;
-case 'action':{const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else if(n.id==='interaction-11'){setScene(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);break;}
+case 'action':{const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else if(n.id==='interaction-11'){setScene(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
@@ -589,6 +746,7 @@ default:continueButton(n.next);
 }
 }
 function showTitle(){
+sound.title();
 clearTimer();playing=false;current=null;nameConfirmed=false;state=C.createInitialState();journey=freshJourney();view=freshView('start');
 document.querySelectorAll('dialog[open]').forEach(d=>d.close());clearView();$('scene').hidden=false;$('route-map').hidden=true;document.body.dataset.node='title';document.body.dataset.type='title';
 setScene({location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'一段西行，八十九年的回响',bg:'IMG-01'});
@@ -618,8 +776,8 @@ controls.append(btn('填写并确认姓名',openName));$('reading-hint').textCon
 function showExhibits(n){const items=[['suitcase','西迁的箱子','竺可桢西迁时随身带的箱子。'],['photo','十二人的合影','1937 年，刘奎斗等 12 位投笔从戎学生的合影。\n他们投笔从戎，保家卫国。'],['diary','日记的手稿','他记了一辈子日记，直到去世前一天。'],['map','护送路线图','2600 多公里，没有一天停止办学。']];
 const selected=items.find(item=>item[0]===view.exhibit);
 const info=el('div','exhibit-info',selected?selected[2]:'先看看三件展品，再展开护送路线图。');info.setAttribute('role','status');content.append(info);
-function showRoute(){view.phase='exhibit-map';setScene({...n,location:'护送路线图'},'IMG-24');pageVersion++;controls.replaceChildren();controls.className='controls';continueButton(n.next);}
-function draw(){controls.replaceChildren();controls.className='controls exhibit-grid';for(const [id,label,description] of items){const seen=state.visitedExhibits.includes(id);const b=btn(label+(seen?'　已查看':''),()=>{if(!state.visitedExhibits.includes(id))state.visitedExhibits.push(id);view.exhibit=id;remember('exhibit:'+id,description,'展品 · '+label);info.textContent=readableText(description);if(id==='map')showRoute();else draw();});b.id='exhibit-'+id;b.disabled=id==='map'&&state.visitedExhibits.length<3;controls.append(b);}}
+function showRoute(){sound.exhibit('map');view.phase='exhibit-map';setScene({...n,location:'护送路线图'},'IMG-24');pageVersion++;controls.replaceChildren();controls.className='controls';continueButton(n.next);}
+function draw(){controls.replaceChildren();controls.className='controls exhibit-grid';for(const [id,label,description] of items){const seen=state.visitedExhibits.includes(id);const b=btn(label+(seen?'　已查看':''),()=>{if(!state.visitedExhibits.includes(id))state.visitedExhibits.push(id);view.exhibit=id;sound.exhibit(id);remember('exhibit:'+id,description,'展品 · '+label);info.textContent=readableText(description);if(id==='map')showRoute();else draw();});b.id='exhibit-'+id;b.disabled=id==='map'&&state.visitedExhibits.length<3;controls.append(b);}}
 if(view.phase==='exhibit-map')showRoute();else draw();
 }
 function showQuiz(n){
@@ -650,15 +808,17 @@ function showWords(n){let selected=view.words||(view.words=[]);const selectedLin
 for(const char of ['求','是','力','行','敦','品','格','致']){const b=btn(char,()=>{if(selected.includes(char))selected=selected.filter(x=>x!==char);else if(selected.length<2)selected.push(char);view.words=selected;selectedLine.textContent='已选：'+(selected.join('　')||'等待你的两个字');wordButtons.forEach(x=>x.setAttribute('aria-pressed',String(selected.includes(x.textContent))));submit.disabled=selected.length!==2;},'word');b.setAttribute('aria-pressed',String(selected.includes(char)));wordButtons.push(b);grid.append(b);}controls.append(selectedLine,grid,submit);}
 function showTypo(n){const grid=el('div','word-grid');for(const char of ['国','难','党','头']){const b=btn(char,()=>{const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});feedback(right?'是“党”字。应当写作“国难当头”。':'这一处应将“党”改成“当”：国难当头。\n油灯的光太暗，你揉了揉眼睛。',n.next);},'word');grid.append(b);}controls.append(grid);}
 function showMontage(n){state.ending=C.resolveEnding(state);let index=view.montage||0;const memories=[['IMG-04','天目山 · 禅源寺','1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。'],['IMG-06','建德 · 文脉西运','1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。'],['IMG-09','泰和 · 赣江大堤','1938 年，泰和。赣江边跑测量，一寸一尺，修的是保命的大堤。'],['IMG-14','遵义 · 费巩灯','1943 年，遵义。费先生给我们一人做了一盏灯。后来我才懂，他给自己留的，是黑。'],['IMG-16','湄潭 · 胜利的灯火','灯还点吗？\n点。路还长。']];
-function frame(){view.montage=index;clearView();const [bg,location,body]=memories[index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),el('p','story-text',body));if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='回忆会自动翻页 · 可随时跳过';autoSave();}
+function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),el('p','story-text',body));if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='回忆会自动翻页 · 可随时跳过';autoSave();}
 frame();timer=setInterval(()=>{if(document.hidden||view.mode==='map'||document.querySelector('dialog[open]'))return;index++;if(index>=memories.length)go(n.next);else frame();},7000);}
 function showEnding(n){state.ending=C.resolveEnding(state);const ending=story.endings[state.ending];remember('ending:'+state.ending,ending.text,ending.title);document.body.dataset.ending=state.ending;content.append(el('p','title-kicker','这一程，你的回答'),el('h1','ending-title',ending.title),el('p','story-text',ending.text),el('p','ending-meta','人心 '+state.renxin+'　／　薪火 '+state.xinhuo+'　／　求真 '+state.qiuzhen));if(state.ending==='anonymous')$('scene-image').classList.add('faded');continueButton(n.next,'走向告别 →');}
 function showReflection(n){clearTimer();if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
 for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;autoSave();});label.append(input);content.append(label);}content.append(el('p','field-note','回答随进度保存在当前浏览器，不会上传。'),el('p','ending-title','求是')); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是';}
 function showDialog(id){$(id).showModal();}
 function openJournal(){
+sound.fx('page');
 const root=$('journal-content');let index=0;
 function draw(){
+if(root.childElementCount)sound.fx('page');
 root.replaceChildren(el('p','journal-summary',(nameConfirmed?state.name:'未署名')+'的手账\n人心 '+state.renxin+'　薪火 '+state.xinhuo+'　求真 '+state.qiuzhen));
 if(!state.journal.length){root.append(el('p','empty','纸页还是空的。走进故事，让经历慢慢留下字迹。'));return;}
 const entry=state.journal[index];const block=el('article','journal-entry');block.append(el('h3','',entry.title),el('p','',readableText(entry.text)));root.append(block);
