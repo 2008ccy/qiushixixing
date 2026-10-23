@@ -29,6 +29,12 @@ main{width:min(100%,1080px);height:calc(100dvh - 20px);min-height:0;margin:0 aut
 #content{flex:0 0 auto;min-width:0}
 .speaker{font-size:14px;line-height:1.5;margin:0 0 8px;letter-spacing:.12em}
 .story-text{font-size:22px;line-height:1.6;letter-spacing:.025em;margin:0;white-space:pre-line;overflow-wrap:anywhere}
+/* Typewriter subtitle: crisper grain to stand apart from the soft body text. */
+.story-text.subtitle{font-weight:600;color:#161c18;letter-spacing:.05em}
+.type-cursor{display:inline-block;width:.5em;height:1em;margin-left:.06em;vertical-align:-.12em;background:currentColor;animation:type-blink .9s steps(1,end) infinite}
+@keyframes type-blink{0%,55%{opacity:1}56%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.type-cursor{animation:none}}
+body[data-typing="1"] .story-panel{cursor:pointer}
 .controls{gap:9px;margin-top:10px;flex:0 0 auto}
 .controls:empty,.notification:empty{display:none}
 .choice,.continue{min-height:38px;padding:7px 14px;border-width:1px;font-size:17px;line-height:1.5;box-shadow:0 1px 0 #cdbf9e55}
@@ -2421,6 +2427,14 @@ function fx(id,volume){
  r.audio.addEventListener('ended',()=>dispose(r),{once:true});
  r.cleanup=setTimeout(()=>dispose(r),['siren','cannon'].includes(id)?7000:2500);
 }
+ // Synthesized typewriter tick: no audio asset needed; plays over the background music.
+ function typeTick(){
+  if(!enabled()||!context||!master)return;
+  const t=context.currentTime,osc=context.createOscillator(),gain=context.createGain();
+  osc.type='square';osc.frequency.value=1700+Math.random()*700;
+  gain.gain.setValueAtTime(.055,t);gain.gain.exponentialRampToValueAtTime(.0005,t+.05);
+  osc.connect(gain);gain.connect(master);osc.start(t);osc.stop(t+.06);
+}
 function change(cue,keyValue,entry=true){
  const fresh=nodeKey!==keyValue;
  if(fresh){cancelCues();nodeKey=keyValue;}
@@ -2464,7 +2478,7 @@ globalThis.QiushiAudio={
  exhibit(id){if(id==='diary')fx('page');if(id==='map'){desired={music:'history',volume:.05};sync();}},
  lamp(){desired={music:'piano',volume:.45};sync();},
  montage(index,ending){desired={music:'piano',volume:ending==='anonymous'?.15:.6};sync();fx('page');fx('shutter',.2);},
- page(n,index,count){if(n?.id==='scene-092'&&count>1&&index===count-1){cancelCues();desired={cut:true};sync(true);}},fx
+ page(n,index,count){if(n?.id==='scene-092'&&count>1&&index===count-1){cancelCues();desired={cut:true};sync(true);}},fx,type(){typeTick();}
 };
 updateUI();
 })();
@@ -2613,10 +2627,10 @@ function openReview(index){
 }
 
 function text(value){return String(value||'').replaceAll('{name}',state.name);}
-function el(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=['story-text','feedback','exhibit-info'].includes(cls)?readableText(value):text(value);return e;}
+function el(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=['story-text','feedback','exhibit-info'].some(k=>cls===k||cls.startsWith(k+' '))?readableText(value):text(value);return e;}
 function btn(label,fn,cls='choice') {const b=el('button',cls,label);b.type='button';const version=pageVersion;b.addEventListener('click',()=>{if(version===pageVersion&&!b.disabled){fn(b);autoSave();}});return b;}
 function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){pageVersion++;advanceAction=null;delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearView(){pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
@@ -2627,7 +2641,7 @@ $('school-sign').hidden=n.id!=='interaction-11';$('school-sign').classList.toggl
 $('scene').classList.remove('flash','quake');if(n.id==='scene-005'){void $('scene').offsetWidth;$('scene').classList.add('flash');}
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
-function writeText(n){if(n.speaker)content.append(el('p','speaker',n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker));const p=el('p','story-text',n.text);p.tabIndex=-1;content.append(p);}
+function writeText(n){const sub=n.speaker==='字幕';if(n.speaker&&!sub)content.append(el('p','speaker',n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker));const p=el('p',sub?'story-text subtitle':'story-text',n.text);p.tabIndex=-1;content.append(p);}
 function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){sound.fx('page');notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
 function readableText(value){
 return text(value).replace(/([。！？；][”’」』]?)(?![”’」』。！？；\n]|$)/g,'$1\n');
@@ -2678,17 +2692,38 @@ for(const piece of pieces){
 }
 if(page)pages.push(page);return pages.length?pages:[''];
 }
+// Typewriter reveal: characters appear one by one; a click or keypress first completes, then advances.
+let typeState=null;
+function clearTyping(){if(typeState){clearInterval(typeState.timer);typeState=null;}delete document.body.dataset.typing;}
+function finishTyping(){if(!typeState)return;const s=typeState;clearTyping();s.node.data=s.chars.join('');}
+function typeInto(paragraph,full,soundOn){
+clearTyping();
+const chars=Array.from(full);
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){paragraph.textContent=full;return;}
+paragraph.textContent='';
+const node=document.createTextNode('');paragraph.append(node);
+if(soundOn){const cursor=el('span','type-cursor');cursor.setAttribute('aria-hidden','true');paragraph.append(cursor);}
+document.body.dataset.typing='1';
+let i=0;
+const timer=setInterval(()=>{
+ if(i>=chars.length){clearTyping();return;}
+ node.data+=chars[i++];
+ if(soundOn)sound.type();
+},60);
+typeState={paragraph,node,chars,timer};
+}
+function typeBody(){const p=content.querySelector('.story-text');if(!p||!p.textContent||p.dataset.typed)return;p.dataset.typed='1';typeInto(p,p.textContent,p.classList.contains('subtitle'));}
 function continueButton(next,finish,hint){
 const list=content.querySelectorAll('.story-text');
 const paragraph=list.length?list[list.length-1]:controls.querySelector('.feedback');
 const pages=textPages(paragraph?paragraph.textContent:'',availHeight(paragraph));let page=Math.min(view.page||0,pages.length-1);
 function draw(){
 view.page=page;
-if(paragraph)paragraph.textContent=pages[page];
 sound.page(current,page,pages.length);
 document.body.dataset.page=String(page+1);document.body.dataset.pages=String(pages.length);
 if(page+1<pages.length||!finish){document.body.dataset.advance='ready';}else{delete document.body.dataset.advance;}
-$('reading-hint').textContent=hint||'按键或点击继续';
+$('reading-hint').textContent='';
+if(paragraph)typeInto(paragraph,pages[page],paragraph.classList.contains('subtitle'));
 }
 advanceAction=()=>{if(page+1<pages.length){page++;draw();}else if(finish){advanceAction=null;finish();}else go(next);};draw();
 }
@@ -2703,7 +2738,7 @@ function showChoices(n){
 const build=()=>{for(const option of n.choices){const b=btn(option.text,()=>{remember('choice:'+n.id+':'+option.id,option.text,'当时的选择');apply('choice:'+n.id+':'+option.id,option.effects,option.journal);if(option.feedback)feedback(option.feedback,option.next||n.next);else go(option.next||n.next);});b.dataset.choice=option.id;controls.append(b);}};
 build();
 const panel=$('story-panel');
-if(panel.scrollHeight<=panel.clientHeight+1){advanceAction=null;delete document.body.dataset.advance;$('reading-hint').textContent='请作出选择';return;}
+if(panel.scrollHeight<=panel.clientHeight+1){advanceAction=null;delete document.body.dataset.advance;$('reading-hint').textContent='请作出选择';typeBody();return;}
 controls.replaceChildren();
 continueButton(null,()=>{content.replaceChildren();build();$('reading-hint').textContent='请作出选择';},'读完本页后作出选择');
 }
@@ -2727,7 +2762,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':showChoices(n);break;
-case 'action':{const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else if(n.id==='interaction-11'){setScene(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);break;}
+case 'action':{const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else if(n.id==='interaction-11'){setScene(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
@@ -2776,7 +2811,7 @@ dialog.addEventListener('close',onClose);
 dialog.showModal();
 }
 function draw(){controls.replaceChildren();controls.className='controls exhibit-grid';for(const item of items){const seen=state.visitedExhibits.includes(item[0]);const b=btn(item[1]+(seen?'　已查看':''),()=>openItem(item));b.id='exhibit-'+item[0];b.disabled=item[0]==='map'&&state.visitedExhibits.length<3;controls.append(b);}}
-if(view.phase==='exhibit-map')go(n.next);else draw();
+if(view.phase==='exhibit-map')go(n.next);else{draw();typeBody();}
 }
 function showQuiz(n){
 const quiz=view.quiz||(view.quiz={index:0,answers:Array(n.questions.length).fill(null)});let index=quiz.index;const answers=quiz.answers;
@@ -2812,17 +2847,17 @@ return {lead:paras[0]||'',tail:''};
 }
 function showWords(n){let selected=view.words||(view.words=[]);const {lead,tail}=interactionPages(n);
 const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');const wordButtons=[];const submit=btn('确认这两个字',()=>{const right=selected.join('')==='求是';remember('words:'+n.id,selected.join(''),'当时选择的两个字');apply('wordpick:'+n.id,right?{xinhuo:1}:{mistakes:1},right?null:{id:'motto-reason',title:'选择的依据',text:'我想用这两个字提醒自己继续读书做事，但选择也应当有依据。'});feedback(right?'全场静默三秒，竺可桢说：“记下吧。”':'竺可桢没有否定你，只问：“你选这两个字，依据是什么？”\n你把自己的想法记进了手账。',n.next);});submit.disabled=selected.length!==2;submit.id='submit-words';$('reading-hint').textContent='已选：'+(selected.join('　')||'等待你的两个字');
-for(const char of ['求','是','力','行','敦','品','格','致']){const b=btn(char,()=>{if(selected.includes(char))selected=selected.filter(x=>x!==char);else if(selected.length<2)selected.push(char);view.words=selected;$('reading-hint').textContent='已选：'+(selected.join('　')||'等待你的两个字');wordButtons.forEach(x=>x.setAttribute('aria-pressed',String(selected.includes(x.textContent))));submit.disabled=selected.length!==2;},'word');b.setAttribute('aria-pressed',String(selected.includes(char)));wordButtons.push(b);grid.append(b);}controls.append(grid,submit);};
+for(const char of ['求','是','力','行','敦','品','格','致']){const b=btn(char,()=>{if(selected.includes(char))selected=selected.filter(x=>x!==char);else if(selected.length<2)selected.push(char);view.words=selected;$('reading-hint').textContent='已选：'+(selected.join('　')||'等待你的两个字');wordButtons.forEach(x=>x.setAttribute('aria-pressed',String(selected.includes(x.textContent))));submit.disabled=selected.length!==2;},'word');b.setAttribute('aria-pressed',String(selected.includes(char)));wordButtons.push(b);grid.append(b);}controls.append(grid,submit);typeBody();};
 if(tail&&!selected.length){content.replaceChildren();content.append(el('p','story-text',lead));continueButton(null,mount,'按键继续');}else mount();}
 function showTypo(n){const {lead,tail}=interactionPages(n);
-const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');for(const char of ['国','难','党','头']){const b=btn(char,()=>{const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});feedback(right?'是“党”字。应当写作“国难当头”。':'这一处应将“党”改成“当”：国难当头。\n油灯的光太暗，你揉了揉眼睛。',n.next);},'word');grid.append(b);}controls.append(grid);};
+const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');for(const char of ['国','难','党','头']){const b=btn(char,()=>{const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});feedback(right?'是“党”字。应当写作“国难当头”。':'这一处应将“党”改成“当”：国难当头。\n油灯的光太暗，你揉了揉眼睛。',n.next);},'word');grid.append(b);}controls.append(grid);typeBody();};
 if(tail){content.replaceChildren();content.append(el('p','story-text',lead));continueButton(null,mount,'按键继续');}else mount();}
 function showMontage(n){state.ending=C.resolveEnding(state);let index=view.montage||0;const memories=[['IMG-04','天目山 · 禅源寺','1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。'],['IMG-06','建德 · 文脉西运','1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。'],['IMG-09','泰和 · 赣江大堤','1938 年，泰和。赣江边跑测量，一寸一尺，修的是保命的大堤。'],['IMG-14','遵义 · 费巩灯','1943 年，遵义。费先生给我们一人做了一盏灯。后来我才懂，他给自己留的，是黑。'],['IMG-16','湄潭 · 胜利的灯火','灯还点吗？\n点。路还长。']];
-function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),el('p','story-text',body));if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='自动翻页 · 点击文字区或按键可翻页';autoSave();advanceAction=()=>{index++;if(index>=memories.length)go(n.next);else frame();};}
+function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');const p=el('p','story-text',body);content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),p);typeInto(p,body,false);if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='自动翻页 · 点击文字区或按键可翻页';autoSave();advanceAction=()=>{index++;if(index>=memories.length)go(n.next);else frame();};}
 frame();timer=setInterval(()=>{if(document.hidden||view.mode==='map'||document.querySelector('dialog[open]'))return;index++;if(index>=memories.length)go(n.next);else frame();},7000);}
 function showEnding(n){state.ending=C.resolveEnding(state);const ending=story.endings[state.ending];remember('ending:'+state.ending,ending.text,ending.title);document.body.dataset.ending=state.ending;content.append(el('p','title-kicker','这一程，你的回答'),el('h1','ending-title',ending.title),el('p','story-text',ending.text),el('p','ending-meta','人心 '+state.renxin+'　／　薪火 '+state.xinhuo+'　／　求真 '+state.qiuzhen));if(state.ending==='anonymous')$('scene-image').classList.add('faded');continueButton(n.next,'走向告别 →');}
 function showReflection(n){clearTimer();if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
-const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;autoSave();});label.append(input);grid.append(label);}content.append(grid); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是 · 回答保存在本机';}
+const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;autoSave();});label.append(input);grid.append(label);}content.append(grid); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是 · 回答保存在本机';typeBody();}
 function showDialog(id){$(id).showModal();}
 function openJournal(){
 sound.fx('page');
@@ -2847,7 +2882,7 @@ $('confirm-restart').addEventListener('click',()=>{$('restart-dialog').close();t
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
 window.addEventListener('pagehide',autoSave);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)autoSave();});
-function advance(){if(!advanceAction||document.querySelector('dialog[open]'))return;const action=advanceAction;action();autoSave();}
+function advance(){if(document.querySelector('dialog[open]'))return;if(typeState){finishTyping();return;}if(!advanceAction)return;const action=advanceAction;action();autoSave();}
 $('story-panel').tabIndex=0;
 $('story-panel').addEventListener('click',event=>{
 if(event.target.closest('button,a,input,textarea,select,label,[contenteditable="true"]'))return;
@@ -2858,7 +2893,7 @@ if(event.repeat||event.isComposing||event.keyCode===229||event.ctrlKey||event.me
 if(['Tab','Escape','Shift','Control','Alt','Meta','CapsLock','Dead','Process','Unidentified'].includes(event.key)||/^F\d+$/.test(event.key))return;
 if(document.querySelector('dialog[open]')||event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
 if(event.target.closest('button,a')&&['Enter',' '].includes(event.key))return;
-if(advanceAction){event.preventDefault();advance();}
+if(advanceAction||typeState){event.preventDefault();advance();}
 });
 showTitle();
 })();
