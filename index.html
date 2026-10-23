@@ -301,6 +301,20 @@ body[data-type="map"] .controls button{width:auto;flex:1;min-width:110px;min-hei
 .audio-dock{display:inline-flex;gap:4px;flex:none}
 .audio-dock button{background:var(--button);border:1px solid var(--line);padding:2px 8px;min-height:24px;font-size:11px;line-height:1.3}
 .audio-setting{display:flex;align-items:center;gap:14px;margin:24px 0;font-size:18px}.audio-setting input{flex:1;min-width:60px;accent-color:var(--accent)}
+/* Keep the existing image/text ratio; quiz solutions share one reading page. */
+body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow-y:auto}
+.quiz-result{font-size:17px;line-height:1.45;letter-spacing:0;overflow-wrap:anywhere}
+.quiz-result p{margin:0 0 6px;white-space:pre-line}
+.quiz-result h3{font-size:inherit;font-weight:400;color:var(--accent);margin:0 0 4px}
+.quiz-result ol{margin:0;padding-left:1.65em}
+.quiz-result li{padding-left:2px;margin:0 0 4px}
+.quiz-result li:last-child{margin-bottom:0}
+@media(max-width:600px){
+  body[data-quiz-result] .story-panel{padding:8px 18px}
+  .quiz-result{font-size:16px;line-height:1.4}
+  .quiz-result p{margin-bottom:5px}
+  .quiz-result li{margin-bottom:3px}
+}
 </style>
 </head>
 <body>
@@ -2644,7 +2658,7 @@ function text(value){return String(value||'').replaceAll('{name}',state.name);}
 function el(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=['story-text','feedback','exhibit-info'].some(k=>cls===k||cls.startsWith(k+' '))?readableText(value):text(value);return e;}
 function btn(label,fn,cls='choice') {const b=el('button',cls,label);b.type='button';const version=pageVersion;b.addEventListener('click',()=>{if(version===pageVersion&&!b.disabled){fn(b);autoSave();}});return b;}
 function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearView(){delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
@@ -2747,7 +2761,25 @@ remember('feedback:'+current.id+':'+message,message,'当时的回应');
 view.phase='feedback';view.message=message;view.next=next;view.page=0;
 drawFeedback();
 }
-function drawFeedback(){const savedNotice=notice.textContent;clearView();notice.textContent=savedNotice;content.append(el('p','story-text',view.message));continueButton(view.next);}
+function drawFeedback(){
+const savedNotice=notice.textContent;clearView();notice.textContent=savedNotice;
+if(current.type==='quiz' && /(?:^|\n)1．/.test(view.message)){
+  document.body.dataset.quizResult='true';
+  const result=el('section','quiz-result');result.setAttribute('aria-label','夜读答案');
+  const split=view.message.indexOf('1．');
+  const introduction=view.message.slice(0,split).trim();
+  const heading='这一次，记住这些答案：';
+  result.append(el('p','',introduction.replace(heading,'').trim()),el('h3','',heading));
+  const answers=el('ol');
+  for(const answer of view.message.slice(split).split(/\n(?=\d+．)/))answers.append(el('li','',answer.replace(/^\d+．/,'')));
+  result.append(answers);content.append(result);
+  view.page=0;document.body.dataset.page='1';document.body.dataset.pages='1';document.body.dataset.advance='ready';
+  $('reading-hint').textContent='按键或点击继续';
+  advanceAction=()=>go(view.next);
+  return;
+}
+content.append(el('p','story-text',view.message));continueButton(view.next);
+}
 function showChoices(n){
 const build=()=>{for(const option of n.choices){const b=btn(option.text,()=>{remember('choice:'+n.id+':'+option.id,option.text,'当时的选择');apply('choice:'+n.id+':'+option.id,option.effects,option.journal);if(option.feedback)feedback(option.feedback,option.next||n.next);else go(option.next||n.next);});b.dataset.choice=option.id;controls.append(b);}};
 build();
