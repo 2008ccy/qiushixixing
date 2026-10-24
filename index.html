@@ -375,27 +375,28 @@ button:hover:not(:disabled){background:#344348}
   .quiz-result{font-size:15px;line-height:1.35}
   .quiz-result p,.quiz-result h3,.quiz-result li{margin-bottom:3px}
 }
-/* Reserve a footer row so audio controls cannot be pushed below the viewport. */
-body{padding:12px 10px}
-main{height:calc(100vh - 24px);height:calc(100svh - 24px)}
-.story-panel,body[data-quiz-result] .story-panel{display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden}
-.reading-body{min-height:0;min-width:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) var(--paper)}
-.below{min-width:0;margin-top:0;padding-top:8px;gap:8px;display:grid;grid-template-columns:minmax(0,1fr) auto auto;background:var(--paper)}
-#save-status{min-width:0;white-space:nowrap}
-.audio-dock{white-space:nowrap;align-items:center}
-.audio-dock button{min-height:28px}
+@media(max-width:600px) and (max-height:600px){
+  .quiz-result{font-size:14px;line-height:1.3}
+}
+/* Audio controls stay at the top right, outside the reading area. */
+main{position:relative}
+.audio-dock{position:absolute;top:16px;right:18px;z-index:5;white-space:nowrap;align-items:center}
+.audio-dock button{min-height:30px;padding:5px 10px;font-size:12px;background:var(--button)}
+.toolbar{top:56px}
+.location{max-width:calc(100% - 300px)}
+.map-heading{padding-right:140px}
 @media(max-width:600px){
-  body{padding:8px}
-  main{height:calc(100vh - 16px);height:calc(100svh - 16px)}
-  .below{grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;padding-top:6px}
-  #reading-hint{grid-column:1;grid-row:1;align-self:end}
-  #save-status{grid-column:1;grid-row:2;overflow:hidden;text-overflow:ellipsis;font-size:9px}
-  .audio-dock{grid-column:2;grid-row:1 / span 2}
+  .audio-dock{top:12px;right:12px}
+  .audio-dock button{min-height:28px;padding:4px 8px;font-size:11px}
+  .location{max-width:calc(100% - 145px)}
+  .toolbar{top:auto}
+  .map-heading{padding-right:0;padding-top:32px}
 }
 </style>
 </head>
 <body>
 <main id="game">
+<div class="audio-dock" role="group" aria-label="声音控制"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button></div>
 <section class="scene" id="scene" aria-label="故事场景">
 <img class="scene-image" id="scene-image" src="./assets/images/IMG-01.webp" alt="校史馆场景示意图">
 <h2 class="location" id="location">紫金港 · 校史馆<span class="date" id="scene-date">2026 年 10 月</span></h2>
@@ -412,9 +413,9 @@ main{height:calc(100vh - 24px);height:calc(100svh - 24px)}
 <p class="map-footer">一所大学的课堂，沿着西行的道路延伸。<span>路线示意 · 非地理比例</span></p>
 </section>
 <section class="story-panel" id="story-panel" aria-label="剧情与选择">
-<div class="reading-body" id="reading-body"><div id="content"></div><div class="controls" id="controls"></div>
-<div class="notification" id="notification" role="status" aria-live="polite"></div></div>
-<div class="below"><span id="reading-hint">点击按钮启程 · 声音缺省静音</span><span id="save-status" role="status">求是西行 · 1937</span><div class="audio-dock" role="group" aria-label="声音控制"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button></div></div>
+<div id="content"></div><div class="controls" id="controls"></div>
+<div class="notification" id="notification" role="status" aria-live="polite"></div>
+<div class="below"><span id="reading-hint">点击按钮启程 · 声音缺省静音</span><span id="save-status" role="status">求是西行 · 1937</span></div>
 </section>
 </main>
 <dialog class="dialog" id="name-dialog" aria-labelledby="name-title"></dialog>
@@ -2760,7 +2761,7 @@ function text(value){return String(value||'').replaceAll('{name}',state.name);}
 function el(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=['story-text','feedback','exhibit-info'].some(k=>cls===k||cls.startsWith(k+' '))?readableText(value):text(value);return e;}
 function btn(label,fn,cls='choice') {const b=el('button',cls,label);b.type='button';const version=pageVersion;b.addEventListener('click',()=>{if(version===pageVersion&&!b.disabled){fn(b);autoSave();}});return b;}
 function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('reading-body').scrollTop=0;}
+function clearView(){delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
 if(bg==='IMG-30'||bg==='IMG-22')image.classList.add('framed');
@@ -2785,7 +2786,7 @@ const metrics={line:parseFloat(s.lineHeight)||Math.round(parseFloat(s.fontSize)*
 probe.remove();return metrics;
 }
 function availHeight(paragraph){
-const panel=$('reading-body');const ps=getComputedStyle(panel);
+const panel=$('story-panel');const ps=getComputedStyle(panel);
 const saved=paragraph?paragraph.textContent:null;
 if(paragraph)paragraph.textContent='';
 let avail=panel.clientHeight-parseFloat(ps.paddingTop)-parseFloat(ps.paddingBottom);
@@ -2886,7 +2887,7 @@ content.append(el('p','story-text',view.message));continueButton(view.next);
 function showChoices(n){
 const build=()=>{for(const option of n.choices){const b=btn(option.text,()=>{remember('choice:'+n.id+':'+option.id,option.text,'当时的选择');apply('choice:'+n.id+':'+option.id,option.effects,option.journal);if(option.feedback)feedback(option.feedback,option.next||n.next);else go(option.next||n.next);});b.dataset.choice=option.id;controls.append(b);}};
 build();
-const panel=$('reading-body');
+const panel=$('story-panel');
 if(panel.scrollHeight<=panel.clientHeight+1){advanceAction=null;delete document.body.dataset.advance;$('reading-hint').textContent='请作出选择';typeBody();return;}
 controls.replaceChildren();
 continueButton(null,()=>{content.replaceChildren(el('p','choice-prompt',n.prompt||n.text));build();$('reading-hint').textContent='请作出选择';},'读完本页后作出选择');
