@@ -10,7 +10,7 @@
 :root{color-scheme:light;--paper:#f4ecd9;--ink:#2b302c;--muted:#756f60;--line:#c9b893;--button:#fffaf1;--accent:#476268}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;font-weight:400}button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button:disabled{cursor:default;opacity:.48}button,textarea,input{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}button:hover:not(:disabled){background:#f0e6cf}button:active:not(:disabled){transform:translateY(1px)}[hidden]{display:none!important}main{width:min(100%,1490px);margin:auto}.scene{position:relative;width:100%;aspect-ratio:16/9;max-height:65svh;background:#8b9da2;overflow:hidden}.scene-image{display:block;width:100%;height:100%;object-fit:cover;transition:filter 1.4s,opacity .5s}.scene-image.night{filter:brightness(.61) saturate(.7)}.scene-image.lit{filter:brightness(1.08) saturate(.9)}.scene-image.memory{filter:grayscale(.62)}.scene-image.faded{filter:grayscale(1) brightness(.82)}.scene.flash{animation:flash .7s}.scene.quake{animation:quake .45s}.location{position:absolute;top:clamp(20px,2.5vw,38px);left:clamp(22px,2.7vw,40px);margin:0;color:#fff9e9;font-size:clamp(20px,2.1vw,30px);font-weight:400;letter-spacing:.3em;text-shadow:0 1px 8px #43585a}.date{display:block;margin-top:12px;font-size:13px;letter-spacing:.14em;opacity:.86}.toolbar{position:absolute;right:clamp(16px,2.7vw,40px);top:clamp(18px,2.5vw,38px);display:flex;gap:6px}.toolbar button{background:#f9f2e5e8;border:1px solid #e6deca;color:#3e504e;padding:8px 13px;font-size:14px;min-height:36px}.chapter-label{position:absolute;left:clamp(22px,2.7vw,40px);bottom:24px;font-size:14px;letter-spacing:.16em;color:#fff9e9;text-shadow:0 1px 5px #3f5557}.lamp-object{position:absolute;bottom:8%;right:10%;width:clamp(100px,18vw,240px);height:clamp(100px,18vw,240px);object-fit:contain;filter:drop-shadow(0 0 28px #e6bb77);opacity:.95}.map-caption{position:absolute;bottom:14%;left:9%;right:9%;color:#fdf8e9;line-height:2.1;font-size:clamp(14px,1.4vw,21px);text-align:center;letter-spacing:.1em;background:#40585bba;padding:15px 25px}
 .story-panel{padding:clamp(24px,4.5vw,64px) clamp(22px,2.7vw,40px) 28px;border-top:1px solid var(--line);min-height:320px}.speaker{font-size:16px;letter-spacing:.15em;color:var(--accent);margin:0 0 12px}.story-text{font-size:clamp(22px,2.3vw,34px);line-height:1.95;letter-spacing:.035em;white-space:pre-line;margin:0;overflow-wrap:anywhere}.story-text:focus{outline:none}.controls{display:flex;flex-direction:column;gap:16px;margin-top:clamp(24px,3.4vw,48px)}.choice,.continue{width:100%;min-height:76px;text-align:left;border:2px solid var(--line);background:var(--button);padding:16px 26px;box-shadow:0 2px 0 #cdbf9e66;font-size:clamp(21px,2vw,30px);line-height:1.65;transition:background .16s}.continue{text-align:right;font-size:clamp(18px,1.7vw,25px);min-height:62px}.choice[aria-pressed=true]{background:#e1e8df;border-color:#6b8582}.below{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:24px;font-size:13px;color:var(--muted);letter-spacing:.06em;line-height:1.7}.title-kicker{font-size:15px;letter-spacing:.3em;color:var(--accent);margin:0 0 12px}.game-title{font-weight:400;font-size:clamp(38px,5vw,70px);letter-spacing:.12em;margin:0 0 15px}.title-description{font-size:clamp(18px,1.6vw,23px);line-height:1.9;margin:0;color:#615e53}.name-label{display:block;font-size:18px;margin:25px 0 10px}.name-input{display:block;width:min(100%,480px);background:#fffaf1;border:1px solid var(--line);border-radius:0;padding:13px 16px;font-size:25px;min-height:56px}.field-note{font-size:14px;color:var(--muted);line-height:1.8;margin:10px 0 0}.notification{font-size:16px;color:var(--accent);min-height:26px;margin-top:18px;line-height:1.7}.feedback{padding:20px 24px;background:#e9e2cd;border-left:3px solid #8a987d;font-size:clamp(19px,1.8vw,27px);line-height:1.9;white-space:pre-line}.exhibit-info{font-size:clamp(19px,1.7vw,26px);padding:15px 0;line-height:1.9}.question{padding:0;margin:0 0 22px;border:0}.question legend{font-size:22px;line-height:1.8;margin-bottom:14px}.answer{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;margin-bottom:10px;border:1px solid var(--line);background:var(--button);font-size:19px;line-height:1.65;cursor:pointer}.answer input{accent-color:#476268;width:20px;height:20px;flex-shrink:0;margin-top:5px}.answer:has(input:checked){background:#e1e8df;border-color:#6b8582}.word-grid{display:flex;flex-wrap:wrap;gap:14px}.word{font-size:34px;width:68px;height:72px;border:1px solid var(--line);background:var(--button)}.word[aria-pressed=true]{background:#d8e1d7;border:2px solid #68837d}.selected-words{font-size:25px;min-height:48px;line-height:1.8;margin:0}.small-button{align-self:flex-start;font-size:16px;background:transparent;border:1px solid var(--line);padding:10px 16px}.ending-title{font-size:clamp(36px,4vw,58px);font-weight:400;letter-spacing:.2em;margin:0 0 24px;color:#3d5c5e}.ending-meta{font-size:16px;color:var(--muted);margin-top:22px;line-height:1.8}.reflection-label{font-size:21px;line-height:1.8;display:block;margin-top:20px}.reflection-input{display:block;resize:vertical;min-height:90px;width:100%;margin-top:12px;padding:16px;border:1px solid var(--line);background:var(--button);font-size:19px;line-height:1.8}.progress{font-size:14px;color:var(--muted);margin:0}.dialog{border:1px solid var(--line);background:var(--paper);color:var(--ink);width:min(760px,92vw);max-height:82svh;padding:30px 34px;box-shadow:0 20px 90px #26373840}.dialog::backdrop{background:#1c31365c}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:-30px;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--line)}.dialog-head h2{font-size:26px;font-weight:400;letter-spacing:.12em;margin:0}.dialog-head button{border:1px solid var(--line);background:var(--button);padding:9px 16px;font-size:16px}.journal-summary{font-size:15px;line-height:1.9;color:var(--muted)}.journal-entry{border-bottom:1px solid #d8ccb0;padding:18px 0}.journal-entry h3{font-size:21px;font-weight:400;margin:0 0 10px}.journal-entry p{font-size:19px;line-height:1.9;white-space:pre-line;margin:0}.empty{font-size:20px;line-height:2;padding:24px 0}.chapter-list{padding-left:24px;font-size:20px;line-height:2.4}.chapter-list .current{color:var(--accent);font-weight:bold}.confirm-actions{display:flex;gap:14px;margin-top:24px}.confirm-actions button{flex:1;border:1px solid var(--line);background:var(--button);padding:14px;font-size:18px}@keyframes flash{50%{opacity:.15}}@keyframes quake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}@media(max-width:600px){.scene{max-height:none}.toolbar{top:auto;bottom:15px;right:16px;gap:5px}.toolbar button{font-size:12px;padding:6px 10px;min-height:33px}.location{font-size:19px;top:20px;left:22px;letter-spacing:.2em;max-width:82%}.date{font-size:11px;margin-top:8px}.chapter-label{font-size:11px;bottom:24px;max-width:45%;line-height:1.7;left:22px}.story-panel{padding:27px 22px 22px;min-height:320px}.story-text{font-size:23px;line-height:1.9}.choice{font-size:21px;padding:14px 17px;min-height:66px}.controls{margin-top:26px;gap:13px}.below{align-items:flex-start;font-size:11px;gap:12px}.question legend{font-size:20px}.answer{font-size:18px;padding:12px}.dialog{padding:20px}.dialog-head{top:-20px}.word{width:57px;height:64px;font-size:30px}.map-caption{bottom:24%;font-size:12px;padding:8px}.game-title{font-size:44px}.title-description{font-size:18px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-.location{max-width:calc(100% - 260px)}.school-sign{position:absolute;top:38%;left:34%;width:32%;text-align:center;background:#50554b;color:#f7efd8;border:2px solid #91876d;padding:12px 8px;font-size:clamp(16px,2.2vw,32px);letter-spacing:.15em;transform:rotate(-7deg);transition:transform .7s}.school-sign.settled{transform:rotate(0)}@media(max-width:600px){.location{max-width:85%}.school-sign{left:25%;width:50%;padding:6px;font-size:16px}}
+.location{max-width:calc(100% - 260px)}@media(max-width:600px){.location{max-width:85%}}
 /* Append after the original stylesheet. Compact, above-image/below-text layout. */
 html{min-height:100%;scroll-behavior:auto;background:#e5ddcb}
 body{min-height:100dvh;padding:10px;font-size:18px}
@@ -24,7 +24,7 @@ main{width:min(100%,1080px);height:calc(100dvh - 20px);min-height:0;margin:0 aut
 .chapter-label{left:26px;bottom:18px;font-size:12px;letter-spacing:.12em}
 .lamp-object{width:135px;height:135px;bottom:4%;right:10%}
 .map-caption{bottom:20%;left:13%;right:13%;padding:9px 14px;line-height:1.7;font-size:15px;letter-spacing:.06em}
-.school-sign{top:36%;padding:7px;font-size:23px}
+
 .story-panel{width:100%;min-height:0;padding:18px 28px 12px;display:flex;flex-direction:column;overflow-y:hidden;position:relative}
 #content{flex:0 0 auto;min-width:0}
 .speaker{font-size:14px;line-height:1.5;margin:0 0 8px;letter-spacing:.12em}
@@ -114,7 +114,7 @@ button.quiet-hint:hover:not(:disabled){background:transparent;color:var(--accent
   .chapter-label{left:18px;bottom:15px;max-width:42%;font-size:10px;line-height:1.6;letter-spacing:.03em}
   .lamp-object{width:100px;height:100px;bottom:13%}
   .map-caption{bottom:27%;left:8%;right:8%;font-size:12px;line-height:1.6;padding:7px 10px}
-  .school-sign{top:40%;left:25%;width:50%;font-size:16px;padding:5px}
+
   .story-panel{padding:16px 18px 10px}
   body[data-type="quiz"] .story-panel{padding-top:12px}
   .speaker{font-size:13px;margin-bottom:7px}
@@ -359,7 +359,7 @@ button:hover:not(:disabled){background:#344348}
 .stage-direction,.choice-prompt{font-size:clamp(14px,1.5vw,18px);line-height:1.6;color:var(--muted);white-space:pre-line;margin:0 0 8px;overflow-wrap:anywhere}
 /* First-chapter navigation keeps the supplied route illustration separate from station controls. */
 .chapter-route-art{display:block;position:relative;z-index:1;flex:1 1 0;min-height:0;width:100%;padding:0;margin:10px 0;border:0;background:transparent;overflow:hidden}
-.scene-image.framed{object-fit:contain}
+.scene-image.framed,#review-image.framed{object-fit:contain}
 .chapter-route-art img{display:block;width:100%;height:100%;object-fit:contain}
 .chapter-route-art:hover:not(:disabled){background:transparent}
 #route-map.has-route-art .route-stations{flex:none;margin:0;padding:5px 0;gap:4px}
@@ -392,6 +392,16 @@ main{position:relative}
   .toolbar{top:auto}
   .map-heading{padding-right:0;padding-top:32px}
 }
+#school-sign{position:absolute;left:50%;top:28%;display:grid;place-items:center;width:28%;min-height:44px;padding:0;border:0;background:transparent;box-shadow:none;transform:translate(-50%,-50%) rotate(var(--sign-angle,-14deg));transform-origin:center;touch-action:none;cursor:grab;user-select:none;transition:transform .2s ease;filter:drop-shadow(0 3px 3px #211b1355);z-index:2}
+#school-sign:hover:not(:disabled){background:transparent}
+#school-sign img{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
+#school-sign.dragging{cursor:grabbing;transition:none}
+#school-sign.settled{cursor:default}
+#school-sign.preview{pointer-events:none;cursor:default}
+.scene-image.school-sign-scene{object-position:center}
+@media(max-width:600px){.scene-image.school-sign-scene{object-fit:cover}}
+.review-scene{position:relative}
+#review-school-sign{position:absolute;height:auto;transform:translate(-50%,-50%) rotate(var(--sign-angle,0deg));pointer-events:none;filter:drop-shadow(0 2px 2px #211b1344)}
 </style>
 </head>
 <body>
@@ -403,7 +413,7 @@ main{position:relative}
 <nav class="toolbar" aria-label="游戏工具"><button id="journal-button" type="button">手账</button><button id="chapters-button" type="button">章节</button><button id="save-button" type="button">存档</button><button id="restart-button" type="button">重来</button></nav>
 <div class="chapter-label" id="chapter-label">一段西行，八十九年的回响</div>
 <img class="lamp-object" id="lamp-object" src="./assets/images/IMG-26.webp" alt="费巩灯示意图" hidden>
-<div id="school-sign" class="school-sign" hidden>国立浙江大学</div>
+<button id="school-sign" class="school-sign" type="button" aria-label="拖动校牌两端扶正，也可按左右方向键调整" hidden><img src="./assets/images/IMG-45.webp" alt="国立浙江大学校牌" draggable="false"></button>
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
@@ -424,7 +434,7 @@ main{position:relative}
 <dialog class="dialog" id="chapters-dialog" aria-labelledby="chapters-title"><div class="dialog-head"><h2 id="chapters-title">西行的足迹</h2><button data-close="chapters-dialog">回到故事</button></div><div id="chapters-content"></div></dialog>
 <dialog class="dialog" id="restart-dialog" aria-labelledby="restart-title"><div class="dialog-head"><h2 id="restart-title">重新启程</h2><button data-close="restart-dialog">继续故事</button></div><p class="empty">重新开始会重置地图、选择和手账，并覆盖自动存档。手动存档会保留。</p><div class="confirm-actions"><button id="cancel-restart">留在这一页</button><button id="confirm-restart">确认重新开始</button></div></dialog>
 <dialog class="dialog" id="save-dialog" aria-labelledby="save-title"><div class="dialog-head"><h2 id="save-title">存档与继续</h2><button data-close="save-dialog">返回</button></div><div id="save-content"></div></dialog>
-<dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><img id="review-image" alt="回顾场景"><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
+<dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><div class="review-scene"><img id="review-image" alt="回顾场景"><img id="review-school-sign" src="./assets/images/IMG-45.webp" alt="" hidden></div><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
 <noscript><p style="padding:30px;font-size:22px">请开启浏览器的 JavaScript 功能，即可开始这段故事。</p></noscript>
 <dialog class="dialog" id="route-image-dialog" aria-labelledby="route-image-title"><div class="dialog-head"><h2 id="route-image-title">第一章 · 西迁路线示意图</h2><button data-close="route-image-dialog" type="button">返回地图</button></div><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图"></dialog>
 <script type="application/json" id="story-data">{
@@ -687,7 +697,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-32",
       "id": "chapter2-news",
       "type": "text",
       "text": "11 月 5 日日军在杭州湾登陆的消息传开；街上人挤人，惊呼声与讨论声不绝于耳。",
@@ -698,7 +708,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-32",
       "type": "text",
       "text": "十一月五号，日本人在全公亭登陆。学校布告贴出来：全校迁建德，水路，分批启程。",
       "speaker": "何九章",
@@ -753,7 +763,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "两人拨开枯黄的茅草，看见蜷缩在土坡下的小女孩。小女孩头发凌乱，裤脚划破，脚上的布鞋磨破了洞，看见来人，吓得往后缩，紧紧把包袱搂在胸前。",
       "next": "scene-028"
@@ -763,7 +773,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "小朋友，别怕，我们是学生，不是坏人。你叫什么名字？",
       "speaker": "陈砚秋",
@@ -775,7 +785,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "小……小，小满。",
       "speaker": "小满",
@@ -787,7 +797,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "小满，你一个人在这里？你的爹娘呢？",
       "speaker": "{name}",
@@ -799,7 +809,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "路上…… 走散了。炮响的时候，娘把我推到草丛里。等我再出来，就找不到他们了。\n\n（把怀里的布包抱紧，里面是半块干硬的麦饼）\n我跟着逃难的人走，走不动，掉队了。",
       "speaker": "小满",
@@ -811,7 +821,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "山风掠过江面，远处隐约传来隆隆闷响。陈砚秋解下自己背上的粗布干粮袋，拿出一小块饼递过去。小满盯着干粮，不敢伸手。",
       "next": "scene-033"
@@ -821,7 +831,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "拿着吃吧。",
       "speaker": "陈砚秋",
@@ -832,7 +842,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "你们…… 要去哪里？",
       "speaker": "小满",
@@ -844,7 +854,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "我们带着学校的书，往建德去。战火来了，可读书不能断。",
       "speaker": "陈砚秋",
@@ -855,7 +865,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "我能不能…… 跟你们一起走？我能捡柴，能帮着拿轻东西，我不拖累你们。",
       "speaker": "小满",
@@ -867,7 +877,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "你们面面相觑，沉默片刻。",
       "next": "scene-037"
@@ -877,7 +887,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "国难路上，没有人该被丢下。只是前路很苦，还要继续赶路。",
       "speaker": "{name}",
@@ -888,7 +898,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-33",
       "type": "text",
       "text": "我能走！我叫小满，我会好好跟着队伍。",
       "speaker": "小满",
@@ -900,7 +910,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-34",
       "type": "text",
       "text": "陈砚秋伸手，小心牵住小满冻得冰凉的小手，带着她追上前行的队伍。前方，师生们的身影在暮色里向着建德方向绵延而去。",
       "next": "scene-040"
@@ -910,7 +920,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "天目山 → 建德梅城",
       "date": "1937 年 11 月",
-      "bg": "IMG-03",
+      "bg": "IMG-34",
       "type": "text",
       "text": "跟着我们，前面，会有灯火。",
       "speaker": "{name}",
@@ -932,7 +942,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "建德梅城",
       "date": "1937 年 11—12 月",
-      "bg": "IMG-05",
+      "bg": "IMG-36",
       "type": "text",
       "text": "在孙宅门口，你第一次近距离见到竺可桢校长。他正蹲着给脚上的水泡挑破。",
       "next": "scene-043"
@@ -942,7 +952,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "建德梅城",
       "date": "1937 年 11—12 月",
-      "bg": "IMG-05",
+      "bg": "IMG-36",
       "type": "text",
       "text": "新生？天目山下来的？\n\n（他抬头看你一眼）\n脚上的泡，挑破了才好走路。学校也一样——疼一下，接着走。",
       "speaker": "竺可桢",
@@ -1151,7 +1161,7 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "学生宿舍",
       "date": "1937 年底",
-      "bg": "IMG-25",
+      "bg": "IMG-19",
       "type": "text",
       "text": "1937 年底，浙江大学学生刘奎斗等 12 人投笔从戎，奔赴浙东战场。但他们出发时站过的地方，是同一个学校。",
       "speaker": "字幕",
@@ -1431,7 +1441,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征",
       "location": "泰和",
       "date": "1938 年夏",
-      "bg": "IMG-09",
+      "bg": "IMG-37",
       "type": "text",
       "text": "西迁途中，缺医少药。校长夫人张侠魂与次子竺衡感染痢疾，相继病殁。校长正在考察新校址的路上，没见到儿子的最后一面。",
       "next": "scene-073"
@@ -1441,7 +1451,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征",
       "location": "泰和",
       "date": "1938 年夏",
-      "bg": "IMG-09",
+      "bg": "IMG-37",
       "type": "text",
       "text": "后来，竺校长捐出积蓄，设立“侠魂女士奖学金”，资助家境清寒、成绩优良的女生。",
       "journal": {
@@ -1456,7 +1466,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征",
       "location": "泰和",
       "date": "1938 年夏",
-      "bg": "IMG-09",
+      "bg": "IMG-06",
       "type": "branch",
       "text": "那些随校西行的古籍，也仍在路上。",
       "condition": "protectBooks",
@@ -1469,7 +1479,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征 · 护书插叙",
       "location": "押运途中 · 雨夜山路",
       "date": "插叙 · 1939 年",
-      "bg": "IMG-03",
+      "bg": "IMG-35",
       "type": "text",
       "text": "插叙：1939 年，押运队继续西行。\n\n你曾报名护书。一个雨夜，独轮车陷进泥里，书箱上的遮布被风掀起。",
       "next": "interaction-7"
@@ -1479,7 +1489,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征 · 护书插叙",
       "location": "押运途中 · 雨夜山路",
       "date": "插叙 · 1939 年",
-      "bg": "IMG-03",
+      "bg": "IMG-35",
       "type": "choice",
       "text": "雨越来越大。应当如何先处理书箱？",
       "choices": [
@@ -1510,7 +1520,7 @@ main{position:relative}
       "chapter": "第三章 · 文军长征 · 护书插叙",
       "location": "押运途中 · 雨夜山路",
       "date": "插叙 · 1939 年",
-      "bg": "IMG-03",
+      "bg": "IMG-35",
       "type": "text",
       "text": "这些书后来迁至贵阳地母洞。你记住了雨里抬起书箱的重量。\n\n插叙结束，故事回到 1938 年的迁校路上。",
       "next": "chapter4-start"
@@ -1552,7 +1562,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 草棚大学",
       "date": "1938 年 10—11 月",
-      "bg": "IMG-11",
+      "bg": "IMG-38",
       "type": "text",
       "text": "校医处只剩最后一支奎宁。陈砚秋烧得说胡话；排在你们前面的，还有个烧得同样厉害的一年级学生。",
       "next": "choice-3"
@@ -1562,7 +1572,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 草棚大学",
       "date": "1938 年 10—11 月",
-      "bg": "IMG-11",
+      "bg": "IMG-38",
       "type": "choice",
       "text": "你站在校医面前。最后一支药，要给谁？",
       "choices": [
@@ -1642,7 +1652,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校务会议",
       "date": "1938 年 11 月 19 日",
-      "bg": "IMG-12",
+      "bg": "IMG-39",
       "type": "wordpick",
       "text": "你作为学生记录员旁听。黑板上散落着八个字：求、是、力、行、敦、品、格、致。\n\n请依次选择两个字，写下浙大的校训。",
       "next": "anthem-meeting-context"
@@ -1673,7 +1683,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校务会议",
       "date": "插叙 · 后来",
-      "bg": "IMG-12",
+      "bg": "IMG-40",
       "type": "text",
       "text": "后来——\n\n马一浮的词很快写成了：四言文言，一百四十八字，开篇是“大不自多，海纳江河”。\n\n竺校长喜欢它，也犯愁它——文理太深。",
       "next": "scene-088"
@@ -1683,7 +1693,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校务会议",
       "date": "插叙 · 1941 年",
-      "bg": "IMG-12",
+      "bg": "IMG-41",
       "type": "text",
       "text": "1941 年 6 月，请国立音乐学院应尚能教授谱曲。\n\n同年 8 月 7 日，应教授谱曲完成寄回。",
       "speaker": "字幕",
@@ -1694,7 +1704,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校务会议",
       "date": "插叙 · 1941 年",
-      "bg": "IMG-12",
+      "bg": "IMG-42",
       "type": "text",
       "text": "同年 11 月 10 日，在遵义举行纪念周时，竺校长请中文系郭斌龢教授讲解歌词，并由歌咏队员演唱一次，近 3 分钟，竺校长认为讲解和演唱均甚好。",
       "speaker": "字幕",
@@ -1705,7 +1715,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 祠堂",
       "date": "1938 年 11 月",
-      "bg": "IMG-12",
+      "bg": "IMG-40",
       "type": "text",
       "text": "回到 1938 年，宜山的祠堂里。\n\n你帮先生们抱着那摞文件出门。你不知道的是，你怀里的某一张纸，要等三年才唱得出声；而等它唱出声的那一天，这首歌会一直被唱到你来的那个年代——",
       "next": "scene-091"
@@ -1715,7 +1725,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 祠堂",
       "date": "1938 年 11 月",
-      "bg": "IMG-12",
+      "bg": "IMG-40",
       "type": "text",
       "text": "大不自多，海纳江河。惟学无际，际于天地。",
       "speaker": "校歌",
@@ -2126,7 +2136,7 @@ main{position:relative}
       "chapter": "第五章 · 东方剑桥",
       "location": "湄潭 · 夜街",
       "date": "1945 年 8 月",
-      "bg": "IMG-16",
+      "bg": "IMG-43",
       "type": "text",
       "text": "湄潭镇子的灯一盏一盏亮起来，文庙、祠堂、民居，漫山遍野的火光，像八年前梅城码头的那批箱灯，终于被一盏一盏重新点亮。\n\n你在人群里走。",
       "next": "scene-120"
@@ -2169,7 +2179,7 @@ main{position:relative}
       "chapter": "第五章 · 东方剑桥",
       "location": "湄潭 · 夜街",
       "date": "1945 年 8 月",
-      "bg": "IMG-16",
+      "bg": "IMG-43",
       "type": "text",
       "text": "1945 年 8 月，抗战胜利。自杭州沦陷、浙大师生出走，已近八年。\n\n来时 2600 多公里，师生行李之外，是 140 箱《四库全书》、两三百箱图书仪器。它们都还在。",
       "speaker": "字幕",
@@ -2191,7 +2201,7 @@ main{position:relative}
       "chapter": "终章 · 走马灯与回答",
       "location": "杭州 · 大学路校舍",
       "date": "1946 年 5—6 月",
-      "bg": "IMG-17",
+      "bg": "IMG-44",
       "type": "text",
       "text": "1945 年 10 月，龙泉分校师生率先返杭。1946 年 5 月 7 日，遵义总校启程。\n\n别兮，遵义。",
       "next": "interaction-11"
@@ -2201,10 +2211,9 @@ main{position:relative}
       "chapter": "终章 · 走马灯与回答",
       "location": "杭州 · 大学路校舍",
       "date": "1946 年 5—6 月",
-      "bg": "IMG-17",
+      "bg": "IMG-44",
       "type": "action",
-      "text": "大学路校舍断墙残垣。你踩着凳子，托起“国立浙江大学”的木牌。",
-      "button": "挂正校牌",
+      "text": "大学路校舍断墙残垣。你踩着凳子，托起“国立浙江大学”的木牌。\n\n拖动校牌两端，将它扶正。",
       "next": "scene-127"
     },
     {
@@ -2620,11 +2629,11 @@ const story=JSON.parse(document.getElementById('story-data').textContent);
 const nodes=new Map(story.nodes.map(n=>[n.id,n]));
 const C=globalThis.QiushiCore;
 const sound=globalThis.QiushiAudio;
-let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null;
+let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null;
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
-const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'西迁山路','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房','IMG-07':'学生宿舍','IMG-08':'白鹭洲书院','IMG-09':'赣江大堤','IMG-10':'澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍','IMG-15':'遵义办公室','IMG-16':'湄潭夜街','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线图','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学'};
+const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'迁校队伍山路跋涉','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房验书','IMG-07':'周念东收拾铺盖参军','IMG-08':'白鹭洲夜读','IMG-09':'赣江大堤测量','IMG-10':'小满进入澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍夜读','IMG-15':'费巩办公室捆书','IMG-16':'湄潭胜利街景','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线示意','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学','IMG-32':'杭州湾登陆消息与迁校布告','IMG-33':'草丛中发现小满','IMG-34':'牵着小满追上队伍','IMG-36':'孙宅门口见竺可桢','IMG-37':'悼念与侠魂奖学金','IMG-35':'雨夜护送书箱','IMG-38':'校医处与奎宁选择','IMG-39':'黑板字块与拼校训','IMG-40':'校歌曲谱第一页','IMG-41':'校歌曲谱第二页','IMG-42':'校歌曲谱第三页','IMG-43':'湄潭夜景与遍城灯火','IMG-44':'返杭校门空牌位','IMG-45':'国立浙江大学木牌'};
 // Route navigation and versioned, browser-local saves.
 const stations=[
  {id:'museum',name:'校史馆',entry:'start',summary:'从一张旧照片走进西迁岁月。'},
@@ -2666,6 +2675,7 @@ function validSave(s){
  if(v.reflection&&(!Array.isArray(v.reflection)||v.reflection.length!==2||!v.reflection.every(x=>typeof x==='string'&&x.length<=1000)))return false;
  if(v.draftName!==undefined&&(typeof v.draftName!=='string'||v.draftName.length>40))return false;
  if(v.montage!==undefined&&(!Number.isInteger(v.montage)||v.montage<0||v.montage>4))return false;
+ if(v.signAngle!==undefined&&(n.id!=='interaction-11'||!Number.isFinite(v.signAngle)||Math.abs(v.signAngle)>28))return false;
  return true;
 }
 function readSlot(slot){
@@ -2736,6 +2746,7 @@ function drawMap(){
  const tools=el('div','map-tools');tools.append(btn('手账',openJournal,'small-button'),btn('存档 / 读档',openSaves,'small-button'),btn('重新启程',()=>showDialog('restart-dialog'),'small-button'));controls.append(tools);
  $('reading-hint').textContent=finalMap?'全程已完成 · 点击地点回顾，或继续结局':'发光地点：继续 · 已完成地点：回顾';
 }
+function reviewBackground(entry){return entry.nodeId==='montage'?entry.bg:(nodes.get(entry.nodeId)?.bg||entry.bg);}
 function openReview(index){
  if(!journey.completed.includes(stations[index].id))return;
  const cards=[];
@@ -2746,8 +2757,8 @@ function openReview(index){
  function draw(){
   const entry=cards[page];$('review-title').textContent='回顾 · '+stations[index].name;
   $('review-heading').textContent=chapterNames[index];
-  const root=$('review-body');root.replaceChildren();
-  if(entry){const updatedScene=entry.chapter===1||entry.nodeId==='scene-004'||entry.nodeId==='scene-005';const bg=updatedScene?(nodes.get(entry.nodeId).bg||entry.bg):entry.bg;$('review-image').src='./assets/images/'+(bg==='IMG-25'?'IMG-07':bg)+'.webp';$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
+  const root=$('review-body');root.replaceChildren();$('review-school-sign').hidden=true;
+  if(entry){const bg=reviewBackground(entry);$('review-image').src='./assets/images/'+(bg==='IMG-25'?'IMG-07':bg)+'.webp';$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
   else root.append(el('p','review-text','这一站还没有留下记录。'));
   const nav=$('review-nav');nav.replaceChildren();
   const previous=btn('上一页',()=>{page--;draw();},'small-button');previous.disabled=page===0;
@@ -2760,16 +2771,90 @@ function openReview(index){
 function text(value){return String(value||'').replaceAll('{name}',state.name);}
 function el(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=['story-text','feedback','exhibit-info'].some(k=>cls===k||cls.startsWith(k+' '))?readableText(value):text(value);return e;}
 function btn(label,fn,cls='choice') {const b=el('button',cls,label);b.type='button';const version=pageVersion;b.addEventListener('click',()=>{if(version===pageVersion&&!b.disabled){fn(b);autoSave();}});return b;}
+function clampSignAngle(angle){return Math.max(-28,Math.min(28,angle));}
+function signIsLevel(angle){return Math.abs(angle)<=4;}
+function positionSchoolSign(image,sign){
+if(sign.hidden||!image.clientWidth||!image.clientHeight)return;
+const width=image.naturalWidth||1672,height=image.naturalHeight||941;
+const fit=getComputedStyle(image).objectFit;
+const scale=(fit==='cover'?Math.max:Math.min)(image.clientWidth/width,image.clientHeight/height),w=width*scale,h=height*scale;
+sign.style.left=(image.offsetLeft+(image.clientWidth-w)/2+w*.502)+'px';
+sign.style.top=(image.offsetTop+(image.clientHeight-h)/2+h*.284)+'px';
+sign.style.width=(w*.282)+'px';
+}
+function layoutSchoolSign(){positionSchoolSign($('scene-image'),$('school-sign'));positionSchoolSign($('review-image'),$('review-school-sign'));}
+function cancelSchoolSignDrag(){
+const drag=schoolSignDrag;if(!drag)return;schoolSignDrag=null;
+const sign=$('school-sign');sign.classList.remove('dragging');
+if(sign.hasPointerCapture(drag.id))sign.releasePointerCapture(drag.id);
+}
+function renderSchoolSign(n){
+const sign=$('school-sign'),preview=n.id==='chapter6-start';sign.hidden=!preview&&n.id!=='interaction-11';if(sign.hidden)return;
+const done=!preview&&state.completedActions.includes('action:interaction-11');
+const angle=preview?-14:(done?0:(view.signAngle??-14));
+sign.style.setProperty('--sign-angle',angle+'deg');sign.classList.toggle('settled',done);
+sign.classList.toggle('preview',preview);
+sign.setAttribute('aria-disabled',String(preview||done));sign.tabIndex=preview||done?-1:0;
+sign.setAttribute('aria-label',preview?'倾斜的国立浙江大学校牌':done?'校牌已扶正':'拖动校牌两端扶正；左右方向键微调，Enter 扶正');
+layoutSchoolSign();
+}
+function finishSchoolSign(){
+const n=current;if(!n||n.id!=='interaction-11'||view.mode!=='story'||view.phase==='feedback'||state.completedActions.includes('action:'+n.id))return;
+cancelSchoolSignDrag();view.signAngle=0;
+remember('action:'+n.id,'拖动扶正校牌','当时的行动');apply('action:'+n.id,n.effects,n.journal);
+renderSchoolSign(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);
+$('story-panel').focus({preventScroll:true});autoSave();
+}
+function showSchoolSign(n){
+if(state.completedActions.includes('action:'+n.id)){view.signAngle=0;renderSchoolSign(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);return;}
+view.signAngle??=-14;renderSchoolSign(n);$('reading-hint').textContent='';typeBody();
+}
+const schoolSign=$('school-sign');
+schoolSign.addEventListener('pointerdown',event=>{
+if(event.button!==0||event.isPrimary===false||current?.id!=='interaction-11'||view.mode!=='story'||view.phase==='feedback'||state.completedActions.includes('action:interaction-11'))return;
+event.preventDefault();event.stopPropagation();if(typeState)finishTyping();
+const rect=schoolSign.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+let dx=event.clientX-cx,dy=event.clientY-cy;
+if(Math.hypot(dx,dy)<schoolSign.offsetWidth*.18){dx=schoolSign.offsetWidth*.4;dy=0;}
+schoolSignDrag={id:event.pointerId,x:event.clientX,y:event.clientY,dx,dy,angle:view.signAngle??-14,start:Math.atan2(dy,dx),moved:false};
+schoolSign.setPointerCapture(event.pointerId);schoolSign.classList.add('dragging');
+});
+schoolSign.addEventListener('pointermove',event=>{
+const drag=schoolSignDrag;if(!drag||drag.id!==event.pointerId)return;
+event.preventDefault();const x=event.clientX-drag.x,y=event.clientY-drag.y;
+drag.moved ||= Math.hypot(x,y)>=3;
+let delta=Math.atan2(drag.dy+y,drag.dx+x)-drag.start;
+if(delta>Math.PI)delta-=Math.PI*2;if(delta<-Math.PI)delta+=Math.PI*2;
+view.signAngle=clampSignAngle(drag.angle+delta*180/Math.PI);renderSchoolSign(current);
+});
+function releaseSchoolSign(event,cancelled){
+const drag=schoolSignDrag;if(!drag||drag.id!==event.pointerId)return;
+cancelSchoolSignDrag();if(!cancelled&&drag.moved&&signIsLevel(view.signAngle))finishSchoolSign();else autoSave();
+}
+schoolSign.addEventListener('pointerup',event=>releaseSchoolSign(event,false));
+schoolSign.addEventListener('pointercancel',event=>releaseSchoolSign(event,true));
+schoolSign.addEventListener('lostpointercapture',event=>releaseSchoolSign(event,true));
+schoolSign.addEventListener('keydown',event=>{
+if(event.isComposing||event.ctrlKey||event.metaKey||event.altKey||current?.id!=='interaction-11'||view.mode!=='story'||view.phase==='feedback'||state.completedActions.includes('action:interaction-11'))return;
+if(!['ArrowLeft','ArrowRight','Enter',' '].includes(event.key))return;
+event.preventDefault();event.stopPropagation();if(typeState)finishTyping();
+view.signAngle=['Enter',' '].includes(event.key)?0:clampSignAngle((view.signAngle??-14)+(event.key==='ArrowRight'?2:-2));
+renderSchoolSign(current);if(signIsLevel(view.signAngle))finishSchoolSign();else autoSave();
+});
+$('scene-image').addEventListener('load',layoutSchoolSign);$('review-image').addEventListener('load',layoutSchoolSign);
+window.addEventListener('resize',()=>{cancelSchoolSignDrag();layoutSchoolSign();});
+if('ResizeObserver' in window){const signResize=new ResizeObserver(layoutSchoolSign);signResize.observe($('scene'));signResize.observe($('review-image'));}
 function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearView(){cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
-if(bg==='IMG-30'||bg==='IMG-22')image.classList.add('framed');
+if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg))image.classList.add('framed');
+if(bg==='IMG-44')image.classList.add('school-sign-scene');
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
 if(/夜|暮|雨/.test(String(n.location||'')+' '+String(n.date||''))&&bg!=='IMG-14')image.classList.add('night');
 $('location').firstChild.textContent=n.location||names[bg]||'西行途中';$('scene-date').textContent=n.date||'';$('chapter-label').textContent=n.chapter||'';
-$('lamp-object').hidden=!(bg==='IMG-14'&&state.lampLit);$('map-caption').hidden=bg!=='IMG-24';$('map-caption').textContent=n.id==='chapter3-start'?'建德 · 金华 · 南昌 · 樟树 · 吉安':'杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭';
-$('school-sign').hidden=n.id!=='interaction-11';$('school-sign').classList.toggle('settled',state.completedActions.includes('action:interaction-11'));
+$('lamp-object').hidden=!(bg==='IMG-14'&&state.lampLit);$('map-caption').hidden=true;$('map-caption').textContent=n.id==='chapter3-start'?'建德 · 金华 · 南昌 · 樟树 · 吉安':'杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭';
+renderSchoolSign(n);
 $('scene').classList.remove('flash','quake');if(n.id==='scene-005'){void $('scene').offsetWidth;$('scene').classList.add('flash');}
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
@@ -2912,7 +2997,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':showChoices(n);break;
-case 'action':{const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else if(n.id==='interaction-11'){setScene(n);feedback('你扶住木牌，轻轻将它挂正。国立浙江大学。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
+case 'action':{if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
