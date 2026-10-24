@@ -167,7 +167,7 @@ button.quiet-hint:hover:not(:disabled){background:transparent;color:var(--accent
 /* Exhibit viewer: big image with a one-line caption underneath. */
 #exhibit-dialog{width:min(880px,calc(100vw - 32px));padding:0}
 #exhibit-dialog .dialog-head{padding:14px 20px 10px}
-#exhibit-image{display:block;width:100%;height:auto;max-height:min(58dvh,520px);object-fit:cover;object-position:center;background:#dfe5df}
+#exhibit-image{display:block;width:100%;height:auto;max-height:min(58dvh,520px);object-fit:contain;object-position:center;background:#dfe5df}
 #exhibit-caption{margin:0;padding:12px 20px 16px;font-size:17px;line-height:1.7;white-space:pre-line}
 body[data-advance="ready"] .story-panel{cursor:pointer}
 .story-panel:focus{outline:none}
@@ -357,6 +357,20 @@ button:hover:not(:disabled){background:#344348}
 @keyframes station-beacon{0%,100%{transform:scale(1);box-shadow:0 0 0 5px #b68b4f22,0 0 15px #d8a55d35}50%{transform:scale(1.06);box-shadow:0 0 0 7px #b68b4f33,0 0 28px #d8a55d70}}
 @media(prefers-reduced-motion:reduce){.station.current .station-number{box-shadow:0 0 0 5px #b68b4f22,0 0 18px #d8a55d50}}
 .stage-direction,.choice-prompt{font-size:clamp(14px,1.5vw,18px);line-height:1.6;color:var(--muted);white-space:pre-line;margin:0 0 8px;overflow-wrap:anywhere}
+/* First-chapter navigation keeps the supplied route illustration separate from station controls. */
+.chapter-route-art{display:block;position:relative;z-index:1;flex:1 1 0;min-height:0;width:100%;padding:0;margin:10px 0;border:0;background:transparent;overflow:hidden}
+.scene-image.framed{object-fit:contain}
+.chapter-route-art img{display:block;width:100%;height:100%;object-fit:contain}
+.chapter-route-art:hover:not(:disabled){background:transparent}
+#route-map.has-route-art .route-stations{flex:none;margin:0;padding:5px 0;gap:4px}
+#route-map.has-route-art .route-lines{display:none}
+#route-map.has-route-art .station{min-height:72px;padding:5px 2px;gap:4px}
+#route-map.has-route-art .station-number{width:25px;height:25px;font-size:12px;box-shadow:none}
+#route-map.has-route-art .station-name{min-height:0;font-size:12px;line-height:1.3}
+#route-map.has-route-art .station-status{font-size:9px}
+#route-image-dialog{width:min(1200px,calc(100vw - 32px))}
+#route-image-dialog img{display:block;width:100%;max-height:calc(100dvh - 145px);object-fit:contain}
+@media(max-height:650px){#route-map.has-route-art{overflow-y:auto}.chapter-route-art{min-height:110px}}
 </style>
 </head>
 <body>
@@ -372,6 +386,7 @@ button:hover:not(:disabled){background:#344348}
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
 <div class="map-heading"><h2>西行的足迹</h2><p id="map-progress"></p></div>
+<button class="chapter-route-art" id="chapter-route-art" type="button" aria-label="放大查看第一章路线图" hidden><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图，第一章从杭州前往西天目山"></button>
 <div class="route-stations" id="route-stations" aria-label="章节地点"></div>
 <p class="map-footer">一所大学的课堂，沿着西行的道路延伸。<span>路线示意 · 非地理比例</span></p>
 </section>
@@ -389,6 +404,7 @@ button:hover:not(:disabled){background:#344348}
 <dialog class="dialog" id="save-dialog" aria-labelledby="save-title"><div class="dialog-head"><h2 id="save-title">存档与继续</h2><button data-close="save-dialog">返回</button></div><div id="save-content"></div></dialog>
 <dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><img id="review-image" alt="回顾场景"><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
 <noscript><p style="padding:30px;font-size:22px">请开启浏览器的 JavaScript 功能，即可开始这段故事。</p></noscript>
+<dialog class="dialog" id="route-image-dialog" aria-labelledby="route-image-title"><div class="dialog-head"><h2 id="route-image-title">第一章 · 西迁路线示意图</h2><button data-close="route-image-dialog" type="button">返回地图</button></div><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图"></dialog>
 <script type="application/json" id="story-data">{
   "nodes": [
     {
@@ -426,7 +442,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "序章 · 照片里的录取",
       "location": "紫金港校史馆",
       "date": "2026 年 10 月",
-      "bg": "IMG-24",
+      "bg": "IMG-22",
       "type": "text",
       "text": "你最后点开路线图，手指沿着西迁路线移动。\n\n当年西迁好艰苦啊！\n\n手指回到杭州，视线忽然被这个地名吸住。白光一闪，传来一声快门。",
       "next": "scene-005"
@@ -436,7 +452,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "序章 · 照片里的录取",
       "location": "紫金港校史馆",
       "date": "2026 年 10 月",
-      "bg": "IMG-24",
+      "bg": "IMG-22",
       "type": "text",
       "text": "你被录取了。八十九年前。",
       "speaker": "字幕",
@@ -452,7 +468,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "杭州 · 国立浙江大学校门",
       "date": "1937 年 9 月",
-      "bg": "IMG-02",
+      "bg": "IMG-27",
       "type": "text",
       "text": "报纸号外飞落：七七事变、八一三淞沪会战。街上逃难的人挑着担子往南站。米价牌上的数字被人一次次改写。\n\n民国二十六年，七月卢沟桥，八月上海。杭州的桂花照开，可报童喊的已经不是桂花的事了。",
       "next": "scene-007"
@@ -472,7 +488,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "杭州 · 国立浙江大学校门",
       "date": "1937 年 9 月",
-      "bg": "IMG-02",
+      "bg": "IMG-28",
       "type": "text",
       "text": "新生？新生不上这儿报到——一年级迁天目山了，禅源寺。喏，路上吃。",
       "speaker": "门房",
@@ -483,7 +499,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "杭州 · 国立浙江大学校门",
       "date": "1937 年 9 月",
-      "bg": "IMG-02",
+      "bg": "IMG-28",
       "type": "action",
       "text": "门房递来两个烧饼。你伸出手，接下这段陌生路上的第一份照应。",
       "button": "接过烧饼 × 2",
@@ -499,7 +515,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "去天目山的独轮车上，同车有两人。\n\n陈砚秋是土木工程系新生，绍兴人，抱着一个布包着的测量水准仪，不许别人碰。\n\n何九章是中文系二年级，建德人，怀里一把二胡。",
       "next": "scene-011"
@@ -509,7 +525,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "喂，新生。你这笔——\n\n（她盯着你的口袋）",
       "speaker": "陈砚秋",
@@ -520,7 +536,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "你回头看向口袋，口袋中竟然还有现代的按动中性笔？",
       "next": "scene-013"
@@ -530,7 +546,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "——按一下就出水的？给我看看。",
       "speaker": "陈砚秋",
@@ -541,7 +557,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "choice",
       "text": "陈砚秋向你伸出手。你决定——",
       "choices": [
@@ -569,7 +585,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "别理她。我叫何九章，九章算术的九章。你呢？",
       "speaker": "何九章",
@@ -580,7 +596,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "nameConfirm",
       "text": "我的名字是……",
       "next": "scene-017",
@@ -591,7 +607,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "去往西天目山的山路",
       "date": "1937 年 9 月",
-      "bg": "IMG-03",
+      "bg": "IMG-29",
       "type": "text",
       "text": "{name}。记住了。山路还长，咱们一起走。",
       "speaker": "何九章",
@@ -612,7 +628,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "西天目山 · 禅源寺",
       "date": "1937 年 9 月 21 日",
-      "bg": "IMG-04",
+      "bg": "IMG-30",
       "type": "action",
       "text": "放好行李，把书本留在伸手能拿到的地方。这里将是你暂时的家。",
       "button": "放好行李",
@@ -623,7 +639,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "西天目山 · 禅源寺",
       "date": "1937 年 9 月 27 日",
-      "bg": "IMG-04",
+      "bg": "IMG-31",
       "type": "text",
       "text": "9 月 27 日，开学第一课。没有礼堂，大殿前的院子就是课堂。\n\n钟声响起时，山下隐约有闷雷滚过——僧人说是山雨。",
       "next": "scene-021"
@@ -633,7 +649,7 @@ button:hover:not(:disabled){background:#344348}
       "chapter": "第一章 · 烽火开学",
       "location": "西天目山 · 禅源寺",
       "date": "1937 年 9 月 27 日",
-      "bg": "IMG-04",
+      "bg": "IMG-31",
       "type": "text",
       "text": "是炮。",
       "speaker": "何九章",
@@ -2586,7 +2602,7 @@ let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playi
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
-const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'西迁山路','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房','IMG-07':'学生宿舍','IMG-08':'白鹭洲书院','IMG-09':'赣江大堤','IMG-10':'澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍','IMG-15':'遵义办公室','IMG-16':'湄潭夜街','IMG-17':'返杭校门','IMG-24':'西迁路线图','IMG-26':'费巩灯'};
+const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'西迁山路','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房','IMG-07':'学生宿舍','IMG-08':'白鹭洲书院','IMG-09':'赣江大堤','IMG-10':'澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍','IMG-15':'遵义办公室','IMG-16':'湄潭夜街','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线图','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学'};
 // Route navigation and versioned, browser-local saves.
 const stations=[
  {id:'museum',name:'校史馆',entry:'start',summary:'从一张旧照片走进西迁岁月。'},
@@ -2678,6 +2694,7 @@ function drawMap(){
  clearTimer();clearView();$('scene').hidden=true;$('route-map').hidden=false;
  document.body.dataset.type='map';document.body.dataset.node='route-map';
  const currentIndex=chapterIndex(current),done=journey.completed.length;
+ $('chapter-route-art').hidden=currentIndex!==1;$('route-map').classList.toggle('has-route-art',currentIndex===1);
  $('map-progress').textContent='已走过 '+done+' / '+stations.length+' 站 · '+(nameConfirmed?state.name:'你的西行');
  const route=$('route-stations');route.replaceChildren();
  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('class','route-lines');svg.setAttribute('viewBox','0 0 700 204');svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
@@ -2708,7 +2725,7 @@ function openReview(index){
   const entry=cards[page];$('review-title').textContent='回顾 · '+stations[index].name;
   $('review-heading').textContent=chapterNames[index];
   const root=$('review-body');root.replaceChildren();
-  if(entry){$('review-image').src='./assets/images/'+(entry.bg==='IMG-25'?'IMG-07':entry.bg)+'.webp';$('review-image').alt=(names[entry.bg]||stations[index].name)+' · 回顾场景';root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
+  if(entry){const updatedScene=entry.chapter===1||entry.nodeId==='scene-004'||entry.nodeId==='scene-005';const bg=updatedScene?(nodes.get(entry.nodeId).bg||entry.bg):entry.bg;$('review-image').src='./assets/images/'+(bg==='IMG-25'?'IMG-07':bg)+'.webp';$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
   else root.append(el('p','review-text','这一站还没有留下记录。'));
   const nav=$('review-nav');nav.replaceChildren();
   const previous=btn('上一页',()=>{page--;draw();},'small-button');previous.disabled=page===0;
@@ -2725,6 +2742,7 @@ function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
 function clearView(){delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
+if(bg==='IMG-30'||bg==='IMG-22')image.classList.add('framed');
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
 if(/夜|暮|雨/.test(String(n.location||'')+' '+String(n.date||''))&&bg!=='IMG-14')image.classList.add('night');
 $('location').firstChild.textContent=n.location||names[bg]||'西行途中';$('scene-date').textContent=n.date||'';$('chapter-label').textContent=n.chapter||'';
@@ -2907,7 +2925,7 @@ dialog.append(heading,form);dialog.showModal();input.focus();
 }
 controls.append(btn('填写并确认姓名',openName));$('reading-hint').textContent='确认姓名后，继续与何九章交谈';openName();
 }
-function showExhibits(n){const items=[['suitcase','西迁的箱子','竺可桢西迁时随身带的箱子。','IMG-06'],['photo','十二人的合影','1937 年，刘奎斗等 12 位投笔从戎学生的合影。\n他们投笔从戎，保家卫国。','IMG-01'],['diary','日记的手稿','他记了一辈子日记，直到去世前一天。','IMG-15'],['map','护送路线图','2600 多公里，没有一天停止办学。','IMG-24']];
+function showExhibits(n){const items=[['suitcase','西迁的箱子','竺可桢西迁时随身带的箱子。','IMG-18'],['photo','十二人的合影','1937 年，刘奎斗等 12 位投笔从戎学生的合影。\n他们投笔从戎，保家卫国。','IMG-19'],['diary','日记的手稿','他记了一辈子日记，直到去世前一天。','IMG-20'],['map','护送路线图','2600 多公里，没有一天停止办学。','IMG-21']];
 function openItem(item){
 const [id,label,description,bg]=item;
 if(!state.visitedExhibits.includes(id))state.visitedExhibits.push(id);
@@ -2997,6 +3015,7 @@ $('save-button').addEventListener('click',openSaves);
 $('restart-button').addEventListener('click',()=>playing?showDialog('restart-dialog'):showTitle());$('cancel-restart').addEventListener('click',()=>$('restart-dialog').close());
 $('confirm-restart').addEventListener('click',()=>{$('restart-dialog').close();try{localStorage.removeItem(SAVE_PREFIX+'auto');}catch(error){storageMessage='浏览器无法清除自动存档。';}delete document.body.dataset.ending;showTitle();state=C.createInitialState();journey=freshJourney();go('start',true);window.scrollTo({top:0,behavior:'instant'});});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
+ $('chapter-route-art').addEventListener('click',()=>showDialog('route-image-dialog'));
 window.addEventListener('pagehide',autoSave);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)autoSave();});
 function advance(){if(document.querySelector('dialog[open]'))return;if(typeState){finishTyping();return;}if(!advanceAction)return;const action=advanceAction;action();autoSave();}
