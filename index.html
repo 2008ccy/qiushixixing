@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f4ecd9">
+<meta name="theme-color" content="#182225">
 <meta name="description" content="《求是西行 · 1937》历史互动故事：从校史馆走进西迁岁月，在选择与手账中寻找自己的回答。">
 <title>求是西行 · 1937</title>
 <style>
@@ -315,6 +315,48 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
   .quiz-result p{margin-bottom:5px}
   .quiz-result li{margin-bottom:3px}
 }
+/* Museum night palette: warm archival paper lettering against blue-grey panels. */
+:root{color-scheme:dark;--paper:#182225;--ink:#e6dfcf;--muted:#b2b4a9;--line:#526064;--button:#253237;--accent:#d7b780}
+html{background:#0e1518}
+main{box-shadow:0 8px 36px #0006}
+.scene,#exhibit-image{background:#111b1f}
+.story-panel{background:radial-gradient(ellipse at 15% 0%,#b68d4c0b,transparent 65%),var(--paper);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) var(--paper)}
+.story-text.subtitle,.game-title{color:#fff0d4}
+.title-description{color:#c7c9bc}
+.location,.chapter-label{text-shadow:0 2px 8px #000,0 0 20px #000}
+.toolbar button{background:#182225ed;border-color:#67716b;color:var(--ink)}
+button:hover:not(:disabled){background:#344348}
+.choice,.continue{box-shadow:0 1px 0 #0004}
+.choice[aria-pressed=true],.word[aria-pressed=true],.answer:has(input:checked){background:#3a4540;border-color:var(--accent)}
+.answer input{accent-color:var(--accent)}
+.name-input,.reflection-input{background:#111c20}
+.name-input::placeholder,.reflection-input::placeholder{color:var(--muted);opacity:1}
+.feedback{background:#243235;border-left-color:var(--accent)}
+.ending-title{color:var(--accent)}
+.dialog{box-shadow:0 20px 90px #0009}
+.dialog::backdrop{background:#050b10b8}
+.journal-entry,#review-image{border-color:var(--line)}
+.save-slot{background:#202d31}
+.map-caption{background:#142226e6}
+#route-map{background:radial-gradient(ellipse at 75% 30%,#8a714a20,transparent 58%),linear-gradient(145deg,#1d2b2f,#152024)}
+#route-map::before{opacity:.16}
+.map-heading h2{color:#e2c79b}
+.station:hover:not(:disabled){background:#2b3b3e;border-color:#8e9c8d}
+.station-number{background:#29373a;border-color:#87948c;color:#c7cec4;box-shadow:0 0 0 5px #1b282b}
+.station.completed .station-number{background:#46665f;border-color:#8aa69a;color:#f3eedf}
+.station.completed .station-name{color:#c2d6c7}
+.station.completed .station-status{color:#aec7b6}
+.station.current{background:#b8843420;border-color:#b79459}
+.station.current .station-number{background:#b68b4f;border-color:#e4c48a;color:#111b1f}
+.station.current .station-name{color:#f0d19a}
+.station.current .station-status{color:#ddbf8b}
+.station.locked:disabled{opacity:.8}
+.station.locked .station-number{background:#202d31;color:#a1aca6;border-color:#6e7e79}
+.map-footer{border-color:var(--line)}
+.map-footer button{background:var(--button)}
+@keyframes station-beacon{0%,100%{transform:scale(1);box-shadow:0 0 0 5px #b68b4f22,0 0 15px #d8a55d35}50%{transform:scale(1.06);box-shadow:0 0 0 7px #b68b4f33,0 0 28px #d8a55d70}}
+@media(prefers-reduced-motion:reduce){.station.current .station-number{box-shadow:0 0 0 5px #b68b4f22,0 0 18px #d8a55d50}}
+.stage-direction,.choice-prompt{font-size:clamp(14px,1.5vw,18px);line-height:1.6;color:var(--muted);white-space:pre-line;margin:0 0 8px;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -593,14 +635,15 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 9 月 27 日",
       "bg": "IMG-04",
       "type": "text",
-      "text": "（低声）\n是炮。",
+      "text": "是炮。",
       "speaker": "何九章",
       "journal": {
         "id": "temple",
         "title": "钟声与炮声",
         "text": "1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。"
       },
-      "next": "chapter2-news"
+      "next": "chapter2-news",
+      "direction": "低声"
     },
     {
       "chapter": "第二章 · 夜渡钱塘",
@@ -640,9 +683,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（回头，压低声音）\n{name}，跟上些，前面转过山坳就有歇脚的平地。天快黑了，要赶在入夜前到达。",
+      "text": "{name}，跟上些，前面转过山坳就有歇脚的平地。天快黑了，要赶在入夜前到达。",
       "speaker": "陈砚秋",
-      "next": "scene-025"
+      "next": "scene-025",
+      "direction": "回头，压低声音"
     },
     {
       "id": "scene-025",
@@ -661,9 +705,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（放轻脚步）\n你听。",
+      "text": "你听。",
       "speaker": "{name}",
-      "next": "scene-027"
+      "next": "scene-027",
+      "direction": "放轻脚步"
     },
     {
       "id": "scene-027",
@@ -682,9 +727,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（放缓语调，慢慢蹲下身，不靠近）\n小朋友，别怕，我们是学生，不是坏人。你叫什么名字？",
+      "text": "小朋友，别怕，我们是学生，不是坏人。你叫什么名字？",
       "speaker": "陈砚秋",
-      "next": "scene-029"
+      "next": "scene-029",
+      "direction": "放缓语调，慢慢蹲下身，不靠近"
     },
     {
       "id": "scene-029",
@@ -693,9 +739,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（嘴唇哆嗦，声音细若蚊蚋）\n小……小，小满。",
+      "text": "小……小，小满。",
       "speaker": "小满",
-      "next": "scene-030"
+      "next": "scene-030",
+      "direction": "嘴唇哆嗦，声音细若蚊蚋"
     },
     {
       "id": "scene-030",
@@ -704,9 +751,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（轻声）\n小满，你一个人在这里？你的爹娘呢？",
+      "text": "小满，你一个人在这里？你的爹娘呢？",
       "speaker": "{name}",
-      "next": "scene-031"
+      "next": "scene-031",
+      "direction": "轻声"
     },
     {
       "id": "scene-031",
@@ -715,9 +763,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（眼泪一下子滚下来）\n路上…… 走散了。炮响的时候，娘把我推到草丛里。等我再出来，就找不到他们了。\n\n（把怀里的布包抱紧，里面是半块干硬的麦饼）\n我跟着逃难的人走，走不动，掉队了。",
+      "text": "路上…… 走散了。炮响的时候，娘把我推到草丛里。等我再出来，就找不到他们了。\n\n（把怀里的布包抱紧，里面是半块干硬的麦饼）\n我跟着逃难的人走，走不动，掉队了。",
       "speaker": "小满",
-      "next": "scene-032"
+      "next": "scene-032",
+      "direction": "眼泪一下子滚下来"
     },
     {
       "id": "scene-032",
@@ -747,9 +796,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（怯生生抬头，看向长长的队伍，看到大家背着书本仪器）\n你们…… 要去哪里？",
+      "text": "你们…… 要去哪里？",
       "speaker": "小满",
-      "next": "scene-035"
+      "next": "scene-035",
+      "direction": "怯生生抬头，看向长长的队伍，看到大家背着书本仪器"
     },
     {
       "id": "scene-035",
@@ -769,9 +819,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（小声）\n我能不能…… 跟你们一起走？我能捡柴，能帮着拿轻东西，我不拖累你们。",
+      "text": "我能不能…… 跟你们一起走？我能捡柴，能帮着拿轻东西，我不拖累你们。",
       "speaker": "小满",
-      "next": "scene-036-pause"
+      "next": "scene-036-pause",
+      "direction": "小声"
     },
     {
       "id": "scene-036-pause",
@@ -801,9 +852,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（用力点头，抹掉泪水，撑着地面站起来）\n我能走！我叫小满，我会好好跟着队伍。",
+      "text": "我能走！我叫小满，我会好好跟着队伍。",
       "speaker": "小满",
-      "next": "scene-039"
+      "next": "scene-039",
+      "direction": "用力点头，抹掉泪水，撑着地面站起来"
     },
     {
       "id": "scene-039",
@@ -822,9 +874,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "（低声对小满）\n跟着我们，前面，会有灯火。",
+      "text": "跟着我们，前面，会有灯火。",
       "speaker": "{name}",
-      "next": "scene-041"
+      "next": "scene-041",
+      "direction": "低声对小满"
     },
     {
       "id": "scene-041",
@@ -885,9 +938,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年 11—12 月",
       "bg": "IMG-06",
       "type": "text",
-      "text": "（他把一函书递给你）\n小心点，别掉了。",
+      "text": "小心点，别掉了。",
       "speaker": "图书馆员",
-      "next": "choice-1"
+      "next": "choice-1",
+      "direction": "他把一函书递给你"
     },
     {
       "id": "choice-1",
@@ -988,9 +1042,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1937 年底",
       "bg": "IMG-07",
       "type": "text",
-      "text": "（他顿了顿，声音低下去）\n我昨晚想了一宿。国家有难，我要去参军保家卫国。……你要不要一起来？",
+      "text": "我昨晚想了一宿。国家有难，我要去参军保家卫国。……你要不要一起来？",
       "speaker": "周念东",
-      "next": "choice-2"
+      "next": "choice-2",
+      "direction": "他顿了顿，声音低下去"
     },
     {
       "id": "choice-2",
@@ -1509,7 +1564,8 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
           "next": "choice-3"
         }
       ],
-      "next": "scene-082"
+      "next": "scene-082",
+      "prompt": "最后一支药，要给谁？"
     },
     {
       "id": "scene-082",
@@ -1700,7 +1756,8 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
           "next": "chapter5-start"
         }
       ],
-      "next": "chapter5-start"
+      "next": "chapter5-start",
+      "prompt": "校舍尽毁，你选择参与哪一件事？"
     },
     {
       "id": "chapter5-start",
@@ -1771,9 +1828,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1943 年前后",
       "bg": "IMG-14",
       "type": "text",
-      "text": "（笑）都一样，明早洗脸水都是黑的。",
+      "text": "都一样，明早洗脸水都是黑的。",
       "speaker": "对铺同学",
-      "next": "scene-102"
+      "next": "scene-102",
+      "direction": "笑"
     },
     {
       "id": "scene-102",
@@ -1792,9 +1850,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1943 年前后",
       "bg": "IMG-14",
       "type": "text",
-      "text": "（小声）先生……",
+      "text": "先生……",
       "speaker": "{name}",
-      "next": "scene-104"
+      "next": "scene-104",
+      "direction": "小声"
     },
     {
       "id": "scene-104",
@@ -1874,14 +1933,15 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1944 年",
       "bg": "IMG-12",
       "type": "text",
-      "text": "（望着文庙的破屋檐，笑了笑）\n\nChekiang University, one of the best four in China.\n\n——栖身破庙，却是中国最好的四所大学之一。",
+      "text": "Chekiang University, one of the best four in China.\n\n——栖身破庙，却是中国最好的四所大学之一。",
       "speaker": "李约瑟",
       "journal": {
         "id": "cambridge",
         "title": "东方剑桥",
         "text": "1944 年，湄潭。我们是中国最好的四所大学之一。我把这句话抄在手账上，灯下看了一遍又一遍。"
       },
-      "next": "scene-111"
+      "next": "scene-111",
+      "direction": "望着文庙的破屋檐，笑了笑"
     },
     {
       "id": "scene-111",
@@ -1983,9 +2043,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "bg": "IMG-15",
       "id": "audit-fei-silent-reply",
       "type": "text",
-      "text": "（笑了笑）回来给你们讲北碚的事。灯下读书，别凑太近。",
+      "text": "回来给你们讲北碚的事。灯下读书，别凑太近。",
       "next": "fei-gone",
-      "speaker": "费巩"
+      "speaker": "费巩",
+      "direction": "笑了笑"
     },
     {
       "id": "fei-gone",
@@ -2166,7 +2227,7 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "1946 年 5—6 月",
       "bg": "IMG-17",
       "type": "text",
-      "text": "赢了。你们做的事，八十九年后还有人记得。",
+      "text": "赢了。你们做的事，直到 2026 年，还有人记得。",
       "speaker": "{name}",
       "next": "scene-132"
     },
@@ -2242,9 +2303,10 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "date": "2026 年 10 月",
       "bg": "IMG-01",
       "type": "text",
-      "text": "（声音远远传来）……浙大西迁，行程 2600 多公里，历时八年多……",
+      "text": "……浙大西迁，行程 2600 多公里，历时八年多……",
       "speaker": "讲解员",
-      "next": "scene-139"
+      "next": "scene-139",
+      "direction": "声音远远传来"
     },
     {
       "id": "scene-139",
@@ -2265,7 +2327,8 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "type": "text",
       "text": "原来不是梦。他们在破庙里点的灯，真的亮到了今天。",
       "speaker": "{name}",
-      "next": "scene-141"
+      "next": "scene-141",
+      "delivery": "inner"
     },
     {
       "id": "scene-141",
@@ -2276,7 +2339,8 @@ body[data-quiz-result] .story-panel{padding-top:10px;padding-bottom:8px;overflow
       "type": "text",
       "text": "竺校长当年问了浙大人两个问题：到浙大来做什么？将来毕业后要做什么样的人？\n\n八十九年前，他们用 2600 多公里回答了一遍。现在，轮到我了。",
       "speaker": "{name}",
-      "next": "reflection"
+      "next": "reflection",
+      "delivery": "inner"
     },
     {
       "id": "reflection",
@@ -2669,7 +2733,7 @@ $('school-sign').hidden=n.id!=='interaction-11';$('school-sign').classList.toggl
 $('scene').classList.remove('flash','quake');if(n.id==='scene-005'){void $('scene').offsetWidth;$('scene').classList.add('flash');}
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
-function writeText(n){const sub=n.speaker==='字幕';if(n.speaker&&!sub)content.append(el('p','speaker',n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker));const p=el('p',sub?'story-text subtitle':'story-text',n.text);p.tabIndex=-1;content.append(p);}
+function writeText(n){const sub=n.speaker==='字幕';if(n.speaker&&!sub){const speaker=n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker;content.append(el('p','speaker',speaker+(n.delivery==='inner'?' · 内心':'')));}if(n.direction)content.append(el('p','stage-direction',n.direction));const p=el('p',sub?'story-text subtitle':'story-text',n.text);p.tabIndex=-1;content.append(p);}
 function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){sound.fx('page');notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
 function readableText(value){
 return text(value).replace(/([。！？；][”’」』]?)(?![”’」』。！？；\n]|$)/g,'$1\n');
@@ -2786,7 +2850,7 @@ build();
 const panel=$('story-panel');
 if(panel.scrollHeight<=panel.clientHeight+1){advanceAction=null;delete document.body.dataset.advance;$('reading-hint').textContent='请作出选择';typeBody();return;}
 controls.replaceChildren();
-continueButton(null,()=>{content.replaceChildren();build();$('reading-hint').textContent='请作出选择';},'读完本页后作出选择');
+continueButton(null,()=>{content.replaceChildren(el('p','choice-prompt',n.prompt||n.text));build();$('reading-hint').textContent='请作出选择';},'读完本页后作出选择');
 }
 function go(id,skipBoundary=false){
 clearTimer();let n=nodes.get(id),limit=0;
@@ -2801,7 +2865,7 @@ const n=current;sound.enter(n,n.type==='ending'?{...state,ending:C.resolveEnding
 document.body.dataset.node=n.id;document.body.dataset.type=n.type||'text';setScene(n);
 $('reading-hint').textContent='请选择或完成当前操作';
 if(n.type!=='action')apply('enter:'+n.id,n.effects,n.journal);
-remember('node:'+n.id,n.text,n.speaker==='你'?(nameConfirmed?state.name:'你'):(n.speaker||'旁白'));
+remember('node:'+n.id,(n.direction?'（'+n.direction+'）\n':'')+(n.text||''),(n.speaker==='你'?(nameConfirmed?state.name:'你'):(n.speaker||'旁白'))+(n.delivery==='inner'?' · 内心':''));
 if(view.phase==='feedback'){drawFeedback();return;}
 if(n.type==='montage'){showMontage(n);return;}if(n.type==='ending'){showEnding(n);return;}if(n.type==='reflection'){showReflection(n);return;}
 writeText(n);
@@ -2899,11 +2963,18 @@ function showTypo(n){const {lead,tail}=interactionPages(n);
 const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');for(const char of ['国','难','党','头']){const b=btn(char,()=>{const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});feedback(right?'是“党”字。应当写作“国难当头”。':'这一处应将“党”改成“当”：国难当头。\n油灯的光太暗，你揉了揉眼睛。',n.next);},'word');grid.append(b);}controls.append(grid);typeBody();};
 if(tail){content.replaceChildren();content.append(el('p','story-text',lead));continueButton(null,mount,'按键继续');}else mount();}
 function showMontage(n){state.ending=C.resolveEnding(state);let index=view.montage||0;const memories=[['IMG-04','天目山 · 禅源寺','1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。'],['IMG-06','建德 · 文脉西运','1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。'],['IMG-09','泰和 · 赣江大堤','1938 年，泰和。赣江边跑测量，一寸一尺，修的是保命的大堤。'],['IMG-14','遵义 · 费巩灯','1943 年，遵义。费先生给我们一人做了一盏灯。后来我才懂，他给自己留的，是黑。'],['IMG-16','湄潭 · 胜利的灯火','灯还点吗？\n点。路还长。']];
-function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');const p=el('p','story-text',body);content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),p);typeInto(p,body,false);if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='自动翻页 · 点击文字区或按键可翻页';autoSave();advanceAction=()=>{index++;if(index>=memories.length)go(n.next);else frame();};}
+function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];const date=['1937 年 9 月 27 日','1937 年 11 月','1938 年','1943 年','1945 年 8 月'][index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location,date},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');const p=el('p','story-text',body);content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),p);typeInto(p,body,false);if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='自动翻页 · 点击文字区或按键可翻页';autoSave();advanceAction=()=>{index++;if(index>=memories.length)go(n.next);else frame();};}
 frame();timer=setInterval(()=>{if(document.hidden||view.mode==='map'||document.querySelector('dialog[open]'))return;index++;if(index>=memories.length)go(n.next);else frame();},7000);}
-function showEnding(n){state.ending=C.resolveEnding(state);const ending=story.endings[state.ending];remember('ending:'+state.ending,ending.text,ending.title);document.body.dataset.ending=state.ending;content.append(el('p','title-kicker','这一程，你的回答'),el('h1','ending-title',ending.title),el('p','story-text',ending.text),el('p','ending-meta','人心 '+state.renxin+'　／　薪火 '+state.xinhuo+'　／　求真 '+state.qiuzhen));if(state.ending==='anonymous')$('scene-image').classList.add('faded');continueButton(n.next,'走向告别 →');}
-function showReflection(n){clearTimer();if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
-const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;autoSave();});label.append(input);grid.append(label);}content.append(grid); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是 · 回答保存在本机';typeBody();}
+function showEnding(n){state.ending=C.resolveEnding(state);const ending=story.endings[state.ending];remember('ending:'+state.ending,ending.text,ending.title);document.body.dataset.ending=state.ending;content.append(el('p','title-kicker','这一程，你的回答'),el('h1','ending-title',ending.title),el('p','story-text',ending.text),el('p','ending-meta','人心 '+state.renxin+'　／　薪火 '+state.xinhuo+'　／　求真 '+state.qiuzhen));if(state.ending==='anonymous')$('scene-image').classList.add('faded');continueButton(n.next);}
+function syncReflectionJournal(){
+const id='reflection-answers',answers=view.reflection||['',''];
+const entry={id,title:'此刻的回答',text:['到浙大来做什么？','将来毕业后要做什么样的人？'].map((q,i)=>q+'\n'+(answers[i].trim()||'（留白）')).join('\n\n')};
+const index=state.journal.findIndex(item=>item.id===id);
+if(answers.some(answer=>answer.trim())){if(index<0)state.journal.push(entry);else state.journal[index]=entry;}
+else if(index>=0)state.journal.splice(index,1);
+}
+function showReflection(n){clearTimer();syncReflectionJournal();if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
+const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;syncReflectionJournal();autoSave();});label.append(input);grid.append(label);}content.append(grid); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是 · 回答已同步手账并保存在本机';typeBody();}
 function showDialog(id){$(id).showModal();}
 function openJournal(){
 sound.fx('page');
