@@ -58,6 +58,8 @@ python3 -m http.server 8000
 | `qiushi-audio` | 暴露 `globalThis.QiushiAudio`，管理素材映射、节点配乐、音效、音量和生命周期。 |
 | `game-engine` | 渲染剧情、处理互动、地图、回顾、存读档及输入事件；依赖前面的 Core 和 Audio。 |
 
+开发者选章工具通过 `?debug=1` 开启，左上角菜单由独立的 `dev-tools.js` 提供；普通入口不加载工具。引擎末尾的 `BEGIN/END OPTIONAL DEVELOPER TOOLS` 标记块负责接入和调试存档隔离（`qiushi-xixing:debug:save:v1:`）。跳章重置调试局，仅模拟前站完成，不补前章数值或历史。使用与完整移除方法见 `开发调试说明.md`。
+
 剧情 JSON 已格式化为多行缩进（2 空格），可直接按块编辑文字；配乐 `cues` 表仍为长行。局部修改时避免无关的整文件格式化，使差异易于检查。若调整脚本组织，保留依赖顺序和既有 DOM ID。
 
 ## 五、剧情数据与关键交互
