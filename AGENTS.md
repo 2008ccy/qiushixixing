@@ -16,6 +16,8 @@
 | 路径 | 内容及维护要点 |
 | --- | --- |
 | `index.html` | 完整游戏入口，内含样式、剧情 JSON、规则、音频系统和交互引擎。 |
+| `manifest.webmanifest`、`pwa.js`、`sw.js` | PWA 安装信息、独立应用设置和离线缓存；路径相对于仓库根目录，兼容 Pages 子路径。 |
+| `assets/icons/` | 本项目原创书本与灯火图标的 SVG 源文件、192／512 像素图标、maskable 图标和 Apple 主屏幕图标。 |
 | `assets/images/` | 43 张在用 WebP 场景和道具图，文件名为 `IMG-xx.webp`；`IMG-01` 为参考月牙楼校史馆官方实景布局生成的沉静色调插画，`IMG-18` 至 `IMG-21` 为用户提供的序章展品绘制图，`IMG-02`、`IMG-04`、`IMG-27` 至 `IMG-31` 为第一章剧情绘制图，`IMG-22` 用于第一章导航及序章剧情路线图，`IMG-24` 用于后续路线与时间轴；第二章起的图片来源及剩余占位见 `assets/素材说明.md`；所有 `_` 前缀文件仅为旧版备份，不引用。 |
 | `assets/素材说明.md` | 图片编号、用途、来源及替换要求。 |
 | `qiushi_bgm/` | 背景音乐、校歌和音效，共 22 个 MP3、1 个 MP4，以及配乐提示表。 |
@@ -40,10 +42,13 @@ python3 -m http.server 8000
 
 浏览器打开 <http://localhost:8000/>。Windows 可使用 `py -m http.server 8000`。
 
-- 不需要 `npm install` 或编译。当前没有 `package.json`、独立测试目录或仓库内自动化测试命令。
+- 不需要 `npm install` 或编译。没有 `package.json`；PWA 回归检查使用 Node 内置测试器：`node --test tests/pwa.test.cjs`，无需安装依赖。
 - 优先通过本地 HTTP 验证；双击 HTML 的 `file:` 环境在音频和本地存储行为上可能与线上不同。
 - GitHub Pages 使用 `main` 分支的根目录发布，根目录应直接包含 `index.html`、`assets/`、`qiushi_bgm/` 和 `.nojekyll`。
 - 音频已经接入，发布时必须同时保留 `qiushi_bgm/`，不能只上传 HTML 和图片。
+- 已接入 PWA：发布时同时保留 `manifest.webmanifest`、`pwa.js`、`sw.js` 和 `assets/icons/`。安装与离线准备要求 HTTPS 或 localhost；`file:` 不支持。使用与验证说明见 `PWA说明.md`。
+- `sw.js` 安装时缓存完整剧情、43 张现用图片及应用文件，配乐由右上角“应用”中另行下载（当前 15 个素材、约 27 MiB）。缓存与 v1 存档独立，清理网站数据会同时删除它们。
+- 每次修改 HTML、JS、图片、图标或清单，必须同步更新 `sw.js` 中的 `SHELL_VERSION`；音频变更另更新 `AUDIO_VERSION` 及清单。不强制刷新或立即接管运行中的旧版，新版等待全部旧窗口关闭后启用；仅更新界面不清理配乐缓存。不缓存 `_` 备份、未用音频和 MP4。
 - 修改后的本地检查、提交、推送和线上发布是不同环节，说明完成情况时应区分。按用户当前请求执行提交与发布，只包含任务相关文件。
 
 ## 四、单文件代码结构

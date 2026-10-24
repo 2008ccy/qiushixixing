@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#182225">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="求是西行">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./assets/icons/icon.svg">
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
 <meta name="description" content="《求是西行 · 1937》历史互动故事：从校史馆走进西迁岁月，在选择与手账中寻找自己的回答。">
 <title>求是西行 · 1937</title>
 <style>
@@ -402,11 +408,16 @@ main{position:relative}
 @media(max-width:600px){.scene-image.school-sign-scene{object-fit:cover}}
 .review-scene{position:relative}
 #review-school-sign{position:absolute;height:auto;transform:translate(-50%,-50%) rotate(var(--sign-angle,0deg));pointer-events:none;filter:drop-shadow(0 2px 2px #211b1344)}
+/* Installation and offline settings share the existing compact controls. */
+.pwa-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pwa-actions button{border:1px solid var(--line);background:var(--button);padding:10px 14px;font-size:16px}
+#pwa-progress{display:block;width:100%;margin:14px 0;accent-color:var(--accent)}
+@media(max-width:600px){.location{max-width:calc(100% - 190px)}}
 </style>
 </head>
 <body>
 <main id="game">
-<div class="audio-dock" role="group" aria-label="声音控制"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button></div>
+<div class="audio-dock" role="group" aria-label="声音与应用设置"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button><button id="pwa-settings" type="button" aria-haspopup="dialog">应用</button></div>
 <section class="scene" id="scene" aria-label="故事场景">
 <img class="scene-image" id="scene-image" src="./assets/images/IMG-01.webp" alt="校史馆场景示意图">
 <h2 class="location" id="location">紫金港 · 校史馆<span class="date" id="scene-date">2026 年 10 月</span></h2>
@@ -429,6 +440,16 @@ main{position:relative}
 </section>
 </main>
 <dialog class="dialog" id="name-dialog" aria-labelledby="name-title"></dialog>
+<dialog class="dialog" id="pwa-dialog" aria-labelledby="pwa-title">
+<div class="dialog-head"><h2 id="pwa-title">安装与离线</h2><button id="pwa-close" type="button">返回游戏</button></div>
+<p id="pwa-install-help" class="field-note">可以从浏览器菜单安装到桌面，以独立窗口打开游戏。</p>
+<p id="pwa-status" class="field-note" role="status" aria-live="polite">正在准备离线剧情与图片……</p>
+<p class="field-note">离线配乐另需下载约 27 MiB；已下载的配乐可在断网时播放。下载中请保持游戏打开，中断后可重试。</p>
+<progress id="pwa-progress" value="0" max="15" aria-label="离线配乐下载进度" hidden></progress>
+<div class="pwa-actions"><button id="pwa-install" type="button" hidden>安装到桌面</button><button id="pwa-download" type="button" disabled>下载离线配乐</button></div>
+<p id="pwa-update" class="field-note" role="status" hidden>新版本已准备好。关闭游戏的所有窗口后重新打开即可更新，进度保存在本机。</p>
+<p class="field-note">存档仅保存在当前浏览器或应用中；清除网站数据会移除存档与离线资源。系统也可能回收离线缓存。</p>
+</dialog>
 <dialog class="dialog" id="exhibit-dialog" aria-labelledby="exhibit-dialog-title"><div class="dialog-head"><h2 id="exhibit-dialog-title"></h2><button data-close="exhibit-dialog" type="button">合上</button></div><img id="exhibit-image" alt=""><p id="exhibit-caption"></p></dialog>
 <dialog class="dialog" id="journal-dialog" aria-labelledby="journal-title"><div class="dialog-head"><h2 id="journal-title">求是手账</h2><button data-close="journal-dialog">合上手账</button></div><div id="journal-content"></div></dialog>
 <dialog class="dialog" id="chapters-dialog" aria-labelledby="chapters-title"><div class="dialog-head"><h2 id="chapters-title">西行的足迹</h2><button data-close="chapters-dialog">回到故事</button></div><div id="chapters-content"></div></dialog>
@@ -3165,5 +3186,6 @@ if(new URLSearchParams(location.search).get('debug')==='1'){
 showTitle();
 })();
 </script>
+<script src="./pwa.js" defer></script>
 </body>
 </html>
