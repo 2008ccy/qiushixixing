@@ -2,7 +2,7 @@
 
 // Bump SHELL_VERSION for every HTML, JS, image, icon or manifest release.
 // Bump AUDIO_VERSION when audio files change; UI-only releases retain downloaded music.
-const SHELL_VERSION = '2026-10-24-4';
+const SHELL_VERSION = '2026-10-24-6';
 const AUDIO_VERSION = '1';
 const BASE = new URL('./', self.location.href);
 const PREFIX = 'qiushi-pwa:' + BASE.pathname + ':';
@@ -12,6 +12,7 @@ const urlFor = path => new URL(path, BASE).href;
 const SHELL_FILES = [
   './', './index.html', './manifest.webmanifest', './pwa.js', './dev-tools.js',
   './assets/icons/icon.svg', './assets/icons/apple-touch-icon.png',
+  './assets/props/dormitory-no-lamps.webp', './assets/props/motto-board.webp', './assets/props/proof-desk.webp', './assets/props/feigong-lamp-unlit.webp', './assets/props/feigong-lamp-lit.webp',
   './assets/props/rescue-books.webp', './assets/props/rescue-platform.webp',
   './assets/icons/icon-192.png', './assets/icons/icon-512.png', './assets/icons/icon-maskable-512.png',
   // IMG-25 has no file: the engine maps that legacy ID to IMG-07.
