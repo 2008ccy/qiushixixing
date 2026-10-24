@@ -19,6 +19,7 @@
 | `manifest.webmanifest`、`pwa.js`、`sw.js` | PWA 安装信息、独立应用设置和离线缓存；路径相对于仓库根目录，兼容 Pages 子路径。 |
 | `assets/icons/` | 本项目原创书本与灯火图标的 SVG 源文件、192／512 像素图标、maskable 图标和 Apple 主屏幕图标。 |
 | `assets/images/` | 43 张在用 WebP 场景和道具图，文件名为 `IMG-xx.webp`；`IMG-01` 为参考月牙楼校史馆官方实景布局生成的沉静色调插画，`IMG-18` 至 `IMG-21` 为用户提供的序章展品绘制图，`IMG-02`、`IMG-04`、`IMG-27` 至 `IMG-31` 为第一章剧情绘制图，`IMG-22` 用于第一章导航及序章剧情路线图，`IMG-24` 用于后续路线与时间轴；第二章起的图片来源及剩余占位见 `assets/素材说明.md`；所有 `_` 前缀文件仅为旧版备份，不引用。 |
+| `assets/props/` | 互动 7 的透明书箱和石台 WebP；内置 imagegen 生成，来源与完整提示词见 `assets/互动7素材生成提示词.md`。 |
 | `assets/素材说明.md` | 图片编号、用途、来源及替换要求。 |
 | `qiushi_bgm/` | 背景音乐、校歌和音效，共 22 个 MP3、1 个 MP4，以及配乐提示表。 |
 | `qiushi_bgm/求是西行1937-配乐提示表.docx` | 音乐情绪和切换的设计参考；部分描述属于制作建议，不能据此认定游戏已实现相应玩法。 |
@@ -42,12 +43,12 @@ python3 -m http.server 8000
 
 浏览器打开 <http://localhost:8000/>。Windows 可使用 `py -m http.server 8000`。
 
-- 不需要 `npm install` 或编译。没有 `package.json`；PWA 回归检查使用 Node 内置测试器：`node --test tests/pwa.test.cjs`，无需安装依赖。
+- 不需要 `npm install` 或编译。没有 `package.json`；PWA 回归检查使用 Node 内置测试器：`node --test tests/pwa.test.cjs`，护书互动回归检查：`node --test tests/rescue.test.cjs`，均无需安装依赖。
 - 优先通过本地 HTTP 验证；双击 HTML 的 `file:` 环境在音频和本地存储行为上可能与线上不同。
 - GitHub Pages 使用 `main` 分支的根目录发布，根目录应直接包含 `index.html`、`assets/`、`qiushi_bgm/` 和 `.nojekyll`。
 - 音频已经接入，发布时必须同时保留 `qiushi_bgm/`，不能只上传 HTML 和图片。
 - 已接入 PWA：发布时同时保留 `manifest.webmanifest`、`pwa.js`、`sw.js` 和 `assets/icons/`。安装与离线准备要求 HTTPS 或 localhost；`file:` 不支持。使用与验证说明见 `PWA说明.md`。
-- `sw.js` 安装时缓存完整剧情、43 张现用图片及应用文件，配乐由右上角“应用”中另行下载（当前 15 个素材、约 27 MiB）。缓存与 v1 存档独立，清理网站数据会同时删除它们。
+- `sw.js` 安装时缓存完整剧情、43 张现用场景图、互动 7 的两张道具图及应用文件，配乐由右上角“应用”中另行下载（当前 15 个素材、约 27 MiB）。缓存与 v1 存档独立，清理网站数据会同时删除它们。
 - 每次修改 HTML、JS、图片、图标或清单，必须同步更新 `sw.js` 中的 `SHELL_VERSION`；音频变更另更新 `AUDIO_VERSION` 及清单。不强制刷新或立即接管运行中的旧版，新版等待全部旧窗口关闭后启用；仅更新界面不清理配乐缓存。不缓存 `_` 备份、未用音频和 MP4。
 - 修改后的本地检查、提交、推送和线上发布是不同环节，说明完成情况时应区分。按用户当前请求执行提交与发布，只包含任务相关文件。
 
@@ -76,6 +77,7 @@ python3 -m http.server 8000
 - 对话可用 `direction` 单列开场动作／语气，`delivery: "inner"` 在说话人旁标注“内心”；选择节点可用 `prompt` 在分页后的选项页保留简短题干。
 - 分支节点使用 `condition`、`yes`、`no`；答题节点使用 `questions`，其中 `correct` 是从 0 开始的选项下标。
 - 支持的类型包括 `text`、`exhibits`、`action`、`choice`、`nameConfirm`、`quiz`、`branch`、`wordpick`、`typo`、`montage`、`ending`、`reflection`。
+- `interaction-7` 为限时拖放护书的 `action` 节点：读完说明、点击“开始护书”后，在 12 秒内将 4 只书箱拖到高处石台并松手。鼠标单击不放书；支持 Pointer Capture、触屏拖动，Tab 选箱后可用 Enter／空格放置。石台与书箱采用 `assets/props/rescue-platform.webp`、`rescue-books.webp` 透明 AI 插画；按背景 `IMG-35` 的图像坐标将起点锚定在左侧独轮车载书处、石台承托线锚定在右侧原有台阶；坐标随 `object-fit` 和 52% 垂直定位换算，手机完整适配显示背景，避免裁掉搬运两端。按 alpha 接触锚点和实际放置顺序从底层堆叠，放到台外或取消拖动时归位。最后一箱放稳后保持画面 1.5 秒，再结算并显示反馈。屏幕外沿暖色光晕随剩余时间减少而加快（周期 2.4—0.8 秒），减少动态效果时改为静态紧迫提示。成功薪火 +1、护书完整度保持；超时一函书受潮、完整度减 1（下限 0），不增加失误。地图、弹窗、切后台暂停计时，切换页面和尺寸变化取消当前拖动；`view.rescue` 可选保存 `started`、`remaining`（毫秒）、`moved`（书箱索引，顺序即堆叠顺序）和最终停留的 `settleRemaining`（可选，0—1500 毫秒），v1 存档版本不变。`action:interaction-7` 去重结算，兼容旧 `choice:interaction-7:shelter/push` 已完成结果及反馈，不重新计分。回顾只读。
 - `interaction-11` 仍是 `action` 节点，但由 `showSchoolSign()` 提供拖动扶正，不生成普通动作按钮。使用 `IMG-44` 无校牌背景和透明 `IMG-45` 木牌，前一页 `chapter6-start` 使用相同背景并固定显示 −14° 歪牌（不可拖动），回顾同步显示；`IMG-17` 保留给其他返杭画面；位置旧背景备份为 `_IMG-44.webp`。
 - 校牌默认 −14°，拖动范围 ±28°，松手在水平 ±4° 内吸附完成；用 `action:interaction-11` 去重结算，仍先读反馈再进 `scene-127`。可选 `view.signAngle` 保存草稿，不改变 v1 存档版本；旧档未带角度正常载入，旧已完成动作恢复水平反馈。保留 Pointer Capture 取消、地图切换、尺寸变化和减少动态效果处理；左右键微调，Enter／空格扶正。
 - 挂牌的主画面与回顾采用同一背景坐标锚点。手机主画面居中放大，回顾用 `review-school-sign` 只读图片，不能绑定拖动事件或重复结算。
@@ -89,7 +91,7 @@ python3 -m http.server 8000
 - 小满加入队伍、周念东参军两种选择的回应、澄江学校及费巩送别等补全内容均已接入；修改周边剧情时不要跳过这些中间节点。
 - `choice-3` 的“建议拆半”是合法自循环：显示拒绝反馈后返回同一选择，允许重选，不增加分数或失误。
 - 护书雨夜是第三章内的 1939 年插叙；其章节标签虽多一段文字，仍属于第三章，结束后回到迁校主线。
-- 配乐提示表中的限时递书、轰炸闪避、五件展品等描述，不等于当前玩法；当前分别是选择交互、叙事场景和四件展品。
+- 配乐提示表中的限时递书、轰炸闪避、五件展品等描述，不等于当前玩法；当前限时递书已接入互动 7，另外两项仍为叙事场景和四件展品。
 
 ## 六、数值、手账与结局
 

@@ -413,9 +413,30 @@ main{position:relative}
 .pwa-actions button{border:1px solid var(--line);background:var(--button);padding:10px 14px;font-size:16px}
 #pwa-progress{display:block;width:100%;margin:14px 0;accent-color:var(--accent)}
 @media(max-width:600px){.location{max-width:calc(100% - 190px)}}
+/* Rain-night book rescue: only the screen edge pulses; the reading area stays still. */
+#rescue-edge{position:fixed;inset:0;z-index:20;pointer-events:none;border:3px solid #d7b78066;box-shadow:inset 0 0 32px #c7894555;animation:rescue-pulse var(--rescue-pulse,2s) ease-in-out infinite}
+@keyframes rescue-pulse{0%,100%{opacity:.18}50%{opacity:.85}}
+#rescue-edge[data-urgency="urgent"]{border-color:#e2a37c;box-shadow:inset 0 0 38px #c8734b77}
+#rescue-edge[data-paused="true"]{animation-play-state:paused;opacity:.15}
+#book-rescue{position:absolute;inset:0;z-index:3;pointer-events:none}
+.rescue-platform{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 2px #0005);transition:filter .2s}
+.rescue-platform img{display:block;width:100%;height:100%;user-select:none;pointer-events:none;mask-image:linear-gradient(#000 66%,#0000 89%)}
+.rescue-platform.drop-ready{filter:drop-shadow(0 0 10px #d7b780aa) drop-shadow(0 7px 8px #0008)}
+.rescue-platform-label{position:absolute;left:14%;right:10%;top:58%;margin:0;text-align:center;color:#f2e4c9;font-size:14px;letter-spacing:.1em;text-shadow:0 1px 5px #000}
+.rescue-crate{position:absolute;margin:0;padding:0;border:0;background:transparent;box-shadow:none;touch-action:none;cursor:grab;pointer-events:auto;user-select:none;transition:left .3s ease,top .3s ease;filter:drop-shadow(0 2px 2px #0009)}
+.rescue-crate::after{content:"";position:absolute;inset:-4px}
+.rescue-crate img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.rescue-crate:hover:not(:disabled),.rescue-crate:active:not(:disabled){background:transparent;transform:none;filter:brightness(1.12) drop-shadow(0 3px 3px #0009)}
+.rescue-crate.dragging{cursor:grabbing;z-index:10!important;transition:none;filter:brightness(1.1) drop-shadow(0 12px 7px #0008)}
+.rescue-crate:disabled{opacity:1;cursor:default}
+.rescue-crate.secured{pointer-events:none}
+.rescue-progress{font-size:16px;line-height:1.6;color:var(--accent);margin:0}
+@media(max-width:600px){body[data-node="interaction-7"] main{grid-template-rows:48% minmax(0,1fr)}.scene-image.rescue-scene{object-fit:contain}.rescue-platform-label{font-size:12px}}
+@media(prefers-reduced-motion:reduce){#rescue-edge{animation:none;opacity:.35}#rescue-edge[data-urgency="urgent"]{opacity:.8}#rescue-edge[data-paused="true"]{opacity:.15}.rescue-crate{transition:none}}
 </style>
 </head>
 <body>
+<div id="rescue-edge" aria-hidden="true" hidden></div>
 <main id="game">
 <div class="audio-dock" role="group" aria-label="声音与应用设置"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button><button id="pwa-settings" type="button" aria-haspopup="dialog">应用</button></div>
 <section class="scene" id="scene" aria-label="故事场景">
@@ -425,6 +446,7 @@ main{position:relative}
 <div class="chapter-label" id="chapter-label">一段西行，八十九年的回响</div>
 <img class="lamp-object" id="lamp-object" src="./assets/images/IMG-26.webp" alt="费巩灯示意图" hidden>
 <button id="school-sign" class="school-sign" type="button" aria-label="拖动校牌两端扶正，也可按左右方向键调整" hidden><img src="./assets/images/IMG-45.webp" alt="国立浙江大学校牌" draggable="false"></button>
+<div id="book-rescue" role="group" aria-label="拖动书箱放上高处石台" hidden></div>
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
@@ -1511,29 +1533,8 @@ main{position:relative}
       "location": "押运途中 · 雨夜山路",
       "date": "插叙 · 1939 年",
       "bg": "IMG-35",
-      "type": "choice",
-      "text": "雨越来越大。应当如何先处理书箱？",
-      "choices": [
-        {
-          "id": "shelter",
-          "text": "先把书箱移到高处避雨",
-          "feedback": "你们先护住书箱，再设法把车推出泥地。书卷没有受潮。",
-          "effects": {
-            "xinhuo": 1,
-            "bookIntegrity": 1
-          },
-          "next": "scene-077"
-        },
-        {
-          "id": "push",
-          "text": "先推车继续赶路",
-          "feedback": "车终于动了，一函书却已经受潮。你将它单独取出，交给保藏人员处理。",
-          "effects": {
-            "bookIntegrity": 0
-          },
-          "next": "scene-077"
-        }
-      ],
+      "type": "action",
+      "text": "雨越下越急，独轮车陷在泥里。趁书卷受潮前，按住书箱，拖到高处石台上松手。",
       "next": "scene-077"
     },
     {
@@ -2650,7 +2651,7 @@ const story=JSON.parse(document.getElementById('story-data').textContent);
 const nodes=new Map(story.nodes.map(n=>[n.id,n]));
 const C=globalThis.QiushiCore;
 const sound=globalThis.QiushiAudio;
-let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null;
+let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null, rescueClock=null, rescueDrag=null;
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
@@ -2697,6 +2698,7 @@ function validSave(s){
  if(v.reflection&&(!Array.isArray(v.reflection)||v.reflection.length!==2||!v.reflection.every(x=>typeof x==='string'&&x.length<=1000)))return false;
  if(v.draftName!==undefined&&(typeof v.draftName!=='string'||v.draftName.length>40))return false;
  if(v.montage!==undefined&&(!Number.isInteger(v.montage)||v.montage<0||v.montage>4))return false;
+ if(v.rescue!==undefined){const r=v.rescue;if(n.id!=='interaction-7'||!r||typeof r.started!=='boolean'||!Number.isFinite(r.remaining)||r.remaining<0||r.remaining>12000||!Array.isArray(r.moved)||r.moved.length>4||new Set(r.moved).size!==r.moved.length||!r.moved.every(i=>Number.isInteger(i)&&i>=0&&i<4)||(!r.started&&(r.moved.length||r.remaining!==12000)))return false;if(r.settleRemaining!==undefined&&(!r.started||r.moved.length!==4||!Number.isFinite(r.settleRemaining)||r.settleRemaining<0||r.settleRemaining>1500))return false;}
  if(v.signAngle!==undefined&&(n.id!=='interaction-11'||!Number.isFinite(v.signAngle)||Math.abs(v.signAngle)>28))return false;
  return true;
 }
@@ -2866,12 +2868,13 @@ renderSchoolSign(current);if(signIsLevel(view.signAngle))finishSchoolSign();else
 $('scene-image').addEventListener('load',layoutSchoolSign);$('review-image').addEventListener('load',layoutSchoolSign);
 window.addEventListener('resize',()=>{cancelSchoolSignDrag();layoutSchoolSign();});
 if('ResizeObserver' in window){const signResize=new ResizeObserver(layoutSchoolSign);signResize.observe($('scene'));signResize.observe($('review-image'));}
-function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearTimer(){stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
+function clearView(){stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
 if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg))image.classList.add('framed');
 if(bg==='IMG-44')image.classList.add('school-sign-scene');
+if(n.id==='interaction-7')image.classList.add('rescue-scene');
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
 if(/夜|暮|雨/.test(String(n.location||'')+' '+String(n.date||''))&&bg!=='IMG-14')image.classList.add('night');
 $('location').firstChild.textContent=n.location||names[bg]||'西行途中';$('scene-date').textContent=n.date||'';$('chapter-label').textContent=n.chapter||'';
@@ -3019,7 +3022,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':showChoices(n);break;
-case 'action':{if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
+case 'action':{if(n.id==='interaction-7'){showBookRescue(n);break;}if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
@@ -3070,6 +3073,155 @@ dialog.showModal();
 function draw(){controls.replaceChildren();controls.className='controls exhibit-grid';for(const item of items){const seen=state.visitedExhibits.includes(item[0]);const b=btn(item[1]+(seen?'　已查看':''),()=>openItem(item));b.id='exhibit-'+item[0];b.disabled=item[0]==='map'&&state.visitedExhibits.length<3;controls.append(b);}}
 if(view.phase==='exhibit-map')go(n.next);else{draw();typeBody();}
 }
+// Anchors follow IMG-35's cart and ledge after object-fit and object-position.
+function rescueArtworkBounds(width,height,fit){
+const scale=(fit==='contain'?Math.min:Math.max)(width/2275,height/1280);
+const w=2275*scale,h=1280*scale;
+return {x:(width-w)/2,y:(height-h)*.52,width:w,height:h};
+}
+function rescueLayout(width,height,fit=width<=600?'contain':'cover'){
+const art=rescueArtworkBounds(width,height,fit);
+const bookWidth=Math.max(48,Math.min(84,art.width*.072)),bookHeight=bookWidth*1145/1374;
+const platformWidth=Math.min(width-8,Math.max(art.width*.34,bookWidth*2+30)),platformHeight=platformWidth*753/2089;
+const platformLeft=Math.max(4,Math.min(width-platformWidth-4,art.x+art.width*.81-platformWidth/2));
+const surface=art.y+art.height*.47,platformTop=surface-platformHeight*.44;
+const gap=8,left=platformLeft+(platformWidth-bookWidth*2-gap)/2;
+const sourceLeft=art.x+art.width*.27-(bookWidth*2+gap)/2,sourceBase=art.y+art.height*.54;
+return {bookWidth,bookHeight,platformLeft,platformWidth,platformHeight,platformTop,surface,left,gap,sourceLeft,sourceBase};
+}
+function rescueBookPosition(index,layout,moved){
+const slot=moved.indexOf(index),secured=slot>=0,order=secured?slot:index;
+const x=(secured?layout.left:layout.sourceLeft)+(order%2)*(layout.bookWidth+layout.gap);
+// Book alpha bottom is 93% of its canvas; visible height is 83.8%.
+const baseline=(secured?layout.surface:layout.sourceBase)-Math.floor(order/2)*layout.bookHeight*.838;
+return {x,y:baseline-layout.bookHeight*.93};
+}
+function currentRescueLayout(){
+const stage=$('book-rescue');return rescueLayout(stage.clientWidth,stage.clientHeight,getComputedStyle($('scene-image')).objectFit);
+}
+function layoutRescueBooks(){
+const stage=$('book-rescue');if(stage.hidden||!view.rescue)return;
+const layout=currentRescueLayout(),platform=stage.querySelector('.rescue-platform');
+if(platform){platform.style.left=layout.platformLeft+'px';platform.style.top=layout.platformTop+'px';platform.style.width=layout.platformWidth+'px';platform.style.height=layout.platformHeight+'px';}
+for(const book of stage.querySelectorAll('.rescue-crate')){
+if(rescueDrag?.element===book)continue;
+const index=Number(book.dataset.crate),p=rescueBookPosition(index,layout,view.rescue.moved);
+book.style.left=p.x+'px';book.style.top=p.y+'px';book.style.width=layout.bookWidth+'px';book.style.height=layout.bookHeight+'px';
+const slot=view.rescue.moved.indexOf(index);book.style.zIndex=slot<0?'2':String(3+Math.floor(slot/2));
+}
+}
+function cancelRescueDrag(){
+const drag=rescueDrag;if(!drag)return;rescueDrag=null;
+drag.element.classList.remove('dragging');
+if(drag.element.hasPointerCapture(drag.id))drag.element.releasePointerCapture(drag.id);
+$('book-rescue').querySelector('.rescue-platform')?.classList.remove('drop-ready');layoutRescueBooks();
+}
+function stopRescueClock(){
+cancelRescueDrag();if(rescueClock){clearInterval(rescueClock.timer);rescueClock=null;}
+$('rescue-edge').hidden=true;$('book-rescue').hidden=true;
+}
+function rescueCanRun(){return current?.id==='interaction-7'&&view.mode==='story'&&view.phase!=='feedback'&&!document.hidden&&!document.querySelector('dialog[open]');}
+function updateRescueClock(){
+const clock=rescueClock;if(!clock)return;
+const now=performance.now(),r=view.rescue,settling=r.moved.length===4;
+if(settling)r.settleRemaining??=1500;
+if(clock.running){if(settling)r.settleRemaining=Math.max(0,r.settleRemaining-(now-clock.last));else r.remaining=Math.max(0,r.remaining-(now-clock.last));}
+clock.last=now;clock.running=rescueCanRun();
+const edge=$('rescue-edge'),ratio=r.remaining/12000;edge.hidden=settling;
+edge.style.setProperty('--rescue-pulse',(0.8+1.6*ratio).toFixed(2)+'s');
+edge.dataset.urgency=ratio<=.3?'urgent':'steady';edge.dataset.paused=String(!clock.running);
+const status=$('rescue-progress');
+if(status)status.textContent=settling?'书箱已全部放稳。你终于松了一口气。':'已放上石台 '+r.moved.length+' / 4 · '+(!clock.running?'已暂停':ratio<=.3?'雨势逼近，抓紧拖动书箱！':'按住书箱，拖到石台上松手');
+if(settling?r.settleRemaining<=0:r.remaining<=0){finishBookRescue(settling);return;}
+if(Math.floor(r.remaining/1000)!==clock.savedSecond){clock.savedSecond=Math.floor(r.remaining/1000);autoSave();}
+}
+function finishBookRescue(success){
+if(current?.id!=='interaction-7'||view.phase==='feedback')return;
+const n=current;
+const message=success?'最后一只书箱稳稳落上石台。你们盖好遮布，再合力把车推出泥地。书卷没有受潮。':'雨水抢先渗进了书箱，一函书已经受潮。你将它单独取出，交给保藏人员处理，其余书箱终于搬到了石台上。';
+apply('action:'+n.id,success?{xinhuo:1}:{bookIntegrity:Math.max(0,(state.bookIntegrity??1)-1)});
+remember('action:'+n.id,success?'及时把全部书箱递上石台，书卷没有受潮。':'未能及时递完书箱，一函书受潮。','雨夜护书');
+stopRescueClock();feedback(message,n.next);autoSave();
+}
+function placeRescueBook(index){
+const r=view.rescue;
+if(!r?.started||!rescueCanRun()||r.moved.length===4||r.moved.includes(index))return;
+updateRescueClock();if(view.phase==='feedback')return;
+r.moved.push(index);const stage=$('book-rescue'),book=stage.querySelector('[data-crate="'+index+'"]');
+book.disabled=true;book.classList.add('secured');book.setAttribute('aria-label','第 '+(index+1)+' 只书箱，已放稳在石台上');
+if(r.moved.length===4)r.settleRemaining=1500;
+layoutRescueBooks();sound.fx('page');updateRescueClock();
+stage.querySelector('.rescue-crate:not(:disabled)')?.focus({preventScroll:true});autoSave();
+}
+function rescueDropAllowed(clientX,clientY){
+const stage=$('book-rescue'),rect=stage.getBoundingClientRect(),l=currentRescueLayout();
+const x=clientX-rect.left,y=clientY-rect.top;
+return x>=l.platformLeft+l.platformWidth*.06&&x<=l.platformLeft+l.platformWidth*.96&&y>=l.surface-l.bookHeight*1.85&&y<=l.surface+l.platformHeight*.12;
+}
+function releaseRescueBook(event,cancelled){
+const drag=rescueDrag;if(!drag||drag.id!==event.pointerId)return;
+event.preventDefault();event.stopPropagation();
+const drop=!cancelled&&drag.moved&&rescueDropAllowed(event.clientX,event.clientY),index=drag.index;
+cancelRescueDrag();if(drop)placeRescueBook(index);else autoSave();
+}
+function showBookRescue(n){
+const oldSuccess=state.completedActions.includes('choice:interaction-7:shelter'),oldFailure=state.completedActions.includes('choice:interaction-7:push');
+if(oldSuccess||oldFailure||state.completedActions.includes('action:'+n.id)){
+const success=oldSuccess||(!oldFailure&&view.rescue?.moved.length===4);
+feedback(success?'你们先护住书箱，再设法把车推出泥地。书卷没有受潮。':'一函书已经受潮。你将它单独取出，交给保藏人员处理。',n.next);return;
+}
+const r=view.rescue??={started:false,remaining:12000,moved:[]};
+if(r.started&&r.remaining<=0&&r.moved.length<4){finishBookRescue(false);return;}
+const stage=$('book-rescue');stage.replaceChildren();stage.hidden=false;
+const platform=el('div','rescue-platform'),stone=el('img');stone.src='./assets/props/rescue-platform.webp';stone.alt='雨夜里的高处石台';stone.draggable=false;
+platform.append(stone,el('p','rescue-platform-label','高处石台'));stage.append(platform);
+const progress=el('p','rescue-progress');progress.id='rescue-progress';progress.setAttribute('role','status');progress.setAttribute('aria-live','polite');controls.append(progress);
+const crates=[];
+for(let i=0;i<4;i++){
+const book=el('button','rescue-crate');book.type='button';book.dataset.crate=i;
+const image=el('img');image.src='./assets/props/rescue-books.webp';image.alt='麻绳捆扎的古籍书箱';image.draggable=false;book.append(image);
+book.setAttribute('aria-label','第 '+(i+1)+' 只书箱，'+(r.moved.includes(i)?'已放稳在石台上':'拖到石台上松手，也可按回车放置'));
+book.disabled=!r.started||r.moved.includes(i);book.classList.toggle('secured',r.moved.includes(i));
+// Native Enter/Space activation has detail 0; mouse/touch must actually drag.
+book.addEventListener('click',event=>{if(event.detail===0)placeRescueBook(i);});
+crates.push(book);stage.append(book);
+}
+layoutRescueBooks();
+  function start(){
+if(typeState)finishTyping();r.started=true;startButton?.remove();crates.forEach((book,i)=>book.disabled=r.moved.includes(i));
+rescueClock={last:performance.now(),running:rescueCanRun(),savedSecond:Math.floor(r.remaining/1000),timer:setInterval(updateRescueClock,100)};
+updateRescueClock();crates.find(book=>!book.disabled)?.focus({preventScroll:true});autoSave();
+}
+let startButton;
+if(r.started)start();else{
+progress.textContent='4 只书箱 · 12 秒内拖上石台；准备好后开始。';
+startButton=btn('开始护书',start);startButton.id='start-rescue';controls.append(startButton);typeBody();
+}
+$('reading-hint').textContent='按住书箱拖到石台 · Tab 选箱，回车放置';
+}
+const rescueStage=$('book-rescue');
+rescueStage.addEventListener('pointerdown',event=>{
+const book=event.target.closest('.rescue-crate');
+if(!book||book.disabled||event.button!==0||event.isPrimary===false||!view.rescue?.started||!rescueCanRun()||view.rescue.moved.length===4)return;
+event.preventDefault();event.stopPropagation();updateRescueClock();if(view.phase==='feedback')return;
+const rect=book.getBoundingClientRect();rescueDrag={id:event.pointerId,index:Number(book.dataset.crate),element:book,offsetX:event.clientX-rect.left,offsetY:event.clientY-rect.top,x:event.clientX,y:event.clientY,moved:false};
+book.classList.add('dragging');book.setPointerCapture(event.pointerId);
+});
+rescueStage.addEventListener('pointermove',event=>{
+const drag=rescueDrag;if(!drag||drag.id!==event.pointerId)return;
+event.preventDefault();event.stopPropagation();const rect=rescueStage.getBoundingClientRect();
+drag.moved ||= Math.hypot(event.clientX-drag.x,event.clientY-drag.y)>=6;
+drag.element.style.left=(event.clientX-rect.left-drag.offsetX)+'px';drag.element.style.top=(event.clientY-rect.top-drag.offsetY)+'px';
+rescueStage.querySelector('.rescue-platform')?.classList.toggle('drop-ready',rescueDropAllowed(event.clientX,event.clientY));
+});
+rescueStage.addEventListener('pointerup',event=>releaseRescueBook(event,false));
+rescueStage.addEventListener('pointercancel',event=>releaseRescueBook(event,true));
+rescueStage.addEventListener('lostpointercapture',event=>releaseRescueBook(event,true));
+window.addEventListener('resize',()=>{cancelRescueDrag();layoutRescueBooks();});
+if('ResizeObserver' in window){const rescueResize=new ResizeObserver(()=>{cancelRescueDrag();layoutRescueBooks();});rescueResize.observe(rescueStage);}
+document.addEventListener('visibilitychange',()=>{cancelRescueDrag();updateRescueClock();autoSave();});
+// Dialogs can also be opened by the audio and PWA modules.
+document.addEventListener('toggle',event=>{if(event.target.tagName==='DIALOG'){cancelRescueDrag();updateRescueClock();autoSave();}},true);
 function showQuiz(n){
 const quiz=view.quiz||(view.quiz={index:0,answers:Array(n.questions.length).fill(null)});let index=quiz.index;const answers=quiz.answers;
 function draw(){
