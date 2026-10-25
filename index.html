@@ -413,18 +413,97 @@ main{position:relative}
 .pwa-actions button{border:1px solid var(--line);background:var(--button);padding:10px 14px;font-size:16px}
 #pwa-progress{display:block;width:100%;margin:14px 0;accent-color:var(--accent)}
 @media(max-width:600px){.location{max-width:calc(100% - 190px)}}
+/* Rain-night book rescue: only the screen edge pulses; the reading area stays still. */
+#rescue-edge{position:fixed;inset:0;z-index:20;pointer-events:none;border:3px solid #d7b78066;box-shadow:inset 0 0 32px #c7894555;animation:rescue-pulse var(--rescue-pulse,2s) ease-in-out infinite}
+@keyframes rescue-pulse{0%,100%{opacity:.18}50%{opacity:.85}}
+#rescue-edge[data-urgency="urgent"]{border-color:#e2a37c;box-shadow:inset 0 0 38px #c8734b77}
+#rescue-edge[data-paused="true"]{animation-play-state:paused;opacity:.15}
+#book-rescue{position:absolute;inset:0;z-index:3;pointer-events:none}
+.rescue-platform{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 2px #0005);transition:filter .2s}
+.rescue-platform img{display:block;width:100%;height:100%;user-select:none;pointer-events:none;mask-image:linear-gradient(#000 66%,#0000 89%)}
+.rescue-platform.drop-ready{filter:drop-shadow(0 0 10px #d7b780aa) drop-shadow(0 7px 8px #0008)}
+.rescue-platform-label{position:absolute;left:14%;right:10%;top:58%;margin:0;text-align:center;color:#f2e4c9;font-size:14px;letter-spacing:.1em;text-shadow:0 1px 5px #000}
+.rescue-crate{position:absolute;margin:0;padding:0;border:0;background:transparent;box-shadow:none;touch-action:none;cursor:grab;pointer-events:auto;user-select:none;transition:left .3s ease,top .3s ease;filter:drop-shadow(0 2px 2px #0009)}
+.rescue-crate::after{content:"";position:absolute;inset:-4px}
+.rescue-crate img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.rescue-crate:hover:not(:disabled),.rescue-crate:active:not(:disabled){background:transparent;transform:none;filter:brightness(1.12) drop-shadow(0 3px 3px #0009)}
+.rescue-crate.dragging{cursor:grabbing;z-index:10!important;transition:none;filter:brightness(1.1) drop-shadow(0 12px 7px #0008)}
+.rescue-crate:disabled{opacity:1;cursor:default}
+.rescue-crate.secured{pointer-events:none}
+.rescue-progress{font-size:16px;line-height:1.6;color:var(--accent);margin:0}
+@media(max-width:600px){body[data-node="interaction-7"] main{grid-template-rows:48% minmax(0,1fr)}.scene-image.rescue-scene{object-fit:contain}.rescue-platform-label{font-size:12px}}
+@media(prefers-reduced-motion:reduce){#rescue-edge{animation:none;opacity:.35}#rescue-edge[data-urgency="urgent"]{opacity:.8}#rescue-edge[data-paused="true"]{opacity:.15}.rescue-crate{transition:none}}
+/* Blackboard, newspaper proof and Fei Gong lamp interactions. */
+.location,.toolbar,.chapter-label{z-index:4}
+.room-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 55% 62%,#27190600 12%,#160d0870 48%,#05080be8 100%);opacity:1;transition:opacity 1.5s ease}
+.room-veil.lit{opacity:0}
+.room-glow{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(145deg,#ffe2a924,#fff4d40d);mix-blend-mode:screen;animation:room-brighten 1.5s ease both}
+@keyframes room-brighten{from{opacity:0}to{opacity:1}}
+.scene-image.motto-scene{object-fit:cover}
+.scene-image.lit{filter:brightness(1.48) saturate(.82)}
+.scene-image.proof-night{filter:brightness(.44) saturate(.65) blur(.7px)}
+.study-surface{position:absolute;inset:0;z-index:2;pointer-events:none}
+.study-surface button,.study-surface input,.study-surface textarea{pointer-events:auto}
+.motto-heading{position:absolute;top:24%;left:12%;right:12%;margin:0;text-align:center;color:#ece7cf;font-size:18px;letter-spacing:.1em;line-height:1.5}
+.motto-slots{position:absolute;top:39%;left:0;right:0;display:flex;justify-content:center;gap:24px}
+.motto-slot{width:78px;height:78px;border:1px dashed #ded9bbad;background:#14282570;color:#fbf6de;font-size:50px;line-height:1;padding:0;box-shadow:inset 0 0 18px #0003}
+.motto-slot:disabled{opacity:1}
+.motto-pool{position:absolute;left:10%;right:10%;bottom:12%;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;max-width:650px;margin:auto}
+.motto-tile,.motto-ghost{display:grid;place-items:center;min-width:0;aspect-ratio:1;border:1px solid #968663;border-radius:2px;color:#201c15;background:linear-gradient(135deg,#e1cf9e,#c6b487);font-size:36px;font-weight:600;box-shadow:0 3px 5px #0007;padding:0;user-select:none;touch-action:none;cursor:grab}
+.motto-tile:hover:not(:disabled){background:#e6d8b1}
+.motto-tile:disabled{opacity:.2}
+.motto-tile.drag-source{opacity:.25}
+.motto-ghost{position:absolute;z-index:9;aspect-ratio:auto;pointer-events:none;cursor:grabbing;box-shadow:0 8px 12px #0009}
+.reason-label{display:block;font-size:14px;color:var(--accent);line-height:1.5;margin-bottom:5px}
+#motto-reason-form .reflection-input{min-height:60px;max-height:90px;margin:0 0 8px;padding:8px 12px;font-size:17px}
+.proof-sheet{position:absolute;inset:27% 22% 13%;padding:18px 22px;background:#e6d8b8da;color:#261e15;box-shadow:0 4px 16px #0005;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;text-align:center;border:1px solid #9c835c80}
+.proof-sheet.dim{background:#c3a76fa6;box-shadow:inset 0 0 65px #3b2c21a0,0 4px 16px #0007}
+.proof-title{font-size:clamp(18px,2vw,27px);letter-spacing:.35em;margin:0;border-bottom:2px solid #655337;width:100%;padding-bottom:8px;font-weight:500}
+.proof-caption,.proof-context{font-size:14px;line-height:1.5;margin:0}
+.proof-sheet.dim .proof-context{color:#45351f;filter:blur(.3px)}
+.proof-line{display:flex;justify-content:center;gap:9px;white-space:nowrap}
+.proof-letter{position:relative;border:0;border-radius:50%;min-width:46px;min-height:48px;padding:2px 5px;background:transparent;color:#211b14;font-size:clamp(27px,3vw,38px);line-height:1.2}
+.proof-letter:hover:not(:disabled){background:#fff3c859}
+.proof-letter.circled{outline:2px solid #9e3529;outline-offset:-2px;color:#782d23}
+.proof-letter:disabled{opacity:1}
+.scene{--desk-lamp-size:clamp(95px,22vw,190px);--desk-lamp-x:69%;--desk-lamp-bottom:11%}
+.desk-lamp{position:absolute;left:var(--desk-lamp-x);bottom:var(--desk-lamp-bottom);transform:translateX(-50%);height:var(--desk-lamp-size);width:calc(var(--desk-lamp-size)*.42);padding:0;border:0;border-radius:6px;background:transparent;cursor:pointer}
+.desk-lamp:hover:not(:disabled){background:#d7b78014;filter:brightness(1.2)}
+.desk-lamp:active:not(:disabled){transform:translateX(-50%)}
+.study-lamp-image{position:absolute;left:50%;top:0;transform:translateX(-50%);width:var(--desk-lamp-size);height:var(--desk-lamp-size);max-width:none;object-fit:contain;pointer-events:none;filter:drop-shadow(0 5px 7px #0009)}
+.desk-lamp-hint{position:absolute;left:var(--desk-lamp-x);bottom:calc(var(--desk-lamp-bottom) - 26px);transform:translateX(-50%);margin:0;white-space:nowrap;font-size:13px;line-height:1.5;color:#e6d8bb;background:#142024d9;padding:2px 8px}
+.lamp-proof-surface .proof-sheet{background:#f4ecdaed;left:12%;right:31%;top:24%;bottom:12%;gap:8px}
+.lamp-object{z-index:3;left:var(--desk-lamp-x);right:auto;bottom:var(--desk-lamp-bottom);transform:translateX(-50%);width:var(--desk-lamp-size);height:var(--desk-lamp-size);pointer-events:none}
+@keyframes study-flicker{0%,100%{filter:none}40%{filter:brightness(.66)}65%{filter:brightness(.9)}}
+.scene.study-flicker{animation:study-flicker .45s ease}
+@media(max-width:600px){
+ .motto-heading{top:23%;left:7%;right:7%;font-size:15px}
+ .motto-slots{top:36%;gap:18px}.motto-slot{width:62px;height:62px;font-size:40px}
+ .motto-pool{left:12%;right:12%;bottom:13%;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:290px}.motto-tile{font-size:29px;max-height:60px}
+ .proof-sheet{inset:25% 6% 16%;padding:14px 10px;gap:10px}.proof-title{font-size:22px}.proof-caption,.proof-context{font-size:12px}.proof-line{gap:5px}.proof-letter{min-width:44px;min-height:46px;font-size:29px}
+ .scene{--desk-lamp-x:calc(100% - var(--desk-lamp-size)/2);--desk-lamp-bottom:12%}
+ .lamp-proof-surface .proof-sheet{left:6%;right:6%;top:24%;bottom:22%;gap:9px}.desk-lamp-hint{display:none}
+ #motto-reason-form .reflection-input{font-size:16px;min-height:60px;max-height:78px}.reason-label{font-size:12px}
+}
+@media(max-height:600px){.motto-heading{top:24%;font-size:14px}.motto-slots{top:41%}.motto-slot{width:48px;height:48px;font-size:32px}.motto-pool{bottom:9%;max-width:480px}.motto-tile{font-size:26px;max-height:42px}.proof-sheet{gap:4px;padding:8px}.proof-title{font-size:17px;padding-bottom:3px}.proof-caption,.proof-context{font-size:11px}.proof-letter{font-size:25px;min-height:36px;min-width:36px}.lamp-proof-surface .proof-sheet{gap:3px}}
+@media(prefers-reduced-motion:reduce){.room-veil{transition:none}.room-glow,.scene.study-flicker{animation:none}}
 </style>
 </head>
 <body>
+<div id="rescue-edge" aria-hidden="true" hidden></div>
 <main id="game">
 <div class="audio-dock" role="group" aria-label="声音与应用设置"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button><button id="pwa-settings" type="button" aria-haspopup="dialog">应用</button></div>
 <section class="scene" id="scene" aria-label="故事场景">
 <img class="scene-image" id="scene-image" src="./assets/images/IMG-01.webp" alt="校史馆场景示意图">
+<div id="room-veil" class="room-veil" aria-hidden="true" hidden></div>
+<div id="room-glow" class="room-glow" aria-hidden="true" hidden></div>
+<div id="study-surface" class="study-surface" hidden></div>
 <h2 class="location" id="location">紫金港 · 校史馆<span class="date" id="scene-date">2026 年 10 月</span></h2>
 <nav class="toolbar" aria-label="游戏工具"><button id="journal-button" type="button">手账</button><button id="chapters-button" type="button">章节</button><button id="save-button" type="button">存档</button><button id="restart-button" type="button">重来</button></nav>
 <div class="chapter-label" id="chapter-label">一段西行，八十九年的回响</div>
-<img class="lamp-object" id="lamp-object" src="./assets/images/IMG-26.webp" alt="费巩灯示意图" hidden>
+<img class="lamp-object" id="lamp-object" src="./assets/props/feigong-lamp-lit.webp" alt="费巩灯示意图" hidden>
 <button id="school-sign" class="school-sign" type="button" aria-label="拖动校牌两端扶正，也可按左右方向键调整" hidden><img src="./assets/images/IMG-45.webp" alt="国立浙江大学校牌" draggable="false"></button>
+<div id="book-rescue" role="group" aria-label="拖动书箱放上高处石台" hidden></div>
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
@@ -1511,29 +1590,8 @@ main{position:relative}
       "location": "押运途中 · 雨夜山路",
       "date": "插叙 · 1939 年",
       "bg": "IMG-35",
-      "type": "choice",
-      "text": "雨越来越大。应当如何先处理书箱？",
-      "choices": [
-        {
-          "id": "shelter",
-          "text": "先把书箱移到高处避雨",
-          "feedback": "你们先护住书箱，再设法把车推出泥地。书卷没有受潮。",
-          "effects": {
-            "xinhuo": 1,
-            "bookIntegrity": 1
-          },
-          "next": "scene-077"
-        },
-        {
-          "id": "push",
-          "text": "先推车继续赶路",
-          "feedback": "车终于动了，一函书却已经受潮。你将它单独取出，交给保藏人员处理。",
-          "effects": {
-            "bookIntegrity": 0
-          },
-          "next": "scene-077"
-        }
-      ],
+      "type": "action",
+      "text": "雨越下越急，独轮车陷在泥里。趁书卷受潮前，按住书箱，拖到高处石台上松手。",
       "next": "scene-077"
     },
     {
@@ -1675,7 +1733,7 @@ main{position:relative}
       "date": "1938 年 11 月 19 日",
       "bg": "IMG-39",
       "type": "wordpick",
-      "text": "你作为学生记录员旁听。黑板上散落着八个字：求、是、力、行、敦、品、格、致。\n\n请依次选择两个字，写下浙大的校训。",
+      "text": "你作为学生记录员旁听。黑板上散落着八个字：求、是、力、行、敦、品、格、致。\n\n请把两个字拖入黑板上的格子，写下浙大的校训。",
       "next": "anthem-meeting-context"
     },
     {
@@ -1951,8 +2009,8 @@ main{position:relative}
       "date": "遵义办学期间",
       "bg": "IMG-14",
       "type": "action",
-      "text": "几天后，总务处门口排起长队。你登记领到一盏灯，回到宿舍，把玻璃灯罩轻轻罩上。",
-      "button": "领取并点亮费巩灯",
+      "text": "几天后，你在总务处登记领到一盏费巩灯。回到宿舍，把灯放在书桌上，轻轻罩好玻璃灯罩。",
+      "button": "点亮桌上的费巩灯",
       "effects": {
         "renxin": 1,
         "lampLit": true
@@ -2651,7 +2709,7 @@ const story=JSON.parse(document.getElementById('story-data').textContent);
 const nodes=new Map(story.nodes.map(n=>[n.id,n]));
 const C=globalThis.QiushiCore;
 const sound=globalThis.QiushiAudio;
-let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null;
+let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null, rescueClock=null, rescueDrag=null, mottoDrag=null, studyClock=null;
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
@@ -2698,6 +2756,10 @@ function validSave(s){
  if(v.reflection&&(!Array.isArray(v.reflection)||v.reflection.length!==2||!v.reflection.every(x=>typeof x==='string'&&x.length<=1000)))return false;
  if(v.draftName!==undefined&&(typeof v.draftName!=='string'||v.draftName.length>40))return false;
  if(v.montage!==undefined&&(!Number.isInteger(v.montage)||v.montage<0||v.montage>4))return false;
+ if(v.rescue!==undefined){const r=v.rescue;if(n.id!=='interaction-7'||!r||typeof r.started!=='boolean'||!Number.isFinite(r.remaining)||r.remaining<0||r.remaining>12000||!Array.isArray(r.moved)||r.moved.length>4||new Set(r.moved).size!==r.moved.length||!r.moved.every(i=>Number.isInteger(i)&&i>=0&&i<4)||(!r.started&&(r.moved.length||r.remaining!==12000)))return false;if(r.settleRemaining!==undefined&&(!r.started||r.moved.length!==4||!Number.isFinite(r.settleRemaining)||r.settleRemaining<0||r.settleRemaining>1500))return false;}
+ if(v.motto!==undefined){const m=v.motto;if(n.id!=='interaction-8'||!m||!['arrange','silence','reason'].includes(m.phase)||typeof m.reason!=='string'||m.reason.length>300||(m.phase!=='arrange'&&(!Array.isArray(v.words)||v.words.length!==2))||(m.phase==='silence'&&v.words?.join('')!=='求是')||(m.wait!==undefined&&(!Number.isFinite(m.wait)||m.wait<0||m.wait>3000)))return false;}
+ if(v.typo!==undefined){const t=v.typo;if(n.id!=='interaction-9'||!t||typeof t.done!=='boolean'||(t.wait!==undefined&&(!Number.isFinite(t.wait)||t.wait<0||t.wait>600||!t.done)))return false;}
+ if(v.lamp!==undefined){const l=v.lamp;if(n.id!=='interaction-10'||!l||!['collect','light','proof'].includes(l.step)||!Array.isArray(l.found)||l.found.length>2||new Set(l.found).size!==l.found.length||!l.found.every(i=>i===0||i===1)||(l.step!=='proof'&&l.found.length)||(l.step==='proof'&&!g.lampLit)||(l.wait!==undefined&&(!Number.isFinite(l.wait)||l.wait<0||l.wait>900||l.step!=='proof'||l.found.length!==2)))return false;}
  if(v.signAngle!==undefined&&(n.id!=='interaction-11'||!Number.isFinite(v.signAngle)||Math.abs(v.signAngle)>28))return false;
  return true;
 }
@@ -2781,7 +2843,7 @@ function openReview(index){
   const entry=cards[page];$('review-title').textContent='回顾 · '+stations[index].name;
   $('review-heading').textContent=chapterNames[index];
   const root=$('review-body');root.replaceChildren();$('review-school-sign').hidden=true;
-  if(entry){const bg=reviewBackground(entry);$('review-image').src='./assets/images/'+(bg==='IMG-25'?'IMG-07':bg)+'.webp';$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
+  if(entry){const bg=reviewBackground(entry);$('review-image').src=sceneImagePath(nodes.get(entry.nodeId),bg);$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
   else root.append(el('p','review-text','这一站还没有留下记录。'));
   const nav=$('review-nav');nav.replaceChildren();
   const previous=btn('上一页',()=>{page--;draw();},'small-button');previous.disabled=page===0;
@@ -2867,12 +2929,16 @@ renderSchoolSign(current);if(signIsLevel(view.signAngle))finishSchoolSign();else
 $('scene-image').addEventListener('load',layoutSchoolSign);$('review-image').addEventListener('load',layoutSchoolSign);
 window.addEventListener('resize',()=>{cancelSchoolSignDrag();layoutSchoolSign();});
 if('ResizeObserver' in window){const signResize=new ResizeObserver(layoutSchoolSign);signResize.observe($('scene'));signResize.observe($('review-image'));}
-function clearTimer(){if(timer){clearInterval(timer);timer=null;}}
-function clearView(){cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
-function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src='./assets/images/'+bg+'.webp';if(image.getAttribute('src')!==src)image.src=src;
-image.alt=(names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
+function clearTimer(){clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
+function clearView(){clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src=sceneImagePath(n,bg);if(image.getAttribute('src')!==src)image.src=src;
+image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
 if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg))image.classList.add('framed');
 if(bg==='IMG-44')image.classList.add('school-sign-scene');
+if(n.id==='interaction-7')image.classList.add('rescue-scene');
+if(n.id==='interaction-8')image.classList.add('motto-scene');
+if(n.id==='interaction-9')image.classList.add('proof-night');
+const room=bg==='IMG-14';$('room-veil').hidden=!room;$('room-glow').hidden=!(room&&state.lampLit);$('room-veil').classList.toggle('lit',room&&state.lampLit);
 if(bg==='IMG-14')image.classList.add(state.lampLit?'lit':'night');
 if(/夜|暮|雨/.test(String(n.location||'')+' '+String(n.date||''))&&bg!=='IMG-14')image.classList.add('night');
 $('location').firstChild.textContent=n.location||names[bg]||'西行途中';$('scene-date').textContent=n.date||'';$('chapter-label').textContent=n.chapter||'';
@@ -2886,12 +2952,12 @@ function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,
 function readableText(value){
 return text(value).replace(/([。！？；][”’」』]?)(?![”’」』。！？；\n]|$)/g,'$1\n');
 }
-function storyMetrics(){
-const probe=el('p','story-text','测');probe.style.cssText='position:absolute;visibility:hidden';
-content.append(probe);
+function storyMetrics(paragraph){
+const probe=paragraph||el('p','story-text','测');
+if(!paragraph){probe.style.cssText='position:absolute;visibility:hidden';content.append(probe);}
 const s=getComputedStyle(probe);
-const metrics={line:parseFloat(s.lineHeight)||Math.round(parseFloat(s.fontSize)*1.6),char:Math.max(1,parseFloat(s.fontSize))};
-probe.remove();return metrics;
+const metrics={line:parseFloat(s.lineHeight)||Math.round(parseFloat(s.fontSize)*1.6),char:Math.max(1,parseFloat(s.fontSize)+(parseFloat(s.letterSpacing)||0))};
+if(!paragraph)probe.remove();return metrics;
 }
 function availHeight(paragraph){
 const panel=$('story-panel');const ps=getComputedStyle(panel);
@@ -2904,14 +2970,14 @@ for(const node of content.children){if(node!==paragraph)deduct(node,false);}
 if(paragraph)paragraph.textContent=saved;
 return Math.max(avail,36);
 }
-function textPages(value,avail){
+function textPages(value,avail,paragraph){
 const source=String(value||'');
 if(!source)return [''];
 const lines=source.split(/\n+/).filter(line=>line.trim());
 const pieces=[];
 let perLine=window.innerWidth<=600?18:36,limit=window.innerWidth<=600?90:180,maxLines=4;
 if(avail!==undefined){
-  const m=storyMetrics();
+  const m=storyMetrics(paragraph);
   perLine=Math.max(6,Math.floor(content.clientWidth/m.char));
   maxLines=Math.max(1,Math.floor(avail/m.line));
   limit=Math.max(perLine,perLine*maxLines);
@@ -2956,7 +3022,7 @@ function typeBody(){const p=content.querySelector('.story-text');if(!p||!p.textC
 function continueButton(next,finish,hint){
 const list=content.querySelectorAll('.story-text');
 const paragraph=list.length?list[list.length-1]:controls.querySelector('.feedback');
-const pages=textPages(paragraph?paragraph.textContent:'',availHeight(paragraph));let page=Math.min(view.page||0,pages.length-1);
+const pages=textPages(paragraph?paragraph.textContent:'',availHeight(paragraph),paragraph);let page=Math.min(view.page||0,pages.length-1);
 function draw(){
 view.page=page;
 sound.page(current,page,pages.length);
@@ -3020,7 +3086,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':showChoices(n);break;
-case 'action':{if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
+case 'action':{if(n.id==='interaction-10'){showLampInteraction(n);break;}if(n.id==='interaction-7'){showBookRescue(n);break;}if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
@@ -3071,6 +3137,155 @@ dialog.showModal();
 function draw(){controls.replaceChildren();controls.className='controls exhibit-grid';for(const item of items){const seen=state.visitedExhibits.includes(item[0]);const b=btn(item[1]+(seen?'　已查看':''),()=>openItem(item));b.id='exhibit-'+item[0];b.disabled=item[0]==='map'&&state.visitedExhibits.length<3;controls.append(b);}}
 if(view.phase==='exhibit-map')go(n.next);else{draw();typeBody();}
 }
+// Anchors follow IMG-35's cart and ledge after object-fit and object-position.
+function rescueArtworkBounds(width,height,fit){
+const scale=(fit==='contain'?Math.min:Math.max)(width/2275,height/1280);
+const w=2275*scale,h=1280*scale;
+return {x:(width-w)/2,y:(height-h)*.52,width:w,height:h};
+}
+function rescueLayout(width,height,fit=width<=600?'contain':'cover'){
+const art=rescueArtworkBounds(width,height,fit);
+const bookWidth=Math.max(48,Math.min(84,art.width*.072)),bookHeight=bookWidth*1145/1374;
+const platformWidth=Math.min(width-8,Math.max(art.width*.34,bookWidth*2+30)),platformHeight=platformWidth*753/2089;
+const platformLeft=Math.max(4,Math.min(width-platformWidth-4,art.x+art.width*.81-platformWidth/2));
+const surface=art.y+art.height*.47,platformTop=surface-platformHeight*.44;
+const gap=8,left=platformLeft+(platformWidth-bookWidth*2-gap)/2;
+const sourceLeft=art.x+art.width*.27-(bookWidth*2+gap)/2,sourceBase=art.y+art.height*.54;
+return {bookWidth,bookHeight,platformLeft,platformWidth,platformHeight,platformTop,surface,left,gap,sourceLeft,sourceBase};
+}
+function rescueBookPosition(index,layout,moved){
+const slot=moved.indexOf(index),secured=slot>=0,order=secured?slot:index;
+const x=(secured?layout.left:layout.sourceLeft)+(order%2)*(layout.bookWidth+layout.gap);
+// Book alpha bottom is 93% of its canvas; visible height is 83.8%.
+const baseline=(secured?layout.surface:layout.sourceBase)-Math.floor(order/2)*layout.bookHeight*.838;
+return {x,y:baseline-layout.bookHeight*.93};
+}
+function currentRescueLayout(){
+const stage=$('book-rescue');return rescueLayout(stage.clientWidth,stage.clientHeight,getComputedStyle($('scene-image')).objectFit);
+}
+function layoutRescueBooks(){
+const stage=$('book-rescue');if(stage.hidden||!view.rescue)return;
+const layout=currentRescueLayout(),platform=stage.querySelector('.rescue-platform');
+if(platform){platform.style.left=layout.platformLeft+'px';platform.style.top=layout.platformTop+'px';platform.style.width=layout.platformWidth+'px';platform.style.height=layout.platformHeight+'px';}
+for(const book of stage.querySelectorAll('.rescue-crate')){
+if(rescueDrag?.element===book)continue;
+const index=Number(book.dataset.crate),p=rescueBookPosition(index,layout,view.rescue.moved);
+book.style.left=p.x+'px';book.style.top=p.y+'px';book.style.width=layout.bookWidth+'px';book.style.height=layout.bookHeight+'px';
+const slot=view.rescue.moved.indexOf(index);book.style.zIndex=slot<0?'2':String(3+Math.floor(slot/2));
+}
+}
+function cancelRescueDrag(){
+const drag=rescueDrag;if(!drag)return;rescueDrag=null;
+drag.element.classList.remove('dragging');
+if(drag.element.hasPointerCapture(drag.id))drag.element.releasePointerCapture(drag.id);
+$('book-rescue').querySelector('.rescue-platform')?.classList.remove('drop-ready');layoutRescueBooks();
+}
+function stopRescueClock(){
+cancelRescueDrag();if(rescueClock){clearInterval(rescueClock.timer);rescueClock=null;}
+$('rescue-edge').hidden=true;$('book-rescue').hidden=true;
+}
+function rescueCanRun(){return current?.id==='interaction-7'&&view.mode==='story'&&view.phase!=='feedback'&&!document.hidden&&!document.querySelector('dialog[open]');}
+function updateRescueClock(){
+const clock=rescueClock;if(!clock)return;
+const now=performance.now(),r=view.rescue,settling=r.moved.length===4;
+if(settling)r.settleRemaining??=1500;
+if(clock.running){if(settling)r.settleRemaining=Math.max(0,r.settleRemaining-(now-clock.last));else r.remaining=Math.max(0,r.remaining-(now-clock.last));}
+clock.last=now;clock.running=rescueCanRun();
+const edge=$('rescue-edge'),ratio=r.remaining/12000;edge.hidden=settling;
+edge.style.setProperty('--rescue-pulse',(0.8+1.6*ratio).toFixed(2)+'s');
+edge.dataset.urgency=ratio<=.3?'urgent':'steady';edge.dataset.paused=String(!clock.running);
+const status=$('rescue-progress');
+if(status)status.textContent=settling?'书箱已全部放稳。你终于松了一口气。':'已放上石台 '+r.moved.length+' / 4 · '+(!clock.running?'已暂停':ratio<=.3?'雨势逼近，抓紧拖动书箱！':'按住书箱，拖到石台上松手');
+if(settling?r.settleRemaining<=0:r.remaining<=0){finishBookRescue(settling);return;}
+if(Math.floor(r.remaining/1000)!==clock.savedSecond){clock.savedSecond=Math.floor(r.remaining/1000);autoSave();}
+}
+function finishBookRescue(success){
+if(current?.id!=='interaction-7'||view.phase==='feedback')return;
+const n=current;
+const message=success?'最后一只书箱稳稳落上石台。你们盖好遮布，再合力把车推出泥地。书卷没有受潮。':'雨水抢先渗进了书箱，一函书已经受潮。你将它单独取出，交给保藏人员处理，其余书箱终于搬到了石台上。';
+apply('action:'+n.id,success?{xinhuo:1}:{bookIntegrity:Math.max(0,(state.bookIntegrity??1)-1)});
+remember('action:'+n.id,success?'及时把全部书箱递上石台，书卷没有受潮。':'未能及时递完书箱，一函书受潮。','雨夜护书');
+stopRescueClock();feedback(message,n.next);autoSave();
+}
+function placeRescueBook(index){
+const r=view.rescue;
+if(!r?.started||!rescueCanRun()||r.moved.length===4||r.moved.includes(index))return;
+updateRescueClock();if(view.phase==='feedback')return;
+r.moved.push(index);const stage=$('book-rescue'),book=stage.querySelector('[data-crate="'+index+'"]');
+book.disabled=true;book.classList.add('secured');book.setAttribute('aria-label','第 '+(index+1)+' 只书箱，已放稳在石台上');
+if(r.moved.length===4)r.settleRemaining=1500;
+layoutRescueBooks();sound.fx('page');updateRescueClock();
+stage.querySelector('.rescue-crate:not(:disabled)')?.focus({preventScroll:true});autoSave();
+}
+function rescueDropAllowed(clientX,clientY){
+const stage=$('book-rescue'),rect=stage.getBoundingClientRect(),l=currentRescueLayout();
+const x=clientX-rect.left,y=clientY-rect.top;
+return x>=l.platformLeft+l.platformWidth*.06&&x<=l.platformLeft+l.platformWidth*.96&&y>=l.surface-l.bookHeight*1.85&&y<=l.surface+l.platformHeight*.12;
+}
+function releaseRescueBook(event,cancelled){
+const drag=rescueDrag;if(!drag||drag.id!==event.pointerId)return;
+event.preventDefault();event.stopPropagation();
+const drop=!cancelled&&drag.moved&&rescueDropAllowed(event.clientX,event.clientY),index=drag.index;
+cancelRescueDrag();if(drop)placeRescueBook(index);else autoSave();
+}
+function showBookRescue(n){
+const oldSuccess=state.completedActions.includes('choice:interaction-7:shelter'),oldFailure=state.completedActions.includes('choice:interaction-7:push');
+if(oldSuccess||oldFailure||state.completedActions.includes('action:'+n.id)){
+const success=oldSuccess||(!oldFailure&&view.rescue?.moved.length===4);
+feedback(success?'你们先护住书箱，再设法把车推出泥地。书卷没有受潮。':'一函书已经受潮。你将它单独取出，交给保藏人员处理。',n.next);return;
+}
+const r=view.rescue??={started:false,remaining:12000,moved:[]};
+if(r.started&&r.remaining<=0&&r.moved.length<4){finishBookRescue(false);return;}
+const stage=$('book-rescue');stage.replaceChildren();stage.hidden=false;
+const platform=el('div','rescue-platform'),stone=el('img');stone.src='./assets/props/rescue-platform.webp';stone.alt='雨夜里的高处石台';stone.draggable=false;
+platform.append(stone,el('p','rescue-platform-label','高处石台'));stage.append(platform);
+const progress=el('p','rescue-progress');progress.id='rescue-progress';progress.setAttribute('role','status');progress.setAttribute('aria-live','polite');controls.append(progress);
+const crates=[];
+for(let i=0;i<4;i++){
+const book=el('button','rescue-crate');book.type='button';book.dataset.crate=i;
+const image=el('img');image.src='./assets/props/rescue-books.webp';image.alt='麻绳捆扎的古籍书箱';image.draggable=false;book.append(image);
+book.setAttribute('aria-label','第 '+(i+1)+' 只书箱，'+(r.moved.includes(i)?'已放稳在石台上':'拖到石台上松手，也可按回车放置'));
+book.disabled=!r.started||r.moved.includes(i);book.classList.toggle('secured',r.moved.includes(i));
+// Native Enter/Space activation has detail 0; mouse/touch must actually drag.
+book.addEventListener('click',event=>{if(event.detail===0)placeRescueBook(i);});
+crates.push(book);stage.append(book);
+}
+layoutRescueBooks();
+  function start(){
+if(typeState)finishTyping();r.started=true;startButton?.remove();crates.forEach((book,i)=>book.disabled=r.moved.includes(i));
+rescueClock={last:performance.now(),running:rescueCanRun(),savedSecond:Math.floor(r.remaining/1000),timer:setInterval(updateRescueClock,100)};
+updateRescueClock();crates.find(book=>!book.disabled)?.focus({preventScroll:true});autoSave();
+}
+let startButton;
+if(r.started)start();else{
+progress.textContent='4 只书箱 · 12 秒内拖上石台；准备好后开始。';
+startButton=btn('开始护书',start);startButton.id='start-rescue';controls.append(startButton);typeBody();
+}
+$('reading-hint').textContent='按住书箱拖到石台 · Tab 选箱，回车放置';
+}
+const rescueStage=$('book-rescue');
+rescueStage.addEventListener('pointerdown',event=>{
+const book=event.target.closest('.rescue-crate');
+if(!book||book.disabled||event.button!==0||event.isPrimary===false||!view.rescue?.started||!rescueCanRun()||view.rescue.moved.length===4)return;
+event.preventDefault();event.stopPropagation();updateRescueClock();if(view.phase==='feedback')return;
+const rect=book.getBoundingClientRect();rescueDrag={id:event.pointerId,index:Number(book.dataset.crate),element:book,offsetX:event.clientX-rect.left,offsetY:event.clientY-rect.top,x:event.clientX,y:event.clientY,moved:false};
+book.classList.add('dragging');book.setPointerCapture(event.pointerId);
+});
+rescueStage.addEventListener('pointermove',event=>{
+const drag=rescueDrag;if(!drag||drag.id!==event.pointerId)return;
+event.preventDefault();event.stopPropagation();const rect=rescueStage.getBoundingClientRect();
+drag.moved ||= Math.hypot(event.clientX-drag.x,event.clientY-drag.y)>=6;
+drag.element.style.left=(event.clientX-rect.left-drag.offsetX)+'px';drag.element.style.top=(event.clientY-rect.top-drag.offsetY)+'px';
+rescueStage.querySelector('.rescue-platform')?.classList.toggle('drop-ready',rescueDropAllowed(event.clientX,event.clientY));
+});
+rescueStage.addEventListener('pointerup',event=>releaseRescueBook(event,false));
+rescueStage.addEventListener('pointercancel',event=>releaseRescueBook(event,true));
+rescueStage.addEventListener('lostpointercapture',event=>releaseRescueBook(event,true));
+window.addEventListener('resize',()=>{cancelRescueDrag();layoutRescueBooks();});
+if('ResizeObserver' in window){const rescueResize=new ResizeObserver(()=>{cancelRescueDrag();layoutRescueBooks();});rescueResize.observe(rescueStage);}
+document.addEventListener('visibilitychange',()=>{cancelRescueDrag();updateRescueClock();autoSave();});
+// Dialogs can also be opened by the audio and PWA modules.
+document.addEventListener('toggle',event=>{if(event.target.tagName==='DIALOG'){cancelRescueDrag();updateRescueClock();autoSave();}},true);
 function showQuiz(n){
 const quiz=view.quiz||(view.quiz={index:0,answers:Array(n.questions.length).fill(null)});let index=quiz.index;const answers=quiz.answers;
 function draw(){
@@ -3103,13 +3318,167 @@ const paras=String(text(n.text)||'').split(/\n\n+/).map(s=>s.trim()).filter(Bool
 if(paras.length>1)return {lead:paras.slice(0,-1).join('\n\n'),tail:paras[paras.length-1]};
 return {lead:paras[0]||'',tail:''};
 }
-function showWords(n){let selected=view.words||(view.words=[]);const {lead,tail}=interactionPages(n);
-const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');const wordButtons=[];const submit=btn('确认这两个字',()=>{const right=selected.join('')==='求是';remember('words:'+n.id,selected.join(''),'当时选择的两个字');apply('wordpick:'+n.id,right?{xinhuo:1}:{mistakes:1},right?null:{id:'motto-reason',title:'选择的依据',text:'我想用这两个字提醒自己继续读书做事，但选择也应当有依据。'});feedback(right?'全场静默三秒，竺可桢说：“记下吧。”':'竺可桢没有否定你，只问：“你选这两个字，依据是什么？”\n你把自己的想法记进了手账。',n.next);});submit.disabled=selected.length!==2;submit.id='submit-words';$('reading-hint').textContent='已选：'+(selected.join('　')||'等待你的两个字');
-for(const char of ['求','是','力','行','敦','品','格','致']){const b=btn(char,()=>{if(selected.includes(char))selected=selected.filter(x=>x!==char);else if(selected.length<2)selected.push(char);view.words=selected;$('reading-hint').textContent='已选：'+(selected.join('　')||'等待你的两个字');wordButtons.forEach(x=>x.setAttribute('aria-pressed',String(selected.includes(x.textContent))));submit.disabled=selected.length!==2;},'word');b.setAttribute('aria-pressed',String(selected.includes(char)));wordButtons.push(b);grid.append(b);}controls.append(grid,submit);typeBody();};
-if(tail&&!selected.length){content.replaceChildren();content.append(el('p','story-text',lead));continueButton(null,mount,'按键继续');}else mount();}
-function showTypo(n){const {lead,tail}=interactionPages(n);
-const mount=()=>{content.replaceChildren();content.append(el('p','story-text',tail||lead));const grid=el('div','word-grid');for(const char of ['国','难','党','头']){const b=btn(char,()=>{const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});feedback(right?'是“党”字。应当写作“国难当头”。':'这一处应将“党”改成“当”：国难当头。\n油灯的光太暗，你揉了揉眼睛。',n.next);},'word');grid.append(b);}controls.append(grid);typeBody();};
-if(tail){content.replaceChildren();content.append(el('p','story-text',lead));continueButton(null,mount,'按键继续');}else mount();}
+// Study interactions keep the original settlement keys and first-answer scoring.
+function stopStudyClock(){if(studyClock){clearInterval(studyClock.timer);studyClock=null;}}
+function cancelMottoDrag(){
+const drag=mottoDrag;if(!drag)return;mottoDrag=null;drag.ghost.remove();drag.source.classList.remove('drag-source');
+const surface=$('study-surface');if(surface.hasPointerCapture(drag.id))surface.releasePointerCapture(drag.id);
+}
+function clearStudy(){cancelMottoDrag();stopStudyClock();$('study-surface').hidden=true;$('study-surface').replaceChildren();$('scene').classList.remove('study-flicker');}
+function studyCanRun(){return playing&&view.mode==='story'&&view.phase!=='feedback'&&!document.hidden&&!document.querySelector('dialog[open]');}
+function updateStudyClock(){
+const clock=studyClock;if(!clock)return;const now=performance.now();
+if(clock.running)clock.draft.wait=Math.max(0,clock.draft.wait-(now-clock.last));
+clock.last=now;clock.running=studyCanRun();
+if(clock.draft.wait<=0){const done=clock.done;stopStudyClock();done();autoSave();}
+}
+function startStudyWait(draft,done){stopStudyClock();studyClock={draft,done,last:performance.now(),running:studyCanRun(),timer:setInterval(updateStudyClock,100)};updateStudyClock();}
+function sceneImagePath(n,bg){
+if(n?.id==='interaction-8')return './assets/props/motto-board.webp';
+if(n?.id==='interaction-9')return './assets/props/proof-desk.webp';
+if(bg==='IMG-14')return './assets/props/dormitory-no-lamps.webp';
+return './assets/images/'+(bg==='IMG-25'?'IMG-07':bg)+'.webp';
+}
+function placeMottoWord(char){
+if(current?.id!=='interaction-8'||view.motto?.phase!=='arrange'||!studyCanRun())return;
+const selected=view.words??=[];
+if(!['求','是','力','行','敦','品','格','致'].includes(char)||selected.length>=2||selected.includes(char))return;
+selected.push(char);sound.fx('page');showWords(current);autoSave();
+}
+function submitMotto(){
+if(current?.id!=='interaction-8'||view.motto?.phase!=='arrange'||view.words?.length!==2)return;
+const right=view.words.join('')==='求是';
+remember('words:'+current.id,view.words.join(''),'当时选择的两个字');
+apply('wordpick:'+current.id,right?{xinhuo:1}:{mistakes:1});
+view.motto.phase=right?'silence':'reason';if(right)view.motto.wait=3000;
+showWords(current);autoSave();
+}
+function finishMottoReason(value){
+if(view.motto?.phase!=='reason'||!String(value||'').trim())return false;
+const reason=String(value).trim().slice(0,300);view.motto.reason=reason;
+const entry={id:'motto-reason',title:'选择的依据',text:'我选择“'+view.words.join('')+'”。\n依据：'+reason};
+const old=state.journal.find(e=>e.id===entry.id);if(old)Object.assign(old,entry);else C.recordJournal(state,entry);
+remember('journal:motto-reason',entry.text,'手账 · 选择的依据');
+feedback('竺可桢没有否定你，只问：“你选这两个字，依据是什么？”\n你把自己的依据写进了手账。',current.next);autoSave();return true;
+}
+function showWords(n){
+clearStudy();content.replaceChildren();controls.replaceChildren();
+const selected=view.words??=[],draft=view.motto??={phase:'arrange',reason:''},surface=$('study-surface');
+surface.className='study-surface motto-surface';surface.hidden=false;
+const heading=el('p','motto-heading',draft.phase==='silence'?'全场静默。':draft.phase==='reason'?'你选这两个字，依据是什么？':'将两个字拖上黑板，写下校训。');surface.append(heading);
+const slots=el('div','motto-slots');
+for(let i=0;i<2;i++){
+const slot=btn(selected[i]||'□',()=>{if(draft.phase!=='arrange'||!selected[i])return;selected.splice(i,1);showWords(n);},'motto-slot');
+slot.dataset.slot=i;slot.setAttribute('aria-label','第 '+(i+1)+' 个字，'+(selected[i]?'已放入'+selected[i]+'，点击取回':'拖一个字到这里'));
+slot.disabled=draft.phase!=='arrange';slots.append(slot);
+}
+surface.append(slots);
+if(draft.phase==='arrange'){
+const pool=el('div','motto-pool');pool.setAttribute('role','group');pool.setAttribute('aria-label','待选字块');
+for(const char of ['求','是','力','行','敦','品','格','致']){
+const tile=el('button','motto-tile',char);tile.type='button';tile.dataset.word=char;tile.disabled=selected.includes(char);
+tile.setAttribute('aria-label',char+'字，拖上黑板，或按回车选入');tile.addEventListener('click',event=>{if(event.detail===0)placeMottoWord(char);});pool.append(tile);
+}
+surface.append(pool);content.append(el('p','story-text','你作为学生记录员旁听校务会议。请把两个字拖进黑板上的格子。'));
+const submit=btn('确认这两个字',submitMotto);submit.id='submit-words';submit.disabled=selected.length!==2;controls.append(submit);
+$('reading-hint').textContent='按住字块拖动 · 点击格子可取回 · Tab / 回车也可操作';
+}else if(draft.phase==='silence'){
+content.append(el('p','story-text','两个字落在黑板上。所有人都停了下来。'));
+$('reading-hint').textContent='';draft.wait??=3000;
+startStudyWait(draft,()=>feedback('全场静默三秒，竺可桢说：“记下吧。”',n.next));
+}else{
+content.append(el('p','story-text','竺可桢没有否定你，只问：“你选这两个字，依据是什么？”'));
+const form=el('form');form.id='motto-reason-form';const label=el('label','reason-label','写下一句自己的依据，记入手账');
+const input=el('textarea','reflection-input');input.id='motto-reason';input.maxLength=300;input.rows=2;input.value=draft.reason||'';input.placeholder='我选择这两个字，因为……';label.htmlFor=input.id;
+const submit=el('button','choice','写入手账，继续');submit.type='submit';submit.id='submit-motto-reason';submit.disabled=!input.value.trim();
+input.addEventListener('input',()=>{draft.reason=input.value;submit.disabled=!input.value.trim();autoSave();});
+form.addEventListener('submit',event=>{event.preventDefault();if(!event.isComposing)finishMottoReason(input.value);});form.append(label,input,submit);controls.append(form);
+$('reading-hint').textContent='必须写一句依据才能继续';
+}
+}
+function flashStudy(){const scene=$('scene');scene.classList.remove('study-flicker');void scene.offsetWidth;scene.classList.add('study-flicker');}
+function checkProofLetter(n,char){
+const draft=view.typo;if(!draft||draft.done||!studyCanRun())return;
+const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');
+// Retried guesses are visual only: the original key settles the first answer once.
+apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});
+if(right){draft.done=true;draft.wait=600;remember('typo-correct:'+n.id,'将“党”改为“当”：国难当头。','校样改正');showTypo(n);}
+else{flashStudy();notice.textContent='灯光晃了一下。再仔细看一遍。';}
+autoSave();
+}
+function proofSheet(title,dim){
+const sheet=el('article','proof-sheet'+(dim?' dim':''));sheet.setAttribute('aria-label',title);sheet.append(el('h3','proof-title','浙大日刊'),el('p','proof-caption',title));return sheet;
+}
+function showTypo(n){
+clearStudy();content.replaceChildren();controls.replaceChildren();
+const draft=view.typo??={done:false},surface=$('study-surface');surface.className='study-surface proof-surface';surface.hidden=false;
+const sheet=proofSheet('校样 · 圈出一个错别字',true),line=el('div','proof-line');line.setAttribute('role','group');line.setAttribute('aria-label','国难党头，点击印错的字');
+for(const char of ['国','难','党','头']){
+const b=btn(char,()=>checkProofLetter(n,char),'proof-letter'+(draft.done&&char==='党'?' circled':''));b.dataset.proofChar=char;b.setAttribute('aria-label','校样中的'+char+'字');b.disabled=draft.done;line.append(b);
+}
+sheet.append(line,el('p','proof-context',draft.done?'“党”应改为“当”：国难当头。':'灯焰小，油烟重。请把印错的字圈出来。'));surface.append(sheet);
+content.append(el('p','story-text','替《浙大日刊》的校样挑一个错字，点击那个字，把它圈出来。'));
+$('reading-hint').textContent='点击纸面上的字 · 四周仍然昏暗';
+if(draft.done){draft.wait??=600;startStudyWait(draft,()=>feedback('是“党”字。应当写作“国难当头”。',n.next));}
+}
+function lightFeigongLamp(){
+if(current?.id!=='interaction-10'||view.lamp?.step!=='light'||!studyCanRun())return;
+view.lamp.step='proof';apply('action:'+current.id,current.effects,current.journal);remember('action:'+current.id,'领到费巩灯，回到宿舍罩上玻璃灯罩，点亮灯芯。','领灯与点亮');
+sound.lamp();setScene(current);showLampInteraction(current);autoSave();
+}
+function checkLampProof(index,char){
+const draft=view.lamp;if(draft?.step!=='proof'||draft.found.length===2||!studyCanRun())return;
+const wrong=['事','傅'][index];if(char!==wrong){flashStudy();notice.textContent='再读一遍，找出这一句里印错的字。';return;}
+if(draft.found.includes(index))return;draft.found.push(index);sound.fx('page');
+if(draft.found.length===2){draft.wait=900;remember('lamp-proof','实事求事 → 实事求是；薪火相傅 → 薪火相传。','亮灯后的校样');}
+showLampInteraction(current);autoSave();
+}
+function showLampInteraction(n){
+clearStudy();content.replaceChildren();controls.replaceChildren();
+if(!view.lamp&&state.completedActions.includes('action:'+n.id)){feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);return;}
+const draft=view.lamp??={step:'light',found:[]},surface=$('study-surface');
+// Older v1 drafts stopped before collecting; resume with the lamp already on the desk.
+if(draft.step==='collect')draft.step='light';
+surface.hidden=false;
+if(draft.step==='proof'){
+surface.className='study-surface proof-surface lamp-proof-surface';
+const sheet=proofSheet('灯亮以后 · 再找出两处错字',false);
+for(const [index,chars] of [['实','事','求','事'],['薪','火','相','傅']].entries()){
+const line=el('div','proof-line');line.setAttribute('role','group');line.setAttribute('aria-label',(index===0?'第一行：':'第二行：')+(draft.found.includes(index)?['实事求是','薪火相传'][index]:['实事求事','薪火相傅'][index]));
+chars.forEach((char,i)=>{const found=draft.found.includes(index),display=found&&i===3?['是','传'][index]:char;
+const b=btn(display,()=>{if(i===3)checkLampProof(index,char);else{flashStudy();notice.textContent='再仔细看一遍这一句。';}},'proof-letter'+(found&&i===3?' circled':''));
+b.dataset.proofRow=index;b.dataset.proofIndex=i;b.disabled=found;b.setAttribute('aria-label','第 '+(index+1)+' 行第 '+(i+1)+' 字：'+display);line.append(b);});sheet.append(line);
+}
+sheet.append(el('p','proof-context','已校正 '+draft.found.length+' / 2 处'));surface.append(sheet);
+content.append(el('p','story-text','灯芯被点燃，火苗“呼”地立起来。四周的暗晕散开，纸上的字终于清楚了。'));
+$('reading-hint').textContent='在亮堂的纸面上，再圈出两处错别字';
+if(draft.found.length===2){draft.wait??=900;startStudyWait(draft,()=>feedback('两处错字都改好了：实事求是，薪火相传。\n灯亮起来，周围也第一次这样清楚。',n.next));}
+}else{
+surface.className='study-surface lamp-desk-surface';
+const lamp=btn('',lightFeigongLamp,'desk-lamp');lamp.id='light-lamp';lamp.setAttribute('aria-label','点击点亮桌上的费巩灯');
+const image=el('img','study-lamp-image');image.src='./assets/props/feigong-lamp-unlit.webp';image.alt='';image.draggable=false;lamp.append(image);
+surface.append(lamp,el('p','desk-lamp-hint','点击灯，点亮灯芯'));
+content.append(el('p','story-text','你已在总务处登记领到费巩先生出资定做的灯。回到宿舍，灯放上书桌，玻璃灯罩也已罩好。轻轻点亮灯芯吧。'));
+$('reading-hint').textContent='点击桌上的费巩灯 · 也可用 Tab 选中后按回车';
+}
+}
+const studySurface=$('study-surface');
+studySurface.addEventListener('pointerdown',event=>{
+const tile=event.target.closest('.motto-tile');if(!tile||tile.disabled||event.button!==0||event.isPrimary===false||view.motto?.phase!=='arrange'||!studyCanRun())return;
+event.preventDefault();event.stopPropagation();const r=tile.getBoundingClientRect(),s=studySurface.getBoundingClientRect();const ghost=el('div','motto-ghost',tile.dataset.word);ghost.setAttribute('aria-hidden','true');
+ghost.style.width=r.width+'px';ghost.style.height=r.height+'px';ghost.style.left=(r.left-s.left)+'px';ghost.style.top=(r.top-s.top)+'px';studySurface.append(ghost);tile.classList.add('drag-source');
+mottoDrag={id:event.pointerId,source:tile,ghost,word:tile.dataset.word,x:event.clientX,y:event.clientY,offsetX:event.clientX-r.left,offsetY:event.clientY-r.top,moved:false};studySurface.setPointerCapture(event.pointerId);
+});
+studySurface.addEventListener('pointermove',event=>{const d=mottoDrag;if(!d||d.id!==event.pointerId)return;event.preventDefault();const s=studySurface.getBoundingClientRect();d.moved ||= Math.hypot(event.clientX-d.x,event.clientY-d.y)>=6;d.ghost.style.left=(event.clientX-s.left-d.offsetX)+'px';d.ghost.style.top=(event.clientY-s.top-d.offsetY)+'px';});
+function releaseMottoWord(event,cancelled){
+const d=mottoDrag;if(!d||d.id!==event.pointerId)return;event.preventDefault();event.stopPropagation();
+let drop=false;if(!cancelled&&d.moved)for(const slot of studySurface.querySelectorAll('.motto-slot')){const r=slot.getBoundingClientRect();if(event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom&&Number(slot.dataset.slot)===(view.words?.length||0))drop=true;}
+const char=d.word;cancelMottoDrag();if(drop)placeMottoWord(char);
+}
+studySurface.addEventListener('pointerup',e=>releaseMottoWord(e,false));studySurface.addEventListener('pointercancel',e=>releaseMottoWord(e,true));studySurface.addEventListener('lostpointercapture',e=>releaseMottoWord(e,true));
+window.addEventListener('resize',cancelMottoDrag);
+document.addEventListener('visibilitychange',()=>{cancelMottoDrag();updateStudyClock();autoSave();});
+document.addEventListener('toggle',event=>{if(event.target.tagName==='DIALOG'){cancelMottoDrag();updateStudyClock();autoSave();}},true);
 function showMontage(n){state.ending=C.resolveEnding(state);let index=view.montage||0;const memories=[['IMG-04','天目山 · 禅源寺','1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。'],['IMG-06','建德 · 文脉西运','1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。'],['IMG-09','泰和 · 赣江大堤','1938 年，泰和。赣江边跑测量，一寸一尺，修的是保命的大堤。'],['IMG-14','遵义 · 费巩灯','遵义办学期间，费先生给我们一人做了一盏灯。后来我才懂，他给自己留的，是黑。'],['IMG-16','湄潭 · 胜利的灯火','灯还点吗？\n点。路还长。']];
 function frame(){sound.montage(index,state.ending);view.montage=index;clearView();const [bg,location,body]=memories[index];const date=['1937 年 9 月 27 日','1937 年 11 月','1938 年','遵义办学期间','1945 年 8 月'][index];remember('montage:'+index,body,'走马灯',bg);setScene({...n,location,date},bg);$('scene-image').classList.add(state.ending==='anonymous'&&index>=2?'faded':'memory');const p=el('p','story-text',body);content.append(el('p','speaker','走马灯 · '+(index+1)+' / 5'),p);typeInto(p,body,false);if(index===4)content.append(el('p','exhibit-info',state.protectBooks&&state.bookIntegrity===1?'那些书，最终到了安全的地方。':'仍有人继续护送书卷西行。'));controls.append(btn('跳过回顾 →',()=>go(n.next),'quiet-hint'));$('reading-hint').textContent='自动翻页 · 点击文字区或按键可翻页';autoSave();advanceAction=()=>{index++;if(index>=memories.length)go(n.next);else frame();};}
 frame();timer=setInterval(()=>{if(document.hidden||view.mode==='map'||document.querySelector('dialog[open]'))return;index++;if(index>=memories.length)go(n.next);else frame();},7000);}

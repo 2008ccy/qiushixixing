@@ -63,6 +63,9 @@ test('precache paths exist and cover current engine images/audio, with no backup
   const images = fs.readdirSync(path.join(root, 'assets/images')).filter(f => /^IMG-.*\.webp$/.test(f)).sort();
   assert.deepEqual(Array.from(w.get('SHELL_FILES')).filter(f => f.includes('/images/')).map(f => path.basename(f)).sort(), images);
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  for (const [, prop] of html.matchAll(/['"](\.\/assets\/props\/[^'"]+)['"]/g)) {
+    assert.ok(Array.from(w.get('SHELL_FILES')).includes(prop), 'offline prop: ' + prop);
+  }
   const fileMap = html.match(/const files=\{([\s\S]*?)\n\};/)[1];
   const audio = [...fileMap.matchAll(/:'([^']+)'/g)].map(m => './qiushi_bgm/' + m[1]).sort();
   assert.deepEqual(Array.from(w.get('AUDIO_FILES')).sort(), audio);
