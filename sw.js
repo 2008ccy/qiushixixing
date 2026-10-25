@@ -2,7 +2,7 @@
 
 // Bump SHELL_VERSION for every HTML, JS, image, icon or manifest release.
 // Bump AUDIO_VERSION when audio files change; UI-only releases retain downloaded music.
-const SHELL_VERSION = '2026-10-24-6';
+const SHELL_VERSION = '2026-10-25-1';
 const AUDIO_VERSION = '1';
 const BASE = new URL('./', self.location.href);
 const PREFIX = 'qiushi-pwa:' + BASE.pathname + ':';
