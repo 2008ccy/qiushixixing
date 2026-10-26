@@ -363,20 +363,73 @@ button:hover:not(:disabled){background:#344348}
 @keyframes station-beacon{0%,100%{transform:scale(1);box-shadow:0 0 0 5px #b68b4f22,0 0 15px #d8a55d35}50%{transform:scale(1.06);box-shadow:0 0 0 7px #b68b4f33,0 0 28px #d8a55d70}}
 @media(prefers-reduced-motion:reduce){.station.current .station-number{box-shadow:0 0 0 5px #b68b4f22,0 0 18px #d8a55d50}}
 .stage-direction,.choice-prompt{font-size:clamp(14px,1.5vw,18px);line-height:1.6;color:var(--muted);white-space:pre-line;margin:0 0 8px;overflow-wrap:anywhere}
-/* First-chapter navigation keeps the supplied route illustration separate from station controls. */
-.chapter-route-art{display:block;position:relative;z-index:1;flex:1 1 0;min-height:0;width:100%;padding:0;margin:10px 0;border:0;background:transparent;overflow:hidden}
-.scene-image.framed,#review-image.framed{object-fit:contain}
-.chapter-route-art img{display:block;width:100%;height:100%;object-fit:contain}
-.chapter-route-art:hover:not(:disabled){background:transparent}
-#route-map.has-route-art .route-stations{flex:none;margin:0;padding:5px 0;gap:4px}
-#route-map.has-route-art .route-lines{display:none}
-#route-map.has-route-art .station{min-height:72px;padding:5px 2px;gap:4px}
-#route-map.has-route-art .station-number{width:25px;height:25px;font-size:12px;box-shadow:none}
-#route-map.has-route-art .station-name{min-height:0;font-size:12px;line-height:1.3}
-#route-map.has-route-art .station-status{font-size:9px}
+/* Full-screen chapter transitions: markers share the route artwork's coordinates. */
+body[data-type="map"]{padding:0;overflow:hidden}
+body[data-type="map"] #game{width:100%;height:100dvh;max-width:none;display:block;margin:0;box-shadow:none}
+body[data-type="map"] .story-panel{display:none}
+body[data-type="map"] .audio-dock{position:fixed;top:max(18px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));z-index:8}
+body[data-type="map"] #route-map{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;overflow:hidden;background:#182225}
+#route-map::before{display:none}
+#route-atlas{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-x pan-y;cursor:grab}
+#route-atlas::-webkit-scrollbar{display:none}
+#route-atlas.dragging{cursor:grabbing;user-select:none}
+.route-landscape{position:relative;isolation:isolate;min-width:100%;min-height:100%}
+.route-background{position:absolute;inset:0;width:100%;height:100%;display:block;filter:brightness(.64) saturate(.64);pointer-events:none;user-select:none}
+.route-connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.75}
+#route-map .route-stations{position:absolute;inset:0;display:block;padding:0;margin:0;isolation:auto;pointer-events:none}
+#route-map .station{position:absolute;left:var(--station-x);top:var(--station-y);width:40px;height:40px;min-height:0;padding:0;display:block;border:0;border-radius:50%;background:transparent;transform:translate(-50%,-50%);pointer-events:auto;opacity:1}
+#route-map .station:hover:not(:disabled){border:0;background:transparent;z-index:3}
+#route-map .station:active:not(:disabled){transform:translate(-50%,-50%)}
+#route-map .station-number{width:40px;height:40px;font-size:15px;border:1px solid #b3b5a4;background:#273739;color:#eee6d4;box-shadow:0 0 0 5px #18222555}
+#route-map .station-label{position:absolute;left:var(--label-x);top:var(--label-y);width:152px;padding:9px 12px;border:1px solid #bdb59d66;background:#152326ee;border-radius:3px;box-shadow:0 4px 18px #0004;text-align:left;line-height:1.4;pointer-events:auto}
+#route-map .station-name{min-height:0;font-size:16px;text-align:left;color:#ece5d2;white-space:normal}
+#route-map .station-place{display:inline;white-space:normal}
+#route-map .station-place+.station-place::before{content:" · "}
+#route-map .station-chapter{display:block;font-size:11px;letter-spacing:.12em;margin-bottom:3px;color:#c7bea7}
+#route-map .station-status{display:block;margin-top:4px;font-size:11px;text-align:left;color:#b5c5b9}
+#route-map .station.completed .station-number{background:#3f6559;border-color:#b5c8ab;color:#fff7df}
+#route-map .station.completed .station-label{border-color:#9fb29c7a}
+#route-map .station.current{z-index:2}
+#route-map .station.current .station-number{background:#efcf87;border-color:#fff1b5;color:#342710;animation:map-station-glow 1.8s ease-in-out infinite}
+#route-map .station.current .station-label{border-color:#f5cf84;background:#302d22f0;box-shadow:0 0 25px #edbd5d55}
+#route-map .station.current .station-name,#route-map .station.current .station-status,#route-map .station.current .station-chapter{color:#ffe4a4}
+#route-map .station.locked:disabled{cursor:not-allowed;opacity:1}
+#route-map .station.locked .station-number{border-style:dashed;background:#223033;color:#a9aea2}
+#route-map .station.locked .station-label{background:#172427e6;border-style:dashed}
+#route-map .station.locked .station-name,#route-map .station.locked .station-status,#route-map .station.locked .station-chapter{color:#b4b6a8}
+#route-map .station:focus-visible{outline:3px solid #fff1b8;outline-offset:9px;z-index:4}
+#route-map .station:focus-visible .station-label,#route-map .station:hover:not(:disabled) .station-label{background:#364338;border-color:#efce8d}
+#route-map .map-heading{position:absolute;top:max(26px,env(safe-area-inset-top));left:max(32px,env(safe-area-inset-left));max-width:calc(100% - 310px);pointer-events:none;text-shadow:0 2px 10px #000}
+#route-map .map-heading h2{color:#fff1d1;font-size:27px;margin-bottom:6px}
+#route-map .map-heading p{color:#e5d9bf;font-size:13px}
+#route-map .map-tools{position:absolute;top:104px;left:max(32px,env(safe-area-inset-left));z-index:4;gap:6px}
+#route-map .map-tools button{min-height:36px;padding:6px 12px;background:#18282cdd;color:#e9dfc9;border:1px solid #b8ab8866;font-size:13px}
+#route-map::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0b151dc9,transparent 24%,transparent 72%,#0b151dea);z-index:0}
+#route-map .map-heading,#route-map .map-footer,#route-map .map-tools{z-index:4}
+#route-map .map-footer{position:absolute;inset:auto 0 0;display:flex;flex-direction:column;gap:8px;border:0;padding:20px 20px max(20px,env(safe-area-inset-bottom));text-align:center;background:linear-gradient(transparent,#101d23e6 35%);pointer-events:none}
+#map-next{color:#e8d8b4;font-size:13px;letter-spacing:.12em;margin:0}
+#map-prompt{color:#fff0cf;font-size:clamp(18px,2vw,24px);letter-spacing:.12em;margin:0;text-shadow:0 0 18px #deb76c88;line-height:1.6}
+#route-map .map-legend{font-size:11px;color:#c7c8b6;letter-spacing:.04em;margin:0}
+#route-map #map-finish{pointer-events:auto;min-height:42px;padding:8px 22px;color:#fff0cf;background:#3f3d2d;border-color:#d7b780}
+@keyframes map-station-glow{0%,100%{box-shadow:0 0 0 7px #edbe6533,0 0 24px 9px #f7c66177;filter:brightness(1)}50%{box-shadow:0 0 0 17px #edbe6512,0 0 48px 20px #ffd57eab;filter:brightness(1.35)}}
+@media(max-width:600px){
+ #route-map .map-heading{left:18px;top:60px;max-width:calc(100% - 36px)}
+ #route-map .map-heading h2{font-size:22px}
+ #route-map .map-heading p{font-size:11px}
+ #route-map .map-tools{top:18px;left:18px;right:auto}
+ #route-map .station.current .station-label{left:-56px;top:56px}
+ #route-map .map-tools button{font-size:12px;padding:6px 9px;min-height:32px}
+ body[data-type="map"] .audio-dock{right:14px;top:18px;gap:3px}
+ body[data-type="map"] .audio-dock button{padding:5px 7px;font-size:11px}
+ #route-map .map-footer{gap:6px;padding:18px 14px max(22px,env(safe-area-inset-bottom))}
+ #map-prompt{font-size:18px;letter-spacing:.05em}
+ #map-next{font-size:12px}
+ #route-map .map-legend{font-size:10px}
+}
+@media(max-height:500px){#route-map .map-heading{top:16px}#route-map .map-heading h2{font-size:20px}#route-map .map-footer{gap:3px;padding-top:8px;padding-bottom:10px}#map-prompt{font-size:17px}}
+@media(prefers-reduced-motion:reduce){#route-map .station.current .station-number{animation:none;box-shadow:0 0 0 9px #edbe6533,0 0 35px 14px #f7c66199}}
 #route-image-dialog{width:min(1200px,calc(100vw - 32px))}
 #route-image-dialog img{display:block;width:100%;max-height:calc(100dvh - 145px);object-fit:contain}
-@media(max-height:650px){#route-map.has-route-art{overflow-y:auto}.chapter-route-art{min-height:110px}}
 @media(max-width:600px) and (max-height:700px){
   .quiz-result{font-size:15px;line-height:1.35}
   .quiz-result p,.quiz-result h3,.quiz-result li{margin-bottom:3px}
@@ -582,10 +635,21 @@ body[data-finale] .audio-dock{position:fixed;z-index:12;top:16px;right:18px}
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
-<div class="map-heading"><h2>西行的足迹</h2><p id="map-progress"></p></div>
-<button class="chapter-route-art" id="chapter-route-art" type="button" aria-label="放大查看第一章路线图" hidden><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图，第一章从杭州前往西天目山"></button>
+<div id="route-atlas" tabindex="0" role="group" aria-label="西迁路线图，可拖动或滑动查看各站点">
+<div class="route-landscape" id="route-landscape">
+<img class="route-background" src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图" draggable="false">
+<svg class="route-connectors" viewBox="0 0 1453 900" aria-hidden="true"><path d="M 1286 171 L 1198 144 L 1293 306" fill="none" stroke="#e4c694" stroke-width="2" stroke-dasharray="5 6"/></svg>
 <div class="route-stations" id="route-stations" aria-label="章节地点"></div>
-<p class="map-footer">一所大学的课堂，沿着西行的道路延伸。<span>路线示意 · 非地理比例</span></p>
+</div>
+</div>
+<div class="map-heading"><h2>西行的足迹</h2><p id="map-progress"></p></div>
+<nav class="map-tools" id="map-tools" aria-label="地图工具"></nav>
+<footer class="map-footer">
+<p id="map-next"></p>
+<p class="map-legend">暖光：当前站点　已完成：可回顾　·　拖动地图查看路线</p>
+<p id="map-prompt" role="status">点击地图上的光亮处，开始下一章</p>
+<button id="map-finish" type="button" hidden>走向结局与告别 →</button>
+</footer>
 </section>
 <section class="story-panel" id="story-panel" aria-label="剧情与选择">
 <div id="content"></div><div class="controls" id="controls"></div>
@@ -3099,13 +3163,13 @@ const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','
 const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'迁校队伍山路跋涉','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房验书','IMG-07':'周念东收拾铺盖参军','IMG-08':'白鹭洲夜读','IMG-09':'赣江大堤测量','IMG-10':'小满进入澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍夜读','IMG-15':'费巩办公室捆书','IMG-16':'湄潭胜利街景','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线示意','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学','IMG-32':'杭州湾登陆消息与迁校布告','IMG-33':'草丛中发现小满','IMG-34':'牵着小满追上队伍','IMG-36':'孙宅门口见竺可桢','IMG-37':'悼念与侠魂奖学金','IMG-35':'雨夜护送书箱','IMG-38':'校医处与奎宁选择','IMG-39':'黑板字块与拼校训','IMG-40':'校歌曲谱第一页','IMG-41':'校歌曲谱第二页','IMG-42':'校歌曲谱第三页','IMG-43':'湄潭夜景与遍城灯火','IMG-44':'返杭校门空牌位','IMG-45':'国立浙江大学木牌','IMG-46':'梅城师生抬黑板进祠堂','IMG-47':'梅城戒严前的灯火','IMG-48':'宜山开学典礼全景','IMG-49':'宜山开学典礼演讲','IMG-50':'轰炸废墟中的钢琴','IMG-51':'文庙课堂与东方剑桥'};
 // Route navigation and versioned, browser-local saves.
 const stations=[
- {id:'museum',name:'校史馆',entry:'start',summary:'从一张旧照片走进西迁岁月。'},
- {id:'tianmu',name:'杭州 · 天目山',entry:'chapter1-start',summary:'烽火中的开学，与同行者相识。'},
- {id:'jiande',name:'建德 · 梅城',entry:'chapter2-news',summary:'夜渡钱塘，护送书卷，遇见小满。'},
- {id:'taihe',name:'吉安 · 泰和',entry:'chapter3-start',summary:'课堂、大堤与澄江学校。'},
- {id:'yishan',name:'广西 · 宜山',entry:'chapter4-start',summary:'在艰难的选择中寻找“求是”。'},
- {id:'meitan',name:'遵义 · 湄潭',entry:'chapter5-start',summary:'东方剑桥与一盏费巩灯。'},
- {id:'home',name:'杭州 · 归来',entry:'chapter6-start',summary:'重挂校牌，把一路的回答带回今天。'}
+ {id:'museum',map:{x:0.885,y:0.19,labelX:-74,labelY:26},name:'校史馆',entry:'start',summary:'从一张旧照片走进西迁岁月。'},
+ {id:'tianmu',map:{x:0.797,y:0.154,labelX:-178,labelY:-28},name:'杭州 · 天目山',entry:'chapter1-start',summary:'烽火中的开学，与同行者相识。'},
+ {id:'jiande',map:{x:0.79,y:0.257,labelX:-178,labelY:22},name:'建德 · 梅城',entry:'chapter2-news',summary:'夜渡钱塘，护送书卷，遇见小满。'},
+ {id:'taihe',map:{x:0.565,y:0.47,labelX:28,labelY:-40},name:'吉安 · 泰和',entry:'chapter3-start',summary:'课堂、大堤与澄江学校。'},
+ {id:'yishan',map:{x:0.237,y:0.684,labelX:28,labelY:-30},name:'广西 · 宜山',entry:'chapter4-start',summary:'在艰难的选择中寻找“求是”。'},
+ {id:'meitan',map:{x:0.159,y:0.433,labelX:-54,labelY:-108},name:'遵义 · 湄潭',entry:'chapter5-start',summary:'东方剑桥与一盏费巩灯。'},
+ {id:'home',map:{x:0.89,y:0.34,labelX:-48,labelY:24},name:'杭州 · 归来',entry:'chapter6-start',summary:'重挂校牌，把一路的回答带回今天。'}
 ];
 const SAVE_VERSION=1;
 let SAVE_PREFIX='qiushi-xixing:save:v1:';
@@ -3195,30 +3259,43 @@ function resumeJourney(){
  if(journey.pending){const next=journey.pending;journey.pending=null;if(next==='montage')journey.finaleStarted=true;go(next,true);}
  else {view.mode='story';renderCurrent();autoSave();}
 }
+function routeMapLayout(width,height,index){
+ const scale=Math.max(width/1453,height/900),mapWidth=1453*scale,mapHeight=900*scale;
+ const point=stations[index]?.map||{x:.5,y:.5};
+ return {width:mapWidth,height:mapHeight,left:Math.max(0,Math.min(mapWidth-width,point.x*mapWidth-width/2)),top:Math.max(0,Math.min(mapHeight-height,point.y*mapHeight-height*.45))};
+}
+function layoutRouteMap(){
+ if(view.mode!=='map'||$('route-map').hidden)return;
+ const atlas=$('route-atlas'),layout=routeMapLayout(atlas.clientWidth,atlas.clientHeight,chapterIndex(current));
+ $('route-landscape').style.width=layout.width+'px';$('route-landscape').style.height=layout.height+'px';
+ atlas.scrollLeft=layout.left;atlas.scrollTop=layout.top;
+}
 function drawMap(){
  sound.map();
  clearTimer();clearView();$('scene').hidden=true;$('route-map').hidden=false;
  document.body.dataset.type='map';document.body.dataset.node='route-map';
- const currentIndex=chapterIndex(current),done=journey.completed.length;
- $('chapter-route-art').hidden=currentIndex!==1;$('route-map').classList.toggle('has-route-art',currentIndex===1);
+ const currentIndex=chapterIndex(current),done=journey.completed.length,finalMap=done===stations.length;
  $('map-progress').textContent='已走过 '+done+' / '+stations.length+' 站 · '+(nameConfirmed?state.name:'你的西行');
  const route=$('route-stations');route.replaceChildren();
- const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('class','route-lines');svg.setAttribute('viewBox','0 0 700 204');svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
- for(const [cls,d] of [['desktop-route','M 50 102 H 650'],['mobile-route','M 87.5 30 H 612.5 Q 690 30 690 96 Q 690 137 612.5 137 H 87.5 Q 8 137 8 146 Q 8 165 87.5 165 H 437.5']]){const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('class',cls);path.setAttribute('d',d);path.setAttribute('fill','none');path.setAttribute('stroke','#a7b1a2');path.setAttribute('stroke-width','1.5');path.setAttribute('stroke-dasharray','5 5');path.setAttribute('vector-effect','non-scaling-stroke');svg.append(path);}route.append(svg);
  stations.forEach((station,i)=>{
   const completed=journey.completed.includes(station.id),active=!completed&&i===currentIndex;
-  const status=completed?'已完成 · 回顾':active?(journey.pending?'下一站 · 前往':'正在此地 · 继续'):'尚未抵达';
+  const status=completed?'已完成 · 回顾':active?(journey.pending?'下一章 · 点击光亮处':'正在此地 · 点击继续'):'尚未抵达';
   const b=btn('',()=>completed?openReview(i):resumeJourney(),'station '+(completed?'completed':active?'current':'locked'));
-  b.dataset.station=station.id;b.disabled=!completed&&!active;b.title=completed?chapterNames[i]+'：'+station.summary:status;
-  b.setAttribute('aria-label',station.name+'，'+status);if(active)b.setAttribute('aria-current','step');
-  const label=el('strong','station-name');station.name.split(' · ').forEach(part=>label.append(el('span','station-place',part)));b.append(el('span','station-number',String(i+1).padStart(2,'0')),label,el('small','station-status',status));route.append(b);
+  b.dataset.station=station.id;b.disabled=!completed&&!active;b.title=chapterNames[i]+'：'+station.summary;
+  b.style.setProperty('--station-x',station.map.x*100+'%');b.style.setProperty('--station-y',station.map.y*100+'%');
+  b.style.setProperty('--label-x',station.map.labelX+'px');b.style.setProperty('--label-y',station.map.labelY+'px');
+  b.addEventListener('focus',()=>b.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));
+  b.setAttribute('aria-label',chapterNames[i]+'，'+station.name+'，'+status);if(active)b.setAttribute('aria-current','step');
+  const label=el('span','station-label'),place=el('strong','station-name');place.textContent=station.name;
+  label.append(el('small','station-chapter',chapterNames[i].split(' · ')[0]),place,el('small','station-status',status));
+  b.append(el('span','station-number',i===0?'序':i===6?'终':String(i)),label);route.append(b);
  });
- const finalMap=done===stations.length;
- content.append(el('p','speaker',finalMap?'西行的足迹':'沿着灯光，继续西行'),el('p','story-text',finalMap?'一路的课堂与灯火，已在地图上连成了回家的路。\n点击旧地点，翻看属于你的西行记录。':journey.pending?'下一站：'+stations[currentIndex].name+'。\n点击发光的地点，开启下一章。':'你正停在'+stations[currentIndex].name+'。\n可以回顾已完成的地点，也可以继续刚才的故事。'));
- if(finalMap)controls.append(btn(journey.pending?'走向结局与告别 →':'继续结局与回答 →',resumeJourney));
- else controls.append(btn('继续西行 →',resumeJourney,'small-button'));
- const tools=el('div','map-tools');tools.append(btn('手账',openJournal,'small-button'),btn('存档 / 读档',openSaves,'small-button'),btn('重新启程',()=>showDialog('restart-dialog'),'small-button'));controls.append(tools);
- $('reading-hint').textContent=finalMap?'全程已完成 · 点击地点回顾，或继续结局':'发光地点：继续 · 已完成地点：回顾';
+ $('map-next').textContent=finalMap?'全程已完成 · 一路的灯火，连成归途':(journey.pending?'下一章：':'当前章节：')+chapterNames[currentIndex]+' · '+stations[currentIndex].name;
+ $('map-prompt').textContent=finalMap?'点击旧站点回顾，或继续走向结局':journey.pending?'点击地图上的光亮处，开始下一章':'点击地图上的光亮处，继续当前章节';
+ $('map-finish').hidden=!finalMap;$('map-finish').textContent=journey.pending?'走向结局与告别 →':'继续结局与回答 →';
+ const tools=$('map-tools');tools.replaceChildren();tools.append(btn('手账',openJournal,'small-button'),btn('存档',openSaves,'small-button'),btn('重来',()=>showDialog('restart-dialog'),'small-button'));
+ $('reading-hint').textContent='';
+ requestAnimationFrame(layoutRouteMap);
 }
 function reviewBackground(entry){return entry.nodeId==='montage'?entry.bg:(nodes.get(entry.nodeId)?.bg||entry.bg);}
 function openReview(index){
@@ -3354,7 +3431,7 @@ if(!['scene-005','scene-137'].includes(n.id)||view.flashShown)return;
 view.flashShown=true;const flash=$('time-flash');flash.hidden=false;flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');
 }
 function clearTimer(){cancelPackingDrag();stopBlackout();clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
-function clearView(){hideFinale();clearPacking();stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearView(){cancelRouteMapPan();hideFinale();clearPacking();stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src=sceneImagePath(n,bg);if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';renderAnthemGallery(bg);
 if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44','IMG-53'].includes(bg))image.classList.add('framed');
@@ -4149,7 +4226,23 @@ $('save-button').addEventListener('click',openSaves);
 $('restart-button').addEventListener('click',()=>playing?showDialog('restart-dialog'):showTitle());$('cancel-restart').addEventListener('click',()=>$('restart-dialog').close());
 $('confirm-restart').addEventListener('click',()=>{$('restart-dialog').close();try{localStorage.removeItem(SAVE_PREFIX+'auto');}catch(error){storageMessage='浏览器无法清除自动存档。';}delete document.body.dataset.ending;showTitle();state=C.createInitialState();journey=freshJourney();go('start',true);window.scrollTo({top:0,behavior:'instant'});});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
- $('chapter-route-art').addEventListener('click',()=>showDialog('route-image-dialog'));
+$('map-finish').addEventListener('click',resumeJourney);
+const routeAtlas=$('route-atlas');let routeMapPan=null;
+function cancelRouteMapPan(){
+ if(routeMapPan&&routeAtlas.hasPointerCapture(routeMapPan.id))routeAtlas.releasePointerCapture(routeMapPan.id);
+ routeMapPan=null;routeAtlas.classList.remove('dragging');
+}
+routeAtlas.addEventListener('pointerdown',event=>{
+ if(event.pointerType!=='mouse'||event.button!==0||event.target.closest('button')||view.mode!=='map')return;
+ routeMapPan={id:event.pointerId,x:event.clientX,y:event.clientY,left:routeAtlas.scrollLeft,top:routeAtlas.scrollTop};
+ routeAtlas.setPointerCapture(event.pointerId);routeAtlas.classList.add('dragging');event.preventDefault();
+});
+routeAtlas.addEventListener('pointermove',event=>{
+ if(!routeMapPan||routeMapPan.id!==event.pointerId)return;
+ routeAtlas.scrollLeft=routeMapPan.left+routeMapPan.x-event.clientX;routeAtlas.scrollTop=routeMapPan.top+routeMapPan.y-event.clientY;
+});
+routeAtlas.addEventListener('pointerup',cancelRouteMapPan);routeAtlas.addEventListener('pointercancel',cancelRouteMapPan);routeAtlas.addEventListener('lostpointercapture',()=>{routeMapPan=null;routeAtlas.classList.remove('dragging');});
+window.addEventListener('resize',()=>{cancelRouteMapPan();if(view.mode==='map')requestAnimationFrame(layoutRouteMap);});
 window.addEventListener('pagehide',()=>{stopTimeFlash();updateBlackout();autoSave();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTimeFlash();updateBlackout();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)autoSave();});

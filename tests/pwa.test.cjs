@@ -8,12 +8,12 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 
-function worker({ scope = '/qiushixixing/', fail = () => false } = {}) {
-  const events = new Map(), stores = new Map(), requests = [];
+function worker({ scope = '/qiushixixing/', fail = () => false, clientURL } = {}) {
+  const events = new Map(), stores = new Map(), requests = [], fetchOptions = [];
   const base = 'https://example.test' + scope;
   const key = input => typeof input === 'string' ? input : input.url;
-  const fetch = async input => {
-    const url = key(input); requests.push(url);
+  const fetch = async (input, options) => {
+    const url = key(input); requests.push(url); fetchOptions.push(options);
     if (fail(url)) throw Error('network unavailable');
     return new Response(url.endsWith('.mp3') ? '0123456789' : url);
   };
@@ -34,13 +34,13 @@ function worker({ scope = '/qiushixixing/', fail = () => false } = {}) {
     }
   };
   const context = vm.createContext({
-    self: { location: { href: base + 'sw.js' }, clients: { async claim() {} }, addEventListener: (name, fn) => events.set(name, fn) },
+    self: { location: { href: base + 'sw.js' }, clients: { async claim() {}, async get() { return clientURL ? { url: clientURL } : undefined; } }, addEventListener: (name, fn) => events.set(name, fn) },
     URL, Request, Response, Headers, caches, fetch
   });
   vm.runInContext(source, context);
   const get = expr => vm.runInContext(expr, context);
   return {
-    get, base, caches, stores, requests,
+    get, base, caches, stores, requests, fetchOptions,
     async dispatch(type, properties = {}) {
       let result;
       events.get(type)({ ...properties, waitUntil: value => { result = value; }, respondWith: value => { result = value; } });
@@ -101,6 +101,56 @@ test('offline navigation works at a repository subpath, preserves queries, and e
   }
   for (const url of [w.base + 'test.html', w.base + 'missing', 'https://example.test/another/', 'https://elsewhere.test/']) {
     assert.equal(await w.dispatch('fetch', { request: navigation(url) }), undefined);
+  }
+});
+
+test('online debug navigation bypasses both installed HTML and the HTTP cache', async () => {
+  const w = worker();
+  const shell = await w.caches.open(w.get('SHELL_CACHE'));
+  await shell.put(w.base + 'index.html', new Response('old HTML'));
+  for (const suffix of ['?debug=1', 'index.html?debug=1']) {
+    const url = w.base + suffix;
+    const result = await w.dispatch('fetch', { request: { url, method: 'GET', mode: 'navigate' } });
+    assert.equal(await result.text(), url);
+    assert.equal(w.fetchOptions.at(-1).cache, 'no-store');
+  }
+  assert.equal(await (await shell.match(w.base + 'index.html')).text(), 'old HTML');
+});
+
+test('debug images, scripts and audio use fresh files and retain offline fallback without overwriting release caches', async () => {
+  for (const viaClient of [true, false]) {
+    let offline = false;
+    const debugURL = 'https://example.test/qiushixixing/?debug=1';
+    const w = worker({ clientURL: viaClient ? debugURL : undefined, fail: () => offline });
+    for (const path of ['./dev-tools.js', './pwa.js', './assets/images/IMG-05.webp', w.get('AUDIO_FILES[0]')]) {
+      const url = w.get('urlFor(' + JSON.stringify(path) + ')');
+      const audio = path.includes('qiushi_bgm');
+      const cache = await w.caches.open(w.get(audio ? 'AUDIO_CACHE' : 'SHELL_CACHE'));
+      await cache.put(url, new Response(audio ? 'abcdefghij' : 'old asset'));
+      const request = new Request(url, { referrer: viaClient ? w.base + 'dev-tools.js' : debugURL,
+        headers: audio ? { Range: 'bytes=2-5' } : {} });
+      const result = await w.dispatch('fetch', { request, clientId: viaClient ? 'debug-client' : '' });
+      assert.equal(await result.text(), audio ? '0123456789' : url);
+      assert.equal(w.fetchOptions.at(-1).cache, 'no-store');
+      assert.equal(await (await cache.match(url)).text(), audio ? 'abcdefghij' : 'old asset');
+      offline = true;
+      const fallback = await w.dispatch('fetch', { request, clientId: viaClient ? 'debug-client' : '' });
+      assert.equal(await fallback.text(), audio ? 'cdef' : 'old asset');
+      assert.equal(fallback.status, audio ? 206 : 200);
+      offline = false;
+    }
+  }
+});
+
+test('ordinary clients and debug URLs outside this application keep using the installed release', async () => {
+  for (const clientURL of ['https://example.test/qiushixixing/?debug=0', 'https://example.test/another/?debug=1', 'https://elsewhere.test/qiushixixing/?debug=1', undefined]) {
+    const w = worker({ clientURL });
+    const url = w.base + 'assets/images/IMG-05.webp';
+    const shell = await w.caches.open(w.get('SHELL_CACHE'));
+    await shell.put(url, new Response('installed image'));
+    const result = await w.dispatch('fetch', { request: new Request(url), clientId: 'ordinary-client' });
+    assert.equal(await result.text(), 'installed image');
+    assert.equal(w.requests.length, 0);
   }
 });
 
