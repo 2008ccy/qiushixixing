@@ -128,7 +128,7 @@
 | 120 | `scene-089` | 第四章 · 求是 | 宜山 · 校务会议 | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.18 |
 | 121 | `scene-090` | 第四章 · 求是 | 宜山 · 祠堂 | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.18 |
 | 122 | `scene-090-page-2` | 第四章 · 求是 | 宜山 · 祠堂 | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.18 |
-| 123 | `scene-091` | 第四章 · 求是 | 宜山 · 祠堂 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.28 |
+| 123 | `scene-091` | 第四章 · 求是 | 宜山 · 祠堂 | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.18 |
 | 124 | `scene-092` | 第四章 · 求是 | 宜山 · 校舍废墟 | `tragic` | ./qiushi_bgm/背景音乐/jonasblakewood-epic-epic-music-562863.mp3 | 0.18 |
 | 125 | `scene-093` | 第四章 · 求是 | 宜山 · 校舍废墟 | `tragic` | ./qiushi_bgm/背景音乐/jonasblakewood-epic-epic-music-562863.mp3 | 0.18 |
 | 126 | `scene-094` | 第四章 · 求是 | 宜山 · 校舍废墟 | `tragic` | ./qiushi_bgm/背景音乐/jonasblakewood-epic-epic-music-562863.mp3 | 0.18 |
@@ -169,27 +169,27 @@
 | 161 | `scene-122` | 第五章 · 东方剑桥 | 湄潭 · 夜街 | `inspire` | ./qiushi_bgm/背景音乐/solvikmusic-epic-inspiring-611151.mp3 | 0.24 |
 | 162 | `scene-123` | 第五章 · 东方剑桥 | 湄潭 · 夜街 | `inspire` | ./qiushi_bgm/背景音乐/solvikmusic-epic-inspiring-611151.mp3 | 0.24 |
 | 163 | `scene-123-page-2` | 第五章 · 东方剑桥 | 湄潭 · 夜街 | `inspire` | ./qiushi_bgm/背景音乐/solvikmusic-epic-inspiring-611151.mp3 | 0.24 |
-| 164 | `scene-124` | 第五章 · 东方剑桥 | 湄潭 · 夜街 | `inspire` | ./qiushi_bgm/背景音乐/solvikmusic-epic-inspiring-611151.mp3 | 0.22 |
-| 165 | `chapter6-start` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 166 | `interaction-11` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 167 | `scene-127` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 168 | `scene-127-page-2` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 169 | `montage` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 170 | `ending` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 171 | `audit-farewell-chase` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 172 | `scene-130` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 173 | `scene-131` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 174 | `scene-132` | 终章 · 走马灯与回答 | 此后的时间 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 175 | `scene-133` | 终章 · 走马灯与回答 | 此后的时间 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 176 | `scene-134` | 终章 · 走马灯与回答 | 此后的时间 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 177 | `scene-135` | 终章 · 走马灯与回答 | 此后的时间 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 178 | `scene-136` | 终章 · 走马灯与回答 | 此后的时间 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
-| 179 | `scene-137` | 终章 · 走马灯与回答 | 紫金港校史馆 | — | 无 / 淡出 | 0.2 |
-| 180 | `scene-138` | 终章 · 走马灯与回答 | 紫金港校史馆 | — | 无 / 淡出 | 0.2 |
-| 181 | `scene-139` | 终章 · 走马灯与回答 | 紫金港校史馆 | — | 无 / 淡出 | 0.2 |
-| 182 | `scene-140` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.12 |
-| 183 | `scene-141` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.12 |
-| 184 | `reflection` | 终章 · 走马灯与回答 | 紫金港校史馆 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 |
+| 164 | `scene-124` | 第五章 · 东方剑桥 | 遵义 · 中正桥 | `inspire` | ./qiushi_bgm/背景音乐/solvikmusic-epic-inspiring-611151.mp3 | 0.22 |
+| 165 | `chapter6-start` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 166 | `interaction-11` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 167 | `scene-127` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 168 | `scene-127-page-2` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 169 | `montage` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 170 | `ending` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 171 | `audit-farewell-chase` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 172 | `scene-130` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 173 | `scene-131` | 终章 · 走马灯与回答 | 杭州 · 大学路校舍 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 174 | `scene-132` | 终章 · 走马灯与回答 | 此后的时间 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 175 | `scene-133` | 终章 · 走马灯与回答 | 此后的时间 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 176 | `scene-134` | 终章 · 走马灯与回答 | 此后的时间 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 177 | `scene-135` | 终章 · 走马灯与回答 | 此后的时间 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 178 | `scene-136` | 终章 · 走马灯与回答 | 此后的时间 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 |
+| 179 | `scene-137` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
+| 180 | `scene-138` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
+| 181 | `scene-139` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
+| 182 | `scene-140` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
+| 183 | `scene-141` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
+| 184 | `reflection` | 终章 · 走马灯与回答 | 紫金港校史馆 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.16 |
 
 ## 特殊状态
 
@@ -200,5 +200,6 @@
 | 章节地图（无目标音乐） | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.15 | 没有可延续的目标音乐时使用固定轨道。 |
 | 展览路线图 | `history` | ./qiushi_bgm/背景音乐/atlasaudio-historical-519440.mp3 | 0.05 | 查看序章护送路线图时临时切换。 |
 | 点亮费巩灯 | `piano` | ./qiushi_bgm/背景音乐/alexgrohl-history-piano-535025.mp3 | 0.22 | `lamp()` 使用固定轨道；已点灯的互动节点同音量。 |
-| 走马灯 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 | `montage()` 使用 `montage` 节点配乐。 |
+| 走马灯 | `anthemInstrumental` | ./qiushi_bgm/校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav | 0.3 | `montage()` 使用 `montage` 节点配乐。 |
 | 普通分页 | 当前音乐 | 当前曲目 | 当前音量 | `page()` 不改变配乐，也不自动播放翻书声。 |
+| 两问后的歌词片尾 | `anthem` | ./qiushi_bgm/校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3 | 0.3 | 用户点击进入后从头单次播放，歌词按用户记录的 18 个起唱点随媒体时钟平滑滚动；结束后定格制作名单。支持暂停、后台暂停、静音下滚动和读档续播，回到两问恢复原轻钢琴。 |

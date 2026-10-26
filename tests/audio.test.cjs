@@ -7,9 +7,9 @@ const cues=JSON.parse(audio.match(/const cues=([\s\S]*?);\r?\n/)[1]);
 const files=Object.fromEntries([...audio.match(/const files=\{([\s\S]*?)\};/)[1].matchAll(/(\w+):'([^']+)'/g)].map(([,key,path])=>[key,path]));
 function harness(){
  const elements=new Map(),listeners={},records=[],timers=new Map();let serial=0,now=0;
- const element=id=>{if(!elements.has(id))elements.set(id,{addEventListener(){},setAttribute(){}});return elements.get(id);};
+ const element=id=>{if(!elements.has(id))elements.set(id,{addEventListener(name,fn){this[name]=fn;},setAttribute(){}});return elements.get(id);};
  class Audio{
-  constructor(){this.paused=true;this.events={};records.push(this);}
+  constructor(){this.paused=true;this.currentTime=0;this.duration=146.207;this.readyState=1;this.events={};records.push(this);}
   addEventListener(name,fn){this.events[name]=fn;}
   play(){this.paused=false;this.plays=(this.plays||0)+1;return Promise.resolve();}
   pause(){this.paused=true;}
@@ -27,7 +27,7 @@ function harness(){
   setTimeout(fn,ms){timers.set(++serial,{fn,at:now+ms});return serial;},clearTimeout(id){timers.delete(id);},cancelAnimationFrame(){},performance:{now:()=>now}});
  vm.runInContext(audio,c);listeners.keydown({type:'keydown',key:'Enter'});
  const enter=(id,ending='qiushi')=>c.QiushiAudio.enter({id},{ending,lampLit:false});
- return {api:c.QiushiAudio,enter,records,document,listeners,timers,
+ return {api:c.QiushiAudio,enter,records,document,listeners,timers,element,
   music:()=>records.filter(r=>r.loop&&r.src.includes('%E8%83%8C%E6%99%AF')||r.loop&&r.src.includes('%E6%A0%A1%E6%AD%8C')),
   step(ms){now+=ms;for(const [id,t] of [...timers])if(t.at<=now){timers.delete(id);t.fn();}}};
 }
@@ -46,13 +46,13 @@ test('sirens are removed and long passages keep one coherent score',()=>{
  assert(fs.existsSync(path.join(__dirname,'../qiushi_bgm',files.sob)));
  const fourth=story.nodes.slice(story.nodes.findIndex(n=>n.id==='chapter4-start'),story.nodes.findIndex(n=>n.id==='scene-091'));
  for(const node of fourth)assert.deepEqual(cues[node.id],node.id==='chapter4-start'?{music:'history',volume:.18,fx:['cannon']}:{music:'history',volume:.18},node.id);
- assert.deepEqual(cues['scene-091'],{music:'anthem',volume:.28});
+ assert.deepEqual(cues['scene-091'],cues['scene-090']);
  for(const id of ['scene-092','scene-093','scene-094','choice-4'])assert.deepEqual(cues[id],id==='scene-092'?{music:'tragic',volume:.18,bombing:true}:{music:'tragic',volume:.18},id);
  assert.equal(cues['scene-092'].bombing,true);
  for(const id of ['scene-098','scene-098-page-2','interaction-9','scene-100','scene-101','scene-102','scene-103','scene-104','scene-105','interaction-10'])assert.deepEqual(cues[id],{music:'piano',volume:.18},id);
  for(const id of ['scene-107','scene-108'])assert.deepEqual(cues[id],{music:'piano',volume:.22},id);
  for(const id of ['scene-109','scene-110','scene-110-page-2'])assert.deepEqual(cues[id],{music:'inspire',volume:.24},id);
- for(const id of ['chapter6-start','interaction-11','scene-127','scene-127-page-2','montage','ending','audit-farewell-chase','scene-130','scene-131'])assert.deepEqual(cues[id],{music:'anthem',volume:.3},id);
+ for(const id of ['chapter6-start','interaction-11','scene-127','scene-127-page-2','montage','ending','audit-farewell-chase','scene-130','scene-131'])assert.deepEqual(cues[id],{music:'anthemInstrumental',volume:.3},id);
  assert.equal(story.endings.qiushi.title,'结局 · 求是');
 });
 test('rain stays beneath music and victory audio avoids page-level spikes',()=>{
@@ -73,6 +73,40 @@ test('audio engine follows smoothed cues without sirens',()=>{
  h.enter('protect-rain');books=h.music().at(-1);
  assert.equal(books.gain.value,.18);
  assert.equal(h.records.find(r=>r.src.includes('rain-sound')).gain.value,.05);
+});
+
+test('the return from time travel through both questions keeps one quiet piano without restarting',()=>{
+ const h=harness();h.enter('scene-137');const piano=h.music().at(-1);piano.currentTime=12;
+ for(const id of ['scene-138','scene-139','scene-140','scene-141','reflection']){assert.deepEqual(cues[id],{music:'piano',volume:.16});h.enter(id);assert.equal(h.music().at(-1),piano);assert.equal(piano.currentTime,12);}
+ assert.equal(piano.gain.value,.16);assert.equal(piano.paused,false);
+});
+test('anthem composition keeps history, homecoming uses the specified accompaniment through the time travel',()=>{
+ const h=harness();h.enter('scene-090');const history=h.music().at(-1);h.enter('scene-091');assert.equal(h.music().at(-1),history);
+ assert.equal(files.anthemInstrumental,'校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav');assert(fs.existsSync(path.join(__dirname,'../qiushi_bgm',files.anthemInstrumental)));
+ const header=fs.readFileSync(path.join(__dirname,'../qiushi_bgm',files.anthemInstrumental)).subarray(0,36);assert.equal(header.toString('ascii',0,4),'RIFF');assert.equal(header.toString('ascii',8,12),'WAVE');assert.equal(header.readUInt16LE(20),1);assert.equal(header.readUInt16LE(34),16);
+ h.enter('chapter6-start');const song=h.music().at(-1);assert(song.src.endsWith('d37043bc-044d-4e89-81b2-0911975669f2.wav'));song.currentTime=23;
+ for(const id of ['interaction-11','scene-127','scene-127-page-2','montage','ending','audit-farewell-chase','scene-130','scene-131','scene-132','scene-133','scene-134','scene-135','scene-136']){h.enter(id);assert.equal(h.music().at(-1),song,id);assert.equal(song.currentTime,23);}
+ h.enter('scene-137');assert(h.music().at(-1).src.includes('history-piano'));assert.equal(song.gain.value,0);
+});
+test('finale uses one non-looping anthem, tracks actual media time, and respects pause and background',()=>{
+ const h=harness();h.enter('reflection');h.api.finaleStart({time:32,phase:'lyrics',paused:false});
+ const song=h.records.at(-1);assert(song.src.endsWith('a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3'));assert.equal(song.loop,false);assert.equal(song.currentTime,32);assert.equal(song.paused,false);
+ song.currentTime=41;assert.equal(h.api.finaleTick(.2).time,41);
+ h.api.finalePause(true);assert.equal(song.paused,true);assert.equal(h.api.finaleTick(30).time,41);
+ h.document.hidden=true;h.listeners.visibilitychange();h.document.hidden=false;h.listeners.visibilitychange();assert.equal(song.paused,true);
+ h.api.finalePause(false);assert.equal(song.paused,false);assert.equal(h.records.at(-1),song);
+ song.ended=true;song.currentTime=song.duration;assert.equal(h.api.finaleTick().finished,true);h.api.finaleFinish();
+ const plays=song.plays;h.listeners.visibilitychange();assert.equal(song.plays,plays);assert.equal(song.paused,true);
+});
+test('muted finale rolls silently and resumes from that position; replay and return clear the finale state',()=>{
+ const h=harness();h.api.finaleStart({time:20,phase:'lyrics',paused:false});let song=h.records.at(-1);song.currentTime=26;
+ h.element('audio-toggle').click();assert.equal(song.paused,true);assert.equal(h.api.finaleTick(.2).time,26.2);
+ h.document.hidden=true;assert.equal(h.api.finaleTick(.2).time,26.2);h.document.hidden=false;
+ h.element('audio-toggle').click();song=h.records.at(-1);assert.equal(song.currentTime,26.2);assert.equal(song.loop,false);
+ h.api.finaleStart({time:0,phase:'lyrics',paused:false});assert.equal(h.records.at(-1).currentTime,0);
+ h.api.finaleStart({time:50,phase:'credits',paused:true});assert.equal(h.records.at(-1).paused,true);
+ h.api.finaleStart({time:50,phase:'closing',paused:true});assert.equal(h.records.at(-1).paused,true);assert.equal(h.api.finaleTick().finished,true);
+ h.enter('reflection');assert.equal(h.api.finaleTick(),null);assert.equal(h.music().at(-1).paused,false);
 });
 test('three-second crossfades stay bounded, and background/mute still pause and resume sound',()=>{
  const h=harness();h.enter('scene-044');const piano=h.music().at(-1);assert.equal(piano.gain.duration,3);

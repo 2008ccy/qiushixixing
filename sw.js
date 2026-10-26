@@ -2,8 +2,8 @@
 
 // Bump SHELL_VERSION for every HTML, JS, image, icon or manifest release.
 // Bump AUDIO_VERSION when audio files change; UI-only releases retain downloaded music.
-const SHELL_VERSION = '2026-10-26-9';
-const AUDIO_VERSION = '2';
+const SHELL_VERSION = '2026-10-26-15';
+const AUDIO_VERSION = '3';
 const BASE = new URL('./', self.location.href);
 const PREFIX = 'qiushi-pwa:' + BASE.pathname + ':';
 const SHELL_CACHE = PREFIX + 'shell-' + SHELL_VERSION;
@@ -14,9 +14,11 @@ const SHELL_FILES = [
   './assets/icons/icon.svg', './assets/icons/apple-touch-icon.png',
   './assets/props/dormitory-no-lamps.webp', './assets/props/motto-board.webp', './assets/props/proof-desk.webp', './assets/props/youth-proof.webp', './assets/props/feigong-lamp-unlit.webp', './assets/props/feigong-lamp-lit.webp',
   './assets/props/rescue-books.webp', './assets/props/rescue-platform.webp',
+  './assets/props/packing-start.webp', './assets/props/packing-empty.webp', './assets/props/packing-finished.webp',
+  './assets/props/packing-luggage.webp', './assets/props/packing-books.webp',
   './assets/icons/icon-192.png', './assets/icons/icon-512.png', './assets/icons/icon-maskable-512.png',
   // IMG-25 has no file: the engine maps that legacy ID to IMG-07.
-  ...Array.from({ length: 51 }, (_, i) => i + 1)
+  ...Array.from({ length: 53 }, (_, i) => i + 1)
     .filter(id => id !== 23 && id !== 25)
     .map(id => './assets/images/IMG-' + String(id).padStart(2, '0') + '.webp')
 ];
@@ -28,6 +30,7 @@ const AUDIO_FILES = [
   '背景音乐/solvikmusic-epic-inspiring-611151.mp3',
   '背景音乐/jonasblakewood-epic-epic-music-562863.mp3',
   '校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3',
+  '校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav',
   '按钮/dragon-studio-button-press-382713.mp3',
   '翻书声/creatorshome-turn-a-page-336933.mp3',
   '相机转场/dragon-studio-camera-shutter-effect-390310.mp3',
