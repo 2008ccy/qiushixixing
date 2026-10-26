@@ -28,7 +28,7 @@ function make(id){
   drawFeedback(){context.clearStudy();context.pageVersion++;},
  });
  vm.runInContext(script('game-core'),context);context.C=context.QiushiCore;context.state=context.C.createInitialState();context.state.nodeId=id;
- for(const name of ['apply','btn','feedback','saveSnapshot','validSave','stopStudyClock','cancelMottoDrag','clearStudy','studyCanRun','updateStudyClock','startStudyWait','sceneImagePath','placeMottoWord','submitMotto','finishMottoReason','showWords','flashStudy','checkProofLetter','proofSheet','showTypo','lightFeigongLamp','checkLampProof','showLampInteraction','releaseMottoWord'])vm.runInContext(source(name),context);
+ for(const name of ['apply','btn','feedback','saveSnapshot','validSave','stopStudyClock','cancelMottoDrag','clearStudy','studyCanRun','updateStudyClock','startStudyWait','sceneImagePath','placeMottoWord','submitMotto','finishMottoReason','shuffleMottoWords','showWords','flashStudy','checkProofLetter','proofSheet','showTypo','lightFeigongLamp','checkLampProof','showLampInteraction','releaseMottoWord'])vm.runInContext(source(name),context);
  return {c:context,$,timers,
   step(ms){now+=ms;for(const fn of [...timers.values()])fn();},
   dialog(value){dialog=value;context.updateStudyClock();},
@@ -54,7 +54,7 @@ test('wrong motto records the original mistake once and requires the actual user
  assert.equal(c.state.journal.length,1);assert.match(c.state.journal[0].text,/先落实行动，再验证所学/);assert.equal(c.state.mistakes,1);
 });
 test('motto drops outside a slot and pointer cancellation do not select a character',()=>{
- const h=make('interaction-8'),c=h.c;c.showWords(c.current);const stage=h.$('study-surface'),tile=stage.querySelectorAll('.motto-tile')[0];
+ const h=make('interaction-8'),c=h.c;c.showWords(c.current);const stage=h.$('study-surface'),tile=stage.querySelectorAll('.motto-tile').find(e=>e.dataset.word==='求');
  tile.rect={left:10,top:150,right:60,bottom:200,width:50,height:50};stage.querySelectorAll('.motto-slot').forEach((e,i)=>e.rect={left:200+i*80,top:20,right:260+i*80,bottom:80,width:60,height:60});
  const e={target:tile,button:0,isPrimary:true,pointerId:4,clientX:20,clientY:160,preventDefault(){},stopPropagation(){}};
  stage.pointerdown(e);stage.pointermove({...e,clientX:100,clientY:100});stage.pointerup({...e,clientX:100,clientY:100});assert.equal(c.view.words.length,0);assert.equal(c.mottoDrag,null);
@@ -95,4 +95,20 @@ test('invalid interaction drafts are rejected and graphics paths remain relative
  assert.equal(h.c.sceneImagePath({id:'interaction-9'},'IMG-14'),'./assets/props/proof-desk.webp');
  assert.equal(h.c.sceneImagePath({id:'interaction-10'},'IMG-14'),'./assets/props/dormitory-no-lamps.webp');
  assert.equal(h.c.sceneImagePath({id:'scene-107'},'IMG-14'),'./assets/props/dormitory-no-lamps.webp');
+});
+
+test('motto shuffles all eight unique words, separates the answer and keeps the draft order through rerenders and saves',()=>{
+ const h=make('interaction-8'),c=h.c,seen=new Set();
+ for(let i=0;i<300;i++){
+  const order=Array.from(c.shuffleMottoWords());assert.deepEqual([...order].sort(),['求','是','力','行','敦','品','格','致'].sort());
+  assert(!['求','是'].includes(order[0]));assert(Math.abs(order.indexOf('求')-order.indexOf('是'))>1);seen.add(order.join(''));
+ }
+ assert(seen.size>1);c.showWords(c.current);const order=Array.from(c.view.motto.order);
+ h.pick('求');assert.deepEqual(Array.from(c.view.motto.order),order);
+ const save=h.save();assert(c.validSave(save));h.restore(save);c.showWords(c.current);
+ assert.deepEqual(Array.from(c.view.motto.order),order);assert.deepEqual(h.$('study-surface').querySelectorAll('.motto-tile').map(e=>e.dataset.word),order);
+ assert.deepEqual([c.state.xinhuo,c.state.mistakes],[0,0]);
+ for(const bad of [null,[],['求','求','力','行','敦','品','格','致'],['求','是','力','行','敦','品','格','外']]){
+  const invalid=h.save();invalid.view.motto.order=bad;assert.equal(c.validSave(invalid),false);
+ }
 });
