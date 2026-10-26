@@ -40,30 +40,39 @@ test('every story node has a cue and split pages inherit their source cue',()=>{
   if(source!==node.id)assert.deepEqual(cues[node.id],cues[source],node.id);
  }
 });
-test('key scene cues retain the music branch mapping after the dev storyline merge',()=>{
+test('sirens are removed and long passages keep one coherent score',()=>{
+ assert.equal(Object.values(cues).filter(c=>(c.fx||[]).includes('siren')).length,0);
  assert.equal(files.sob,'哭/小女孩抽泣声音效_爱给网_aigei_com.mp3');
  assert(fs.existsSync(path.join(__dirname,'../qiushi_bgm',files.sob)));
- assert.deepEqual(cues['scene-010'],{music:'books',volume:.22});
- assert.deepEqual(cues['scene-020'],{music:'books',volume:.22,fx:['cannon']});
- assert.deepEqual(cues['chapter2-news'],{music:'cinema',volume:.22,fx:['cannon','siren']});
- assert.deepEqual(cues['scene-025'],{music:'piano',volume:.2,ambient:'sob',ambientVolume:.08});
- assert.deepEqual(cues['chapter4-start'],{music:'cinema',volume:.2,fx:['cannon','siren']});
- assert.deepEqual(cues['chapter6-start'],{music:'anthem',volume:.45});
- assert.deepEqual(cues['montage'],{music:'piano',volume:.6});
- assert.deepEqual(cues['scene-132'],{music:'history',volume:.2,fx:['page']});
- assert.deepEqual(cues['reflection'],{music:'anthem',volume:.8});
+ const fourth=story.nodes.slice(story.nodes.findIndex(n=>n.id==='chapter4-start'),story.nodes.findIndex(n=>n.id==='scene-091'));
+ for(const node of fourth)assert.deepEqual(cues[node.id],node.id==='chapter4-start'?{music:'history',volume:.18,fx:['cannon']}:{music:'history',volume:.18},node.id);
+ assert.deepEqual(cues['scene-091'],{music:'anthem',volume:.28});
+ for(const id of ['scene-092','scene-093','scene-094','choice-4'])assert.deepEqual(cues[id],id==='scene-092'?{music:'tragic',volume:.18,bombing:true}:{music:'tragic',volume:.18},id);
+ assert.equal(cues['scene-092'].bombing,true);
+ for(const id of ['scene-098','scene-098-page-2','interaction-9','scene-100','scene-101','scene-102','scene-103','scene-104','scene-105','interaction-10'])assert.deepEqual(cues[id],{music:'piano',volume:.18},id);
+ for(const id of ['scene-107','scene-108'])assert.deepEqual(cues[id],{music:'piano',volume:.22},id);
+ for(const id of ['scene-109','scene-110','scene-110-page-2'])assert.deepEqual(cues[id],{music:'inspire',volume:.24},id);
+ for(const id of ['chapter6-start','interaction-11','scene-127','scene-127-page-2','montage','ending','audit-farewell-chase','scene-130','scene-131'])assert.deepEqual(cues[id],{music:'anthem',volume:.3},id);
  assert.equal(story.endings.qiushi.title,'结局 · 求是');
 });
-test('audio engine follows merged cues for music, effects and ambience',()=>{
+test('rain stays beneath music and victory audio avoids page-level spikes',()=>{
+ for(const id of ['protect-rain','interaction-7'])assert.deepEqual(cues[id],{music:'books',volume:.18,ambient:'rain',ambientVolume:.05},id);
+ for(const id of ['scene-111','scene-112','audit-fei-future-memory','choice-5','fei-stop','fei-silent','audit-fei-lift-case','audit-fei-silent-reply'])assert.deepEqual(cues[id],{music:'piano',volume:.18,ambient:'rain',ambientVolume:.04},id);
+ for(const id of ['fei-gone','fei-gone-page-2'])assert.deepEqual(cues[id],{music:null,volume:.2,ambient:'rain',ambientVolume:.08},id);
+ for(const id of ['scene-117','scene-118','scene-119'])assert.deepEqual(cues[id],{music:'inspire',volume:.26,ambient:'fireworks',ambientVolume:.08},id);
+ for(const id of ['scene-120','scene-121','scene-122','scene-123','scene-123-page-2'])assert.deepEqual(cues[id],{music:'inspire',volume:.24,ambient:'fireworks',ambientVolume:.05},id);
+ assert.deepEqual(cues['scene-124'],{music:'inspire',volume:.22,fx:['shutter']});
+});
+test('audio engine follows smoothed cues without sirens',()=>{
  const h=harness();h.enter('scene-020');let books=h.music().at(-1);
  assert.equal(books.gain.value,.22);h.enter('scene-021');assert.equal(h.music().at(-1),books);
  h.enter('chapter2-news');const cinema=h.music().at(-1);
  assert.equal(cinema.gain.value,.22);
  assert(h.records.some(r=>r.src.includes('cannon-shot')));
- assert(h.records.some(r=>r.src.includes('air-raid-siren')));
+ assert.equal(h.records.some(r=>r.src.includes('air-raid-siren')),false);
  h.enter('protect-rain');books=h.music().at(-1);
- assert.equal(books.gain.value,.05);
- assert.equal(h.records.find(r=>r.src.includes('rain-sound')).gain.value,.25);
+ assert.equal(books.gain.value,.18);
+ assert.equal(h.records.find(r=>r.src.includes('rain-sound')).gain.value,.05);
 });
 test('three-second crossfades stay bounded, and background/mute still pause and resume sound',()=>{
  const h=harness();h.enter('scene-044');const piano=h.music().at(-1);assert.equal(piano.gain.duration,3);
