@@ -20,7 +20,7 @@ test('all three score pages appear in order in story and read-only review, then 
  const h=harness();for(const review of [false,true]){
   for(const bg of ['IMG-40','IMG-41','IMG-42']){
    h.c.renderAnthemGallery(bg,review);const gallery=h.$(review?'review-anthem-gallery':'anthem-gallery');
-   assert.equal(gallery.hidden,false);assert.deepEqual(Array.from(gallery.children,p=>p.src),['./assets/images/IMG-40.webp','./assets/images/IMG-41.webp','./assets/images/IMG-42.webp']);
+   assert.equal(gallery.hidden,false);assert.deepEqual(Array.from(gallery.children,p=>p.src),['./assets/images/IMG-40.webp','./assets/images/IMG-42.webp','./assets/images/IMG-41.webp']);
    assert.equal(h.$(review?'review-image':'scene-image').hidden,true);
   }
   h.c.renderAnthemGallery('IMG-13',review);assert.equal(h.$(review?'review-anthem-gallery':'anthem-gallery').hidden,true);assert.equal(h.$(review?'review-image':'scene-image').hidden,false);
