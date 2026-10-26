@@ -363,73 +363,90 @@ button:hover:not(:disabled){background:#344348}
 @keyframes station-beacon{0%,100%{transform:scale(1);box-shadow:0 0 0 5px #b68b4f22,0 0 15px #d8a55d35}50%{transform:scale(1.06);box-shadow:0 0 0 7px #b68b4f33,0 0 28px #d8a55d70}}
 @media(prefers-reduced-motion:reduce){.station.current .station-number{box-shadow:0 0 0 5px #b68b4f22,0 0 18px #d8a55d50}}
 .stage-direction,.choice-prompt{font-size:clamp(14px,1.5vw,18px);line-height:1.6;color:var(--muted);white-space:pre-line;margin:0 0 8px;overflow-wrap:anywhere}
-/* Full-screen chapter transitions: markers share the route artwork's coordinates. */
+/* Full-screen map: artwork and labels fit between the measured header and footer. */
 body[data-type="map"]{padding:0;overflow:hidden}
 body[data-type="map"] #game{width:100%;height:100dvh;max-width:none;display:block;margin:0;box-shadow:none}
 body[data-type="map"] .story-panel{display:none}
-body[data-type="map"] .audio-dock{position:fixed;top:max(18px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));z-index:8}
-body[data-type="map"] #route-map{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;overflow:hidden;background:#182225}
-#route-map::before{display:none}
-#route-atlas{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-x pan-y;cursor:grab}
-#route-atlas::-webkit-scrollbar{display:none}
-#route-atlas.dragging{cursor:grabbing;user-select:none}
-.route-landscape{position:relative;isolation:isolate;min-width:100%;min-height:100%}
-.route-background{position:absolute;inset:0;width:100%;height:100%;display:block;filter:brightness(.64) saturate(.64);pointer-events:none;user-select:none}
-.route-connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.75}
+body[data-type="map"] .audio-dock{position:fixed;top:max(20px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));z-index:8}
+body[data-type="map"] #route-map{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;overflow:hidden;background:#182225;--map-card-width:152px;--map-card-height:74px;--map-pin-size:22px}
+#route-map::before{display:block;position:absolute;inset:0;content:"";opacity:1;background:linear-gradient(#182225dd,#182225e8),var(--route-art,url('./assets/images/IMG-22.webp')) center/cover;pointer-events:none}
+#route-atlas{position:absolute;inset:0;overflow:hidden;touch-action:manipulation}
+.route-landscape{position:relative;width:100%;height:100%;isolation:isolate}
+.route-background{position:absolute;display:block;filter:brightness(.76) saturate(.64);pointer-events:none;user-select:none;border:1px solid #d7b78040;box-shadow:0 8px 36px #0003}
+.route-connectors{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8}
 #route-map .route-stations{position:absolute;inset:0;display:block;padding:0;margin:0;isolation:auto;pointer-events:none}
-#route-map .station{position:absolute;left:var(--station-x);top:var(--station-y);width:40px;height:40px;min-height:0;padding:0;display:block;border:0;border-radius:50%;background:transparent;transform:translate(-50%,-50%);pointer-events:auto;opacity:1}
+#route-map .station{position:absolute;left:var(--station-x);top:var(--station-y);width:var(--map-pin-size);height:var(--map-pin-size);min-height:0;padding:0;display:block;border:0;border-radius:50%;background:transparent;transform:translate(-50%,-50%);pointer-events:auto;opacity:1}
 #route-map .station:hover:not(:disabled){border:0;background:transparent;z-index:3}
 #route-map .station:active:not(:disabled){transform:translate(-50%,-50%)}
-#route-map .station-number{width:40px;height:40px;font-size:15px;border:1px solid #b3b5a4;background:#273739;color:#eee6d4;box-shadow:0 0 0 5px #18222555}
-#route-map .station-label{position:absolute;left:var(--label-x);top:var(--label-y);width:152px;padding:9px 12px;border:1px solid #bdb59d66;background:#152326ee;border-radius:3px;box-shadow:0 4px 18px #0004;text-align:left;line-height:1.4;pointer-events:auto}
-#route-map .station-name{min-height:0;font-size:16px;text-align:left;color:#ece5d2;white-space:normal}
-#route-map .station-place{display:inline;white-space:normal}
-#route-map .station-place+.station-place::before{content:" · "}
-#route-map .station-chapter{display:block;font-size:11px;letter-spacing:.12em;margin-bottom:3px;color:#c7bea7}
-#route-map .station-status{display:block;margin-top:4px;font-size:11px;text-align:left;color:#b5c5b9}
+#route-map .station-number{width:var(--map-pin-size);height:var(--map-pin-size);font-size:10px;border:1px solid #c9cbb5;background:#273739;color:#eee6d4;box-shadow:0 0 0 3px #18222555}
+#route-map.map-small-pins .station-number{font-size:0}
+#route-map .station-label{position:absolute;left:var(--label-x);top:var(--label-y);width:var(--map-card-width);height:var(--map-card-height);display:flex;flex-direction:column;justify-content:center;gap:3px;padding:6px 10px;border:1px solid #bdb59d66;background:#152326f5;border-radius:3px;box-shadow:0 4px 18px #0004;text-align:left;line-height:1.3;pointer-events:auto}
+#route-map .station-name{min-height:0;margin:0;font-size:15px;text-align:left;color:#ece5d2;white-space:nowrap}
+#route-map .station-chapter{display:block;margin:0;font-size:11px;letter-spacing:.08em;color:#c7bea7}
+#route-map .station-status{display:block;margin:0;font-size:10px;text-align:left;color:#b5c5b9;white-space:nowrap}
 #route-map .station.completed .station-number{background:#3f6559;border-color:#b5c8ab;color:#fff7df}
 #route-map .station.completed .station-label{border-color:#9fb29c7a}
 #route-map .station.current{z-index:2}
 #route-map .station.current .station-number{background:#efcf87;border-color:#fff1b5;color:#342710;animation:map-station-glow 1.8s ease-in-out infinite}
-#route-map .station.current .station-label{border-color:#f5cf84;background:#302d22f0;box-shadow:0 0 25px #edbd5d55}
+#route-map .station.current .station-label{border-color:#f5cf84;background:#302d22f5;animation:map-label-glow 1.8s ease-in-out infinite}
 #route-map .station.current .station-name,#route-map .station.current .station-status,#route-map .station.current .station-chapter{color:#ffe4a4}
 #route-map .station.locked:disabled{cursor:not-allowed;opacity:1}
 #route-map .station.locked .station-number{border-style:dashed;background:#223033;color:#a9aea2}
-#route-map .station.locked .station-label{background:#172427e6;border-style:dashed}
+#route-map .station.locked .station-label{background:#172427f5;border-style:dashed}
 #route-map .station.locked .station-name,#route-map .station.locked .station-status,#route-map .station.locked .station-chapter{color:#b4b6a8}
-#route-map .station:focus-visible{outline:3px solid #fff1b8;outline-offset:9px;z-index:4}
-#route-map .station:focus-visible .station-label,#route-map .station:hover:not(:disabled) .station-label{background:#364338;border-color:#efce8d}
-#route-map .map-heading{position:absolute;top:max(26px,env(safe-area-inset-top));left:max(32px,env(safe-area-inset-left));max-width:calc(100% - 310px);pointer-events:none;text-shadow:0 2px 10px #000}
-#route-map .map-heading h2{color:#fff1d1;font-size:27px;margin-bottom:6px}
-#route-map .map-heading p{color:#e5d9bf;font-size:13px}
-#route-map .map-tools{position:absolute;top:104px;left:max(32px,env(safe-area-inset-left));z-index:4;gap:6px}
-#route-map .map-tools button{min-height:36px;padding:6px 12px;background:#18282cdd;color:#e9dfc9;border:1px solid #b8ab8866;font-size:13px}
-#route-map::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0b151dc9,transparent 24%,transparent 72%,#0b151dea);z-index:0}
+#route-map .station:focus-visible{outline:none;z-index:4}
+#route-map .station:focus-visible .station-label{outline:3px solid #fff1b8;outline-offset:3px}
+#route-map .station:hover:not(:disabled) .station-label{background:#364338;border-color:#efce8d}
+#route-map .map-heading{position:absolute;top:max(20px,env(safe-area-inset-top));left:max(24px,env(safe-area-inset-left));width:210px;max-width:calc(100% - 32px);padding:0;pointer-events:none;text-shadow:0 2px 10px #000}
+#route-map .map-heading h2{color:#fff1d1;font-size:25px;margin:0 0 6px}
+#route-map .map-heading p{color:#e5d9bf;font-size:12px;line-height:1.5}
+#route-map .map-tools{position:absolute;top:22px;left:252px;z-index:4;gap:5px}
+#route-map .map-tools button{min-height:34px;padding:6px 10px;background:#18282cdd;color:#e9dfc9;border:1px solid #b8ab8866;font-size:12px}
+#route-map::after{content:none}
 #route-map .map-heading,#route-map .map-footer,#route-map .map-tools{z-index:4}
-#route-map .map-footer{position:absolute;inset:auto 0 0;display:flex;flex-direction:column;gap:8px;border:0;padding:20px 20px max(20px,env(safe-area-inset-bottom));text-align:center;background:linear-gradient(transparent,#101d23e6 35%);pointer-events:none}
-#map-next{color:#e8d8b4;font-size:13px;letter-spacing:.12em;margin:0}
-#map-prompt{color:#fff0cf;font-size:clamp(18px,2vw,24px);letter-spacing:.12em;margin:0;text-shadow:0 0 18px #deb76c88;line-height:1.6}
-#route-map .map-legend{font-size:11px;color:#c7c8b6;letter-spacing:.04em;margin:0}
+#route-map .map-footer{position:absolute;inset:auto 0 0;display:flex;flex-direction:column;gap:7px;border:0;padding:16px 16px max(18px,env(safe-area-inset-bottom));text-align:center;background:linear-gradient(transparent,#101d23ee 35%);pointer-events:none}
+#map-next{color:#e8d8b4;font-size:12px;letter-spacing:.06em;margin:0;line-height:1.5}
+#map-prompt{color:#fff0cf;font-size:clamp(17px,2vw,23px);letter-spacing:.08em;margin:0;text-shadow:0 0 18px #deb76c88;line-height:1.5}
+#route-map .map-legend{font-size:10px;color:#c7c8b6;letter-spacing:.02em;margin:0;line-height:1.5}
 #route-map #map-finish{pointer-events:auto;min-height:42px;padding:8px 22px;color:#fff0cf;background:#3f3d2d;border-color:#d7b780}
-@keyframes map-station-glow{0%,100%{box-shadow:0 0 0 7px #edbe6533,0 0 24px 9px #f7c66177;filter:brightness(1)}50%{box-shadow:0 0 0 17px #edbe6512,0 0 48px 20px #ffd57eab;filter:brightness(1.35)}}
+#route-map.map-compact .station-label{gap:2px;padding:4px 8px}
+#route-map.map-compact .station-name{font-size:13px}
+#route-map.map-compact .station-chapter{font-size:10px}
+#route-map.map-compact .station-status{display:none}
+@keyframes map-station-glow{0%,100%{box-shadow:0 0 0 4px #edbe6533,0 0 14px 4px #f7c66177;filter:brightness(1)}50%{box-shadow:0 0 0 7px #edbe6512,0 0 22px 7px #ffd57eab;filter:brightness(1.3)}}
+@keyframes map-label-glow{0%,100%{box-shadow:0 0 12px #edbd5d33}50%{box-shadow:0 0 24px #edbd5d77}}
 @media(max-width:600px){
- #route-map .map-heading{left:18px;top:60px;max-width:calc(100% - 36px)}
+ #route-map .map-heading{left:16px;top:60px;width:calc(100% - 32px)}
  #route-map .map-heading h2{font-size:22px}
  #route-map .map-heading p{font-size:11px}
- #route-map .map-tools{top:18px;left:18px;right:auto}
- #route-map .station.current .station-label{left:-56px;top:56px}
- #route-map .map-tools button{font-size:12px;padding:6px 9px;min-height:32px}
- body[data-type="map"] .audio-dock{right:14px;top:18px;gap:3px}
- body[data-type="map"] .audio-dock button{padding:5px 7px;font-size:11px}
- #route-map .map-footer{gap:6px;padding:18px 14px max(22px,env(safe-area-inset-bottom))}
- #map-prompt{font-size:18px;letter-spacing:.05em}
- #map-next{font-size:12px}
- #route-map .map-legend{font-size:10px}
+ #route-map .map-tools{top:14px;left:16px;right:auto}
+ #route-map .map-tools button{font-size:11px;padding:6px 8px;min-height:30px}
+ body[data-type="map"] .audio-dock{right:14px;top:14px;gap:3px}
+ body[data-type="map"] .audio-dock button{padding:5px 6px;font-size:10px}
+ #route-map .map-footer{gap:6px;padding:12px 16px max(16px,env(safe-area-inset-bottom))}
+ #map-prompt{font-size:17px;letter-spacing:0}
+ #map-next{font-size:11px}
+ #route-map .station-name{font-size:14px}
 }
-@media(max-height:500px){#route-map .map-heading{top:16px}#route-map .map-heading h2{font-size:20px}#route-map .map-footer{gap:3px;padding-top:8px;padding-bottom:10px}#map-prompt{font-size:17px}}
-@media(prefers-reduced-motion:reduce){#route-map .station.current .station-number{animation:none;box-shadow:0 0 0 9px #edbe6533,0 0 35px 14px #f7c66199}}
-#route-image-dialog{width:min(1200px,calc(100vw - 32px))}
-#route-image-dialog img{display:block;width:100%;max-height:calc(100dvh - 145px);object-fit:contain}
+@media(max-height:640px){#route-map .map-legend{display:none}}
+@media(max-width:600px) and (max-height:640px){#map-next{display:none}}
+@media(max-height:500px) and (min-aspect-ratio:13/10){
+ #route-map .map-heading{top:10px;left:16px;width:195px}
+ #route-map .map-heading h2{font-size:20px;margin-bottom:3px}
+ #route-map .map-heading p{font-size:10px}
+ #route-map .map-tools{top:12px;left:228px}
+ #route-map .map-tools button{min-height:30px;font-size:11px;padding:5px 8px}
+ body[data-type="map"] .audio-dock{top:12px;right:14px}
+ body[data-type="map"] .audio-dock button{font-size:10px;padding:5px 6px}
+ #route-map .map-footer{gap:3px;padding:8px 14px max(10px,env(safe-area-inset-bottom))}
+ #map-prompt{font-size:16px;letter-spacing:0}
+ #map-next{font-size:10px}
+ #route-map.map-finished .map-footer{display:grid;grid-template-columns:1fr auto;align-items:center;gap:5px 10px}
+ #route-map.map-finished #map-next{grid-column:1/-1}
+ #route-map.map-finished #map-prompt{font-size:15px}
+ #route-map.map-finished #map-finish{font-size:13px;min-height:36px;padding:6px 12px}
+}
+@media(prefers-reduced-motion:reduce){#route-map .station.current .station-number{animation:none;box-shadow:0 0 0 5px #edbe6533,0 0 18px 5px #f7c66199}#route-map .station.current .station-label{animation:none;box-shadow:0 0 18px #edbd5d66}}
 @media(max-width:600px) and (max-height:700px){
   .quiz-result{font-size:15px;line-height:1.35}
   .quiz-result p,.quiz-result h3,.quiz-result li{margin-bottom:3px}
@@ -635,10 +652,10 @@ body[data-finale] .audio-dock{position:fixed;z-index:12;top:16px;right:18px}
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
-<div id="route-atlas" tabindex="0" role="group" aria-label="西迁路线图，可拖动或滑动查看各站点">
+<div id="route-atlas" tabindex="0" role="group" aria-label="西迁路线图，各章站点自动缩放适配，可用 Tab 键选择">
 <div class="route-landscape" id="route-landscape">
-<img class="route-background" src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图" draggable="false">
-<svg class="route-connectors" viewBox="0 0 1453 900" aria-hidden="true"><path d="M 1286 171 L 1198 144 L 1293 306" fill="none" stroke="#e4c694" stroke-width="2" stroke-dasharray="5 6"/></svg>
+<img class="route-background" id="route-background" src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图" draggable="false">
+<svg class="route-connectors" id="route-connectors" aria-hidden="true"></svg>
 <div class="route-stations" id="route-stations" aria-label="章节地点"></div>
 </div>
 </div>
@@ -646,7 +663,7 @@ body[data-finale] .audio-dock{position:fixed;z-index:12;top:16px;right:18px}
 <nav class="map-tools" id="map-tools" aria-label="地图工具"></nav>
 <footer class="map-footer">
 <p id="map-next"></p>
-<p class="map-legend">暖光：当前站点　已完成：可回顾　·　拖动地图查看路线</p>
+<p class="map-legend">暖光：当前站点　·　已完成地点可回顾</p>
 <p id="map-prompt" role="status">点击地图上的光亮处，开始下一章</p>
 <button id="map-finish" type="button" hidden>走向结局与告别 →</button>
 </footer>
@@ -676,7 +693,7 @@ body[data-finale] .audio-dock{position:fixed;z-index:12;top:16px;right:18px}
 <dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><div class="review-scene"><img id="review-image" alt="回顾场景"><div id="review-anthem-gallery" class="anthem-gallery" role="group" aria-label="校歌曲谱三页并排" hidden></div><img id="review-school-sign" src="./assets/images/IMG-45.webp" alt="" hidden></div><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
 <section id="finale" class="finale" aria-label="校歌与制作名单" tabindex="-1" hidden></section>
 <noscript><p style="padding:30px;font-size:22px">请开启浏览器的 JavaScript 功能，即可开始这段故事。</p></noscript>
-<dialog class="dialog" id="route-image-dialog" aria-labelledby="route-image-title"><div class="dialog-head"><h2 id="route-image-title">第一章 · 西迁路线示意图</h2><button data-close="route-image-dialog" type="button">返回地图</button></div><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图"></dialog>
+
 <script type="application/json" id="story-data">{
   "nodes": [
     {
@@ -3259,22 +3276,65 @@ function resumeJourney(){
  if(journey.pending){const next=journey.pending;journey.pending=null;if(next==='montage')journey.finaleStarted=true;go(next,true);}
  else {view.mode='story';renderCurrent();autoSave();}
 }
-function routeMapLayout(width,height,index){
- const scale=Math.max(width/1453,height/900),mapWidth=1453*scale,mapHeight=900*scale;
- const point=stations[index]?.map||{x:.5,y:.5};
- return {width:mapWidth,height:mapHeight,left:Math.max(0,Math.min(mapWidth-width,point.x*mapWidth-width/2)),top:Math.max(0,Math.min(mapHeight-height,point.y*mapHeight-height*.45))};
+function routeMapLayout(width,height,index,options={}){
+ const margin=width<600?16:24,gap=height<500?4:width<600?8:12,top=options.top??(height<500&&width/height>=1.3?64:width<=600?128:96),bottom=options.bottom??height-(height<=640?60:120);
+ const available=Math.max(1,bottom-top),compact=height<740,cardHeight=options.cardHeight??(compact?(height<500?44:48):74);
+ let columns=width>=900||width/height>=1.3;
+ if(columns&&available<4*cardHeight+3*gap)columns=false;
+ const count=columns?1:width/height>=1.3&&width>=500?4:width>=650?3:2,cardWidth=columns?Math.min(152,Math.max(118,width*.16)):(width-2*margin-(count-1)*gap)/count;
+ const cards=Array(7);let box;
+ if(columns){
+  for(const [ids,x] of [[[5,3,4],margin],[[0,1,2,6],width-margin-cardWidth]]){
+   const spacing=Math.max(gap,(available-ids.length*cardHeight)/(ids.length-1));
+   ids.forEach((id,row)=>cards[id]={x,y:top+row*(cardHeight+spacing),width:cardWidth,height:cardHeight});
+  }
+  box={x:margin+cardWidth+18,y:top,width:Math.max(1,width-2*(margin+cardWidth+18)),height:available};
+ }else{
+  const upper=count>=3?Array.from({length:count},(_,i)=>i):[0,1,2,3],lower=count>=3?Array.from({length:7-count},(_,i)=>i+count):[4,5,6];
+  const bandHeight=ids=>Math.ceil(ids.length/count)*cardHeight+(Math.ceil(ids.length/count)-1)*gap;
+  const upperHeight=bandHeight(upper),lowerHeight=bandHeight(lower),mapHeight=Math.max(1,available-upperHeight-lowerHeight-24);
+  const scale=Math.min((width-2*margin)/1453,mapHeight/900),imageHeight=900*scale;
+  const extra=Math.max(0,available-upperHeight-lowerHeight-imageHeight-24),start=top+extra/2;
+  for(const [ids,y] of [[upper,start],[lower,start+upperHeight+24+imageHeight]]){
+   ids.forEach((id,k)=>{const row=Math.floor(k/count),rowCount=Math.min(count,ids.length-row*count),rowWidth=rowCount*cardWidth+(rowCount-1)*gap;
+    cards[id]={x:(width-rowWidth)/2+(k%count)*(cardWidth+gap),y:y+row*(cardHeight+gap),width:cardWidth,height:cardHeight};});
+  }
+  box={x:margin,y:start+upperHeight+12,width:width-2*margin,height:imageHeight};
+ }
+ const scale=Math.min(box.width/1453,box.height/900),image={x:box.x+(box.width-1453*scale)/2,y:box.y+(box.height-900*scale)/2,width:1453*scale,height:900*scale};
+ const points=stations.map(station=>({x:image.x+station.map.x*image.width,y:image.y+station.map.y*image.height}));
+ let distance=Infinity;for(let i=0;i<points.length;i++)for(let j=0;j<i;j++)distance=Math.min(distance,Math.hypot(points[i].x-points[j].x,points[i].y-points[j].y));
+ return {width,height,left:0,top:0,image,cards,points,cardWidth,cardHeight,pinSize:Math.min(22,distance*.6),compact,columns};
 }
 function layoutRouteMap(){
  if(view.mode!=='map'||$('route-map').hidden)return;
- const atlas=$('route-atlas'),layout=routeMapLayout(atlas.clientWidth,atlas.clientHeight,chapterIndex(current));
- $('route-landscape').style.width=layout.width+'px';$('route-landscape').style.height=layout.height+'px';
- atlas.scrollLeft=layout.left;atlas.scrollTop=layout.top;
+ const root=$('route-map'),atlas=$('route-atlas'),width=atlas.clientWidth,height=atlas.clientHeight;
+ root.classList.toggle('map-compact',height<740);
+ const headerBottom=Math.max(...[root.querySelector('.map-heading'),$('map-tools'),document.querySelector('.audio-dock')].filter(Boolean).map(e=>e.getBoundingClientRect().bottom));
+ const footerTop=root.querySelector('.map-footer').getBoundingClientRect().top;
+ const layout=routeMapLayout(width,height,chapterIndex(current),{top:headerBottom+14,bottom:footerTop-14});
+ root.style.setProperty('--map-card-width',layout.cardWidth+'px');root.style.setProperty('--map-card-height',layout.cardHeight+'px');root.style.setProperty('--map-pin-size',layout.pinSize+'px');
+ root.classList.toggle('map-small-pins',layout.pinSize<18);
+ const image=$('route-background');Object.assign(image.style,{left:layout.image.x+'px',top:layout.image.y+'px',width:layout.image.width+'px',height:layout.image.height+'px'});
+ const connector=$('route-connectors');connector.setAttribute('viewBox','0 0 '+width+' '+height);connector.replaceChildren();
+ [...$('route-stations').children].forEach((button,i)=>{
+  const point=layout.points[i],card=layout.cards[i];
+  button.style.setProperty('--station-x',point.x+'px');button.style.setProperty('--station-y',point.y+'px');
+  button.style.setProperty('--label-x',card.x-point.x+layout.pinSize/2+'px');button.style.setProperty('--label-y',card.y-point.y+layout.pinSize/2+'px');
+  const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+  for(const [name,value] of Object.entries({x1:point.x,y1:point.y,x2:Math.max(card.x,Math.min(card.x+card.width,point.x)),y2:Math.max(card.y,Math.min(card.y+card.height,point.y)),stroke:button.classList.contains('current')?'#f4d28a':'#b5b49e','stroke-width':button.classList.contains('current')?1.5:1,'stroke-dasharray':'4 5'}))line.setAttribute(name,String(value));
+  connector.append(line);
+ });
+ atlas.scrollLeft=0;atlas.scrollTop=0;
 }
 function drawMap(){
  sound.map();
  clearTimer();clearView();$('scene').hidden=true;$('route-map').hidden=false;
  document.body.dataset.type='map';document.body.dataset.node='route-map';
  const currentIndex=chapterIndex(current),done=journey.completed.length,finalMap=done===stations.length;
+ const routeImage=journey.pending?'./assets/props/chapter-route-clean.webp':'./assets/images/IMG-22.webp';
+ $('route-background').src=routeImage;$('route-map').style.setProperty('--route-art','url("'+routeImage+'")');
+ $('route-map').classList.toggle('map-finished',finalMap);
  $('map-progress').textContent='已走过 '+done+' / '+stations.length+' 站 · '+(nameConfirmed?state.name:'你的西行');
  const route=$('route-stations');route.replaceChildren();
  stations.forEach((station,i)=>{
@@ -3284,7 +3344,6 @@ function drawMap(){
   b.dataset.station=station.id;b.disabled=!completed&&!active;b.title=chapterNames[i]+'：'+station.summary;
   b.style.setProperty('--station-x',station.map.x*100+'%');b.style.setProperty('--station-y',station.map.y*100+'%');
   b.style.setProperty('--label-x',station.map.labelX+'px');b.style.setProperty('--label-y',station.map.labelY+'px');
-  b.addEventListener('focus',()=>b.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));
   b.setAttribute('aria-label',chapterNames[i]+'，'+station.name+'，'+status);if(active)b.setAttribute('aria-current','step');
   const label=el('span','station-label'),place=el('strong','station-name');place.textContent=station.name;
   label.append(el('small','station-chapter',chapterNames[i].split(' · ')[0]),place,el('small','station-status',status));
@@ -3295,7 +3354,7 @@ function drawMap(){
  $('map-finish').hidden=!finalMap;$('map-finish').textContent=journey.pending?'走向结局与告别 →':'继续结局与回答 →';
  const tools=$('map-tools');tools.replaceChildren();tools.append(btn('手账',openJournal,'small-button'),btn('存档',openSaves,'small-button'),btn('重来',()=>showDialog('restart-dialog'),'small-button'));
  $('reading-hint').textContent='';
- requestAnimationFrame(layoutRouteMap);
+ layoutRouteMap();
 }
 function reviewBackground(entry){return entry.nodeId==='montage'?entry.bg:(nodes.get(entry.nodeId)?.bg||entry.bg);}
 function openReview(index){
@@ -3431,7 +3490,7 @@ if(!['scene-005','scene-137'].includes(n.id)||view.flashShown)return;
 view.flashShown=true;const flash=$('time-flash');flash.hidden=false;flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');
 }
 function clearTimer(){cancelPackingDrag();stopBlackout();clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
-function clearView(){cancelRouteMapPan();hideFinale();clearPacking();stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearView(){hideFinale();clearPacking();stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src=sceneImagePath(n,bg);if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';renderAnthemGallery(bg);
 if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44','IMG-53'].includes(bg))image.classList.add('framed');
@@ -4227,22 +4286,11 @@ $('restart-button').addEventListener('click',()=>playing?showDialog('restart-dia
 $('confirm-restart').addEventListener('click',()=>{$('restart-dialog').close();try{localStorage.removeItem(SAVE_PREFIX+'auto');}catch(error){storageMessage='浏览器无法清除自动存档。';}delete document.body.dataset.ending;showTitle();state=C.createInitialState();journey=freshJourney();go('start',true);window.scrollTo({top:0,behavior:'instant'});});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
 $('map-finish').addEventListener('click',resumeJourney);
-const routeAtlas=$('route-atlas');let routeMapPan=null;
-function cancelRouteMapPan(){
- if(routeMapPan&&routeAtlas.hasPointerCapture(routeMapPan.id))routeAtlas.releasePointerCapture(routeMapPan.id);
- routeMapPan=null;routeAtlas.classList.remove('dragging');
+window.addEventListener('resize',()=>{if(view.mode==='map')requestAnimationFrame(layoutRouteMap);});
+if('ResizeObserver' in window){
+ const mapResize=new ResizeObserver(()=>{if(view.mode==='map')requestAnimationFrame(layoutRouteMap);});
+ for(const element of [$('route-map'),$('map-tools'),document.querySelector('#route-map .map-heading'),document.querySelector('#route-map .map-footer'),document.querySelector('.audio-dock')])if(element)mapResize.observe(element);
 }
-routeAtlas.addEventListener('pointerdown',event=>{
- if(event.pointerType!=='mouse'||event.button!==0||event.target.closest('button')||view.mode!=='map')return;
- routeMapPan={id:event.pointerId,x:event.clientX,y:event.clientY,left:routeAtlas.scrollLeft,top:routeAtlas.scrollTop};
- routeAtlas.setPointerCapture(event.pointerId);routeAtlas.classList.add('dragging');event.preventDefault();
-});
-routeAtlas.addEventListener('pointermove',event=>{
- if(!routeMapPan||routeMapPan.id!==event.pointerId)return;
- routeAtlas.scrollLeft=routeMapPan.left+routeMapPan.x-event.clientX;routeAtlas.scrollTop=routeMapPan.top+routeMapPan.y-event.clientY;
-});
-routeAtlas.addEventListener('pointerup',cancelRouteMapPan);routeAtlas.addEventListener('pointercancel',cancelRouteMapPan);routeAtlas.addEventListener('lostpointercapture',()=>{routeMapPan=null;routeAtlas.classList.remove('dragging');});
-window.addEventListener('resize',()=>{cancelRouteMapPan();if(view.mode==='map')requestAnimationFrame(layoutRouteMap);});
 window.addEventListener('pagehide',()=>{stopTimeFlash();updateBlackout();autoSave();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTimeFlash();updateBlackout();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)autoSave();});
