@@ -1,0 +1,1660 @@
+[
+  {
+    "node": "start",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-002",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-1",
+    "type": "exhibits",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-1",
+    "exhibit": "suitcase",
+    "src": "./assets/images/IMG-18.webp"
+  },
+  {
+    "node": "interaction-1",
+    "exhibit": "photo",
+    "src": "./assets/images/IMG-19.webp"
+  },
+  {
+    "node": "interaction-1",
+    "exhibit": "diary",
+    "src": "./assets/images/IMG-20.webp"
+  },
+  {
+    "node": "interaction-1",
+    "exhibit": "map",
+    "src": "./assets/images/IMG-21.webp"
+  },
+  {
+    "node": "scene-004",
+    "type": "text",
+    "src": "./assets/images/IMG-22.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-005",
+    "type": "text",
+    "src": "./assets/images/IMG-22.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-22.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter1-start",
+    "type": "text",
+    "src": "./assets/images/IMG-27.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-007",
+    "type": "text",
+    "src": "./assets/images/IMG-02.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-008",
+    "type": "text",
+    "src": "./assets/images/IMG-28.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-2",
+    "type": "action",
+    "src": "./assets/images/IMG-28.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "scene-010",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-011",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-012",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-013",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-3",
+    "type": "choice",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-3",
+    "type": "choice",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-015",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "name-confirm",
+    "type": "nameConfirm",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "scene-017",
+    "type": "text",
+    "src": "./assets/images/IMG-29.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-018",
+    "type": "text",
+    "src": "./assets/images/IMG-04.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-4",
+    "type": "action",
+    "src": "./assets/images/IMG-30.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "scene-020",
+    "type": "text",
+    "src": "./assets/images/IMG-31.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-021",
+    "type": "text",
+    "src": "./assets/images/IMG-31.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-31.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter2-news",
+    "type": "text",
+    "src": "./assets/images/IMG-32.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chapter2-start",
+    "type": "text",
+    "src": "./assets/images/IMG-32.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-023",
+    "type": "text",
+    "src": "./assets/images/IMG-03.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-024",
+    "type": "text",
+    "src": "./assets/images/IMG-03.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-025",
+    "type": "text",
+    "src": "./assets/images/IMG-03.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-026",
+    "type": "text",
+    "src": "./assets/images/IMG-03.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-027",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-028",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-029",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-030",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-031",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-031",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "scene-032",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-033",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-034",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-035",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-036",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-036-pause",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-037",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-038",
+    "type": "text",
+    "src": "./assets/images/IMG-33.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-039",
+    "type": "text",
+    "src": "./assets/images/IMG-34.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-040",
+    "type": "text",
+    "src": "./assets/images/IMG-34.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-041",
+    "type": "text",
+    "src": "./assets/images/IMG-05.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-042",
+    "type": "text",
+    "src": "./assets/images/IMG-36.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-043",
+    "type": "text",
+    "src": "./assets/images/IMG-36.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-043",
+    "type": "text",
+    "src": "./assets/images/IMG-36.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "scene-044",
+    "type": "text",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-045",
+    "type": "text",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-046",
+    "type": "text",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice-1",
+    "type": "choice",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "choice-1",
+    "type": "choice",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-048",
+    "type": "text",
+    "src": "./assets/images/IMG-05.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-049",
+    "type": "text",
+    "src": "./assets/images/IMG-05.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-049",
+    "type": "text",
+    "src": "./assets/images/IMG-05.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "scene-050",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-051",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-052",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-053",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice-2",
+    "type": "choice",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "choice-2",
+    "type": "choice",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice2-join-reply",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice2-join-departure",
+    "type": "text",
+    "src": "./assets/images/IMG-07.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-055",
+    "type": "text",
+    "src": "./assets/images/IMG-19.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-19.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter3-start",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-057",
+    "type": "text",
+    "src": "./assets/images/IMG-08.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-5",
+    "type": "quiz",
+    "src": "./assets/images/IMG-08.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-5",
+    "type": "quiz",
+    "src": "./assets/images/IMG-08.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-059",
+    "type": "text",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-060",
+    "type": "text",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-061",
+    "type": "text",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-062",
+    "type": "text",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-6",
+    "type": "choice",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-6",
+    "type": "choice",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-064",
+    "type": "text",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-065",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-066",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chengjiang-xiaoman-looks-up",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-067",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chengjiang-offer-school",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-068",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chengjiang-grip-broom",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-069",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-070",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chengjiang-hold-sleeve",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-071",
+    "type": "text",
+    "src": "./assets/images/IMG-10.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-072",
+    "type": "text",
+    "src": "./assets/images/IMG-37.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-073",
+    "type": "text",
+    "src": "./assets/images/IMG-37.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "protect-rain",
+    "type": "text",
+    "src": "./assets/images/IMG-35.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-7",
+    "type": "choice",
+    "src": "./assets/images/IMG-35.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-7",
+    "type": "choice",
+    "src": "./assets/images/IMG-35.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-077",
+    "type": "text",
+    "src": "./assets/images/IMG-35.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-35.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter4-start",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "chapter4-he-narration",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-079",
+    "type": "text",
+    "src": "./assets/images/IMG-11.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-080",
+    "type": "text",
+    "src": "./assets/images/IMG-38.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice-3",
+    "type": "choice",
+    "src": "./assets/images/IMG-38.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-082",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-083",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-084",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-8",
+    "type": "wordpick",
+    "src": "./assets/images/IMG-39.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "anthem-meeting-context",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-086",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-087",
+    "type": "text",
+    "src": "./assets/images/IMG-40.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-088",
+    "type": "text",
+    "src": "./assets/images/IMG-41.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-089",
+    "type": "text",
+    "src": "./assets/images/IMG-42.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-090",
+    "type": "text",
+    "src": "./assets/images/IMG-40.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-091",
+    "type": "text",
+    "src": "./assets/images/IMG-40.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-092",
+    "type": "text",
+    "src": "./assets/images/IMG-13.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-093",
+    "type": "text",
+    "src": "./assets/images/IMG-13.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-094",
+    "type": "text",
+    "src": "./assets/images/IMG-13.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice-4",
+    "type": "choice",
+    "src": "./assets/images/IMG-13.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-13.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter5-start",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "audit-guizhou-hezhi",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-097",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-098",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-9",
+    "type": "typo",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-100",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-101",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-102",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-103",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-104",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-105",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-10",
+    "type": "action",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "interaction-10",
+    "type": "action",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": true,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-107",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": true,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-108",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": true,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-108",
+    "type": "text",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": true,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "scene-109",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-110",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-110",
+    "type": "text",
+    "src": "./assets/images/IMG-12.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "scene-111",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-112",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "audit-fei-future-memory",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "choice-5",
+    "type": "choice",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "choice-5",
+    "type": "choice",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "fei-silent",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "audit-fei-lift-case",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "audit-fei-silent-reply",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "fei-gone",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-117",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-118",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-119",
+    "type": "text",
+    "src": "./assets/images/IMG-43.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-120",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-121",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-122",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-123",
+    "type": "text",
+    "src": "./assets/images/IMG-43.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-124",
+    "type": "text",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "chapter6-start",
+    "type": "text",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "interaction-11",
+    "type": "action",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": true,
+    "page": null
+  },
+  {
+    "node": "interaction-11",
+    "type": "action",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": true,
+    "page": "1"
+  },
+  {
+    "node": "scene-127",
+    "type": "text",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "route-map",
+    "type": "map",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": false,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "montage",
+    "type": "montage",
+    "src": "./assets/images/IMG-04.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "montage",
+    "type": "montage",
+    "src": "./assets/images/IMG-06.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "montage",
+    "type": "montage",
+    "src": "./assets/images/IMG-09.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "montage",
+    "type": "montage",
+    "src": "./assets/images/IMG-14.webp",
+    "sceneVisible": true,
+    "lamp": true,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "montage",
+    "type": "montage",
+    "src": "./assets/images/IMG-16.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "ending",
+    "type": "ending",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "ending",
+    "type": "ending",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "2"
+  },
+  {
+    "node": "audit-farewell-chase",
+    "type": "text",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-130",
+    "type": "text",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-131",
+    "type": "text",
+    "src": "./assets/images/IMG-17.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-132",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-133",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-134",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-135",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-136",
+    "type": "text",
+    "src": "./assets/images/IMG-24.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-137",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-138",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-139",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-140",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "scene-141",
+    "type": "text",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": "1"
+  },
+  {
+    "node": "reflection",
+    "type": "reflection",
+    "src": "./assets/images/IMG-01.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "page": null
+  },
+  {
+    "node": "fei-stop",
+    "type": "text",
+    "src": "./assets/images/IMG-15.webp",
+    "sceneVisible": true,
+    "lamp": false,
+    "sign": false,
+    "supplement": true
+  }
+]
