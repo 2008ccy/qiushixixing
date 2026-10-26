@@ -28,7 +28,7 @@ function make(id){
   drawFeedback(){context.clearStudy();context.pageVersion++;},
  });
  vm.runInContext(script('game-core'),context);context.C=context.QiushiCore;context.state=context.C.createInitialState();context.state.nodeId=id;
- for(const name of ['apply','btn','feedback','saveSnapshot','validSave','stopStudyClock','cancelMottoDrag','clearStudy','studyCanRun','updateStudyClock','startStudyWait','sceneImagePath','placeMottoWord','submitMotto','finishMottoReason','shuffleMottoWords','showWords','flashStudy','checkProofLetter','proofSheet','showTypo','lightFeigongLamp','checkLampProof','showLampInteraction','releaseMottoWord'])vm.runInContext(source(name),context);
+ for(const name of ['apply','btn','feedback','saveSnapshot','validSave','stopStudyClock','cancelMottoDrag','clearStudy','studyCanRun','updateStudyClock','startStudyWait','sceneImagePath','placeMottoWord','submitMotto','finishMottoReason','shuffleMottoWords','showWords','flashStudy','proofCorrections','proofViewValid','layoutProofPaper','renderProofPaper','checkProofLetter','showTypo','lightFeigongLamp','checkLampProof','showLampInteraction','releaseMottoWord'])vm.runInContext(source(name),context);
  return {c:context,$,timers,
   step(ms){now+=ms;for(const fn of [...timers.values()])fn();},
   dialog(value){dialog=value;context.updateStudyClock();},
@@ -62,10 +62,10 @@ test('motto drops outside a slot and pointer cancellation do not select a charac
  stage.pointerdown(e);stage.pointermove({...e,clientX:230,clientY:50});stage.pointerup({...e,clientX:230,clientY:50});assert.equal(c.view.words[0],'求');
 });
 test('proofreading rewards a correct first answer once; a wrong first answer retains the original mistake through retries',()=>{
- const right=make('interaction-9'),c=right.c;c.showTypo(c.current);c.checkProofLetter(c.current,'党');assert.equal(c.state.qiuzhen,1);right.step(600);assert.equal(c.view.phase,'feedback');
- const h=make('interaction-9'),g=h.c;g.showTypo(g.current);g.checkProofLetter(g.current,'国');g.checkProofLetter(g.current,'头');
+ const right=make('interaction-9'),c=right.c;c.showTypo(c.current);c.checkProofLetter(c.current,0);assert.equal(c.state.qiuzhen,1);assert.equal(c.view.typo.done,false);c.checkProofLetter(c.current,0);c.checkProofLetter(c.current,1);right.step(600);assert.equal(c.view.phase,'feedback');
+ const h=make('interaction-9'),g=h.c;g.showTypo(g.current);g.checkProofLetter(g.current,null);g.checkProofLetter(g.current,null);
  assert.equal(g.state.mistakes,1);assert.equal(g.view.phase,'node');assert.equal(g.state.qiuzhen,0);
- const save=h.save();assert(g.validSave(save));h.restore(save);g.showTypo(g.current);g.checkProofLetter(g.current,'党');h.step(600);
+ const save=h.save();assert(g.validSave(save));h.restore(save);g.showTypo(g.current);g.checkProofLetter(g.current,1);g.checkProofLetter(g.current,0);h.step(600);
  assert.equal(g.view.phase,'feedback');assert.equal(g.view.next,'scene-100');assert.equal(g.state.qiuzhen,0);assert.equal(g.state.mistakes,1);
 });
 test('clicking the desk lamp, proof errors and restoring drafts retain original +1 renxin only',()=>{
@@ -73,8 +73,8 @@ test('clicking the desk lamp, proof errors and restoring drafts retain original 
  assert.equal(c.state.renxin,0);assert.equal(h.$('controls').children.length,0);assert.equal(h.$('light-lamp')['aria-label'],'点击点亮桌上的费巩灯');
  const received=h.save();assert(c.validSave(received));h.restore(received);c.showLampInteraction(c.current);h.$('light-lamp').click();c.lightFeigongLamp();
  assert.equal(c.state.renxin,1);assert.equal(c.state.lampLit,true);assert.equal(c.view.lamp.step,'proof');
- c.checkLampProof(0,'求');assert.equal(c.state.mistakes,0);c.checkLampProof(0,'事');c.checkLampProof(0,'事');assert.deepEqual(Array.from(c.view.lamp.found),[0]);
- const half=h.save();assert(c.validSave(half));h.restore(half);c.showLampInteraction(c.current);c.checkLampProof(1,'傅');
+ c.checkLampProof(-1);assert.equal(c.state.mistakes,0);c.checkLampProof(0);c.checkLampProof(0);assert.deepEqual(Array.from(c.view.lamp.found),[0]);
+ const half=h.save();assert(c.validSave(half));h.restore(half);c.showLampInteraction(c.current);c.checkLampProof(1);c.checkLampProof(2);
  h.step(899);assert.equal(c.view.phase,'node');assert(c.validSave(h.save()));h.step(1);assert.equal(c.view.phase,'feedback');assert.equal(c.view.next,'scene-107');
  assert.deepEqual([c.state.renxin,c.state.xinhuo,c.state.qiuzhen,c.state.mistakes],[1,0,0,0]);
 });
@@ -111,4 +111,46 @@ test('motto shuffles all eight unique words, separates the answer and keeps the 
  for(const bad of [null,[],['求','求','力','行','敦','品','格','致'],['求','是','力','行','敦','品','格','外']]){
   const invalid=h.save();invalid.view.motto.order=bad;assert.equal(c.validSave(invalid),false);
  }
+});
+
+test('dark proof exposes only the two center targets and restores partial work without extra scoring',()=>{
+ const h=make('interaction-9'),c=h.c;c.showTypo(c.current);
+ assert.deepEqual(h.$('proof-paper').querySelectorAll('.proof-hit').map(e=>e.dataset.proofTarget),['0','1']);
+ assert(h.$('proof-paper').querySelector('.proof-vignette'));assert.equal(h.$('proof-paper').querySelector('.proof-image').src,'./assets/props/youth-proof.webp');
+ c.checkProofLetter(c.current,2);assert.equal(c.view.typo.found.length,0);assert.equal(c.state.mistakes,1);
+ c.checkProofLetter(c.current,0);const save=h.save();assert(c.validSave(save));h.restore(save);c.showTypo(c.current);
+ assert.deepEqual(Array.from(c.view.typo.found),[0]);c.checkProofLetter(c.current,0);assert.equal(c.state.qiuzhen,0);c.checkProofLetter(c.current,1);
+ assert.equal(c.view.typo.done,true);h.dialog(true);h.step(5000);assert.equal(c.view.phase,'node');h.dialog(false);h.step(600);assert.equal(c.view.phase,'feedback');assert.equal(c.view.next,'scene-100');
+ assert.deepEqual([c.state.qiuzhen,c.state.mistakes],[0,1]);
+});
+test('lighting reveals the same whole proof with both center corrections and three remaining targets',()=>{
+ const h=make('interaction-10'),c=h.c;c.showLampInteraction(c.current);h.$('light-lamp').click();
+ const paper=h.$('proof-paper');assert.equal(paper.querySelector('.proof-vignette'),null);
+ assert.equal(paper.querySelectorAll('.proof-hit').length,5);assert.equal(paper.querySelectorAll('.corrected').length,2);
+ assert.equal(paper.querySelectorAll('.proof-hit').filter(e=>e.tagName==='BUTTON').length,3);
+ assert.deepEqual(Array.from(c.proofCorrections(),x=>x.fixed),['完备','都顾到','人才济济','专门学问','一偏之见']);
+ c.checkLampProof(2);const save=h.save();assert(c.validSave(save));h.restore(save);c.showLampInteraction(c.current);assert.deepEqual(Array.from(c.view.lamp.found),[2]);
+ c.checkLampProof(0);c.checkLampProof(1);h.dialog(true);h.step(10000);assert.equal(c.view.phase,'node');h.dialog(false);h.step(900);
+ assert.equal(c.view.phase,'feedback');assert.equal(c.state.renxin,1);assert.equal(c.state.mistakes,0);
+});
+test('zoom, paper position and new proof drafts validate while malformed draft data are rejected',()=>{
+ const h=make('interaction-9'),c=h.c;c.showTypo(c.current);h.$('proof-zoom-in').click();assert.equal(c.view.typo.zoom,3.5);
+ const save=h.save();assert(c.validSave(save));h.restore(save);c.showTypo(c.current);assert.equal(c.view.typo.zoom,3.5);
+ for(const patch of [{zoom:0},{zoom:5},{pan:{x:NaN,y:.5}},{pan:{x:2,y:.5}},{sheet:'other'},{found:[0,0]},{done:true,found:[0]},{found:[2]}]){
+  const invalid=h.save();Object.assign(invalid.view.typo,patch);assert.equal(c.validSave(invalid),false);
+ }
+ const lamp=make('interaction-10');lamp.c.showLampInteraction(lamp.c.current);lamp.$('light-lamp').click();lamp.c.checkLampProof(2);assert(lamp.c.validSave(lamp.save()));
+ for(const patch of [{found:[3]},{found:[0,0]},{sheet:'other'},{zoom:0},{wait:900}]){const invalid=lamp.save();Object.assign(invalid.view.lamp,patch);assert.equal(lamp.c.validSave(invalid),false);}
+});
+test('older completed proof drafts keep their result and unfinished lamp drafts migrate without re-awarding the lamp',()=>{
+ const h=make('interaction-9'),c=h.c;c.view.typo={done:true,wait:300};assert(c.validSave(h.save()));c.showTypo(c.current);h.step(300);assert.equal(c.view.phase,'feedback');assert.equal(c.state.qiuzhen,0);
+ const l=make('interaction-10'),g=l.c;g.state.lampLit=true;g.state.renxin=2;g.state.completedActions=['action:interaction-10'];g.view.lamp={step:'proof',found:[1]};assert(g.validSave(l.save()));g.showLampInteraction(g.current);assert.equal(g.view.lamp.sheet,'youth');assert.equal(g.view.lamp.found.length,0);assert.equal(g.state.renxin,2);
+ g.view.lamp={step:'proof',found:[0,1],wait:400};assert(g.validSave(l.save()));g.showLampInteraction(g.current);l.step(400);assert.equal(g.view.phase,'feedback');assert.equal(g.state.renxin,2);
+});
+
+test('scrolling to the edge keeps normalized paper positions valid even with scrollbars and overscroll',()=>{
+ const h=make('interaction-9'),c=h.c;c.showTypo(c.current);const v=h.$('proof-viewport');
+ Object.assign(v,{scrollWidth:900,clientWidth:375,scrollHeight:1200,clientHeight:400,scrollLeft:525,scrollTop:800});v.scroll();
+ assert.deepEqual({...c.view.typo.pan},{x:1,y:1});assert(c.validSave(h.save()));
+ v.scrollLeft=-20;v.scrollTop=900;v.scroll();assert.deepEqual({...c.view.typo.pan},{x:0,y:1});assert(c.validSave(h.save()));
 });

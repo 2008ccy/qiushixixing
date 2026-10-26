@@ -501,6 +501,63 @@ body[data-scene-transition] .story-panel{cursor:wait}
 @keyframes time-flash{0%{opacity:0}18%,38%{opacity:1}100%{opacity:0}}
 @keyframes time-flash-reduced{0%,100%{opacity:0}50%{opacity:.32}}
 @media(prefers-reduced-motion:reduce){#time-flash.active{animation:time-flash-reduced 700ms linear both!important}}
+
+.youth-proof-surface .proof-viewport{position:absolute;inset:88px 12px 22px;overflow:auto;background:#070908;pointer-events:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;scrollbar-width:thin}
+.scene:has(.youth-proof-surface:not([hidden]))>.lamp-object{display:none}
+.proof-paper{position:relative;aspect-ratio:3/4;margin:0 auto;container-type:inline-size;line-height:0}
+.proof-image{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
+.proof-hit{position:absolute;padding:0;min-width:0;min-height:0;border:0;background:transparent;border-radius:0;color:transparent;box-shadow:none;line-height:1;z-index:1;touch-action:pan-x pan-y}
+.proof-hit:hover:not(:disabled){background:transparent}.proof-hit:active:not(:disabled){transform:none}
+.proof-hit:focus-visible{outline:2px solid #a33225;outline-offset:2px}
+.proof-hit.corrected{display:flex;align-items:center;justify-content:center;color:#702a20;background:#c6a875;font-family:SimSun,serif;font-size:3.05cqw;outline:1px solid #913e30;border-radius:15%;pointer-events:none}
+.proof-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 47% 23% at 50% 49.5%,#0000002e 0%,#0000003d 25%,#00000066 45%,#0000009e 65%,#000000d1 85%,#000 110%)}
+.proof-tools{display:flex;align-items:center;gap:12px;justify-content:center}.proof-tools .small-button{font-size:14px;min-height:34px;padding:6px 12px}.proof-zoom-label,.proof-progress{font-size:14px;color:var(--muted);margin:8px 0;line-height:1.5}
+@media(max-width:600px){.youth-proof-surface .proof-viewport{inset:85px 4px 58px}.proof-tools{gap:8px}.proof-tools .small-button{font-size:13px;padding:5px 10px}.proof-progress{font-size:12px}}
+#packing-stage{position:absolute;inset:0;z-index:3;pointer-events:none}
+body[data-node="interaction-4"] #scene::before{content:"";position:absolute;inset:-14px;background:url('./assets/props/packing-empty.webp') center/cover;filter:blur(12px) brightness(.8)}
+body[data-node="interaction-4"] #scene-image{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--packing-fit,cover);object-position:50% var(--packing-y,100%)}
+.packing-canvas{position:absolute;overflow:visible;pointer-events:auto}
+.packing-room{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;user-select:none}
+.packing-target{position:absolute;display:flex;align-items:center;justify-content:center;border:1px dashed #d7b78066;border-radius:8px;background:#d7b78009;color:#f2e4c9;font-size:13px;text-shadow:0 1px 5px #000;pointer-events:none;transition:background .2s,box-shadow .2s}
+.packing-target span{background:#152024c9;padding:3px 8px;border-radius:3px}
+.packing-target.drop-ready{background:#d7b78028;box-shadow:0 0 14px #d7b78080;border-color:#f6d99e}
+.packing-item{position:absolute;padding:0;margin:0;min-width:0;min-height:0;border:0;background:transparent;box-shadow:none;touch-action:none;user-select:none;cursor:grab;transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease;z-index:2}
+.packing-item::after{content:"";position:absolute;inset:-7px}
+.packing-item img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+.packing-item:hover:not(:disabled),.packing-item:active:not(:disabled){background:transparent;transform:none;filter:brightness(1.15)}
+.packing-item.dragging{cursor:grabbing;transition:none;z-index:5;filter:drop-shadow(0 8px 6px #0009)}
+.packing-item:disabled{opacity:1;pointer-events:none}
+.packing-progress{margin:0;font-size:15px;line-height:1.6;color:var(--accent)}
+@media(max-width:600px){body[data-node="interaction-4"] main{grid-template-rows:50% minmax(0,1fr)}.packing-target{font-size:11px}.packing-target span{padding:2px 5px}}
+@media(prefers-reduced-motion:reduce){.packing-item,.packing-target{transition:none}}
+.finale{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 43%,#203034,#10191c 75%);color:#eee7d7;display:flex;flex-direction:column;align-items:center;padding:76px 24px 22px;text-align:center;overflow:hidden}
+.finale[hidden]{display:none}
+body[data-finale] .audio-dock{position:fixed;z-index:12;top:16px;right:18px}
+.finale-kicker{margin:0;color:#c7af83;font-size:12px;letter-spacing:.35em}
+.finale-title{font-size:clamp(23px,3vw,34px);font-weight:400;letter-spacing:.14em;margin:14px 0 8px}
+.finale-author{font-size:13px;color:#aeb9b6;margin:0}
+.finale-window{position:relative;width:min(100%,780px);flex:1;min-height:0;margin:22px 0;overflow:hidden;mask-image:linear-gradient(transparent,#000 16%,#000 84%,transparent)}
+.finale-lyrics{position:absolute;top:0;left:0;right:0;will-change:transform;font-size:clamp(22px,3vw,34px);line-height:2.35;letter-spacing:.12em}
+.finale-lyrics p{margin:0;white-space:nowrap}
+.finale-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;flex-shrink:0}
+.finale-actions button{width:auto;min-height:36px;font-size:13px;padding:9px 15px;text-align:center;color:#c6ccc3;border:1px solid #6a79744d;background:transparent;box-shadow:none}
+.finale-status{min-height:1.5em;font-size:12px;color:#aeb9b6;margin:9px 0 0}
+.finale-credits{width:min(100%,670px);margin:auto;overflow:auto;padding:12px 0 24px}
+.finale-credits h2{font-size:clamp(23px,3.5vw,36px);letter-spacing:.09em;font-weight:400;line-height:1.6;margin:0}
+.finale-group{color:#d7b780;font-size:clamp(19px,2.4vw,25px);letter-spacing:.25em;margin:10px 0 24px}
+.finale-team{display:grid;grid-template-columns:3em auto;gap:11px 24px;max-width:550px;margin:0 auto;text-align:left;font-size:clamp(15px,1.8vw,19px);line-height:1.75}
+.finale-team dt{color:#a5b4ad}.finale-team dd{margin:0;display:flex;flex-wrap:wrap;gap:0 1em}.finale-name{white-space:nowrap}
+.finale-order-note{font-size:12px;color:#a5b4ad;margin:12px 0 0}
+.finale-guidance{display:flex;justify-content:center;gap:26px;font-size:16px;line-height:1.8;margin:28px 0 0}.finale-guidance span{white-space:nowrap}
+.finale-ai{margin:24px 0 0;font-size:13px;color:#aeb9b6;letter-spacing:.06em}
+.finale-actions .finale-next{color:#e5cd9f;border-color:#ae97665c}
+.finale-closing{width:min(100%,800px);margin:auto;overflow:auto;padding:24px 0}
+.finale-end-title{margin:24px 0 18px;font-size:clamp(34px,6vw,68px);font-weight:400;line-height:1.5;letter-spacing:.06em}
+.finale-end-note{color:#b0bcb5;font-size:14px;letter-spacing:.15em;margin:0 0 48px}
+.finale-menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:460px;margin:auto}
+.finale-menu button{width:100%;min-height:46px;padding:10px;font-size:15px;text-align:center;box-shadow:none}
+@media(max-width:600px){.finale{padding:72px 20px 20px}.finale-window{margin:18px 0}.finale-lyrics{font-size:22px;letter-spacing:.05em}.finale-team{gap:13px 15px;font-size:16px}.finale-group{margin-bottom:24px}.finale-ai{margin-top:24px}}
+@media(max-height:570px){.finale{padding-top:60px}.finale-credits{padding:0 0 12px}.finale-group{margin:4px 0 12px}.finale-team{gap:4px 20px;font-size:15px}.finale-ai{margin-top:14px}.finale-title{margin-top:6px}}
 </style>
 </head>
 <body>
@@ -521,6 +578,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
 <img class="lamp-object" id="lamp-object" src="./assets/props/feigong-lamp-lit.webp" alt="费巩灯示意图" hidden>
 <button id="school-sign" class="school-sign" type="button" aria-label="拖动校牌两端扶正，也可按左右方向键调整" hidden><img src="./assets/images/IMG-45.webp" alt="国立浙江大学校牌" draggable="false"></button>
 <div id="book-rescue" role="group" aria-label="拖动书箱放上高处石台" hidden></div>
+<div id="packing-stage" role="group" aria-label="把行李放到下铺，把书籍放到书桌" hidden></div>
 <div class="map-caption" id="map-caption" hidden>杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭</div>
 </section>
 <section id="route-map" aria-label="西行路线地图" hidden>
@@ -552,6 +610,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
 <dialog class="dialog" id="restart-dialog" aria-labelledby="restart-title"><div class="dialog-head"><h2 id="restart-title">重新启程</h2><button data-close="restart-dialog">继续故事</button></div><p class="empty">重新开始会重置地图、选择和手账，并覆盖自动存档。手动存档会保留。</p><div class="confirm-actions"><button id="cancel-restart">留在这一页</button><button id="confirm-restart">确认重新开始</button></div></dialog>
 <dialog class="dialog" id="save-dialog" aria-labelledby="save-title"><div class="dialog-head"><h2 id="save-title">存档与继续</h2><button data-close="save-dialog">返回</button></div><div id="save-content"></div></dialog>
 <dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><div class="review-scene"><img id="review-image" alt="回顾场景"><div id="review-anthem-gallery" class="anthem-gallery" role="group" aria-label="校歌曲谱三页并排" hidden></div><img id="review-school-sign" src="./assets/images/IMG-45.webp" alt="" hidden></div><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
+<section id="finale" class="finale" aria-label="校歌与制作名单" tabindex="-1" hidden></section>
 <noscript><p style="padding:30px;font-size:22px">请开启浏览器的 JavaScript 功能，即可开始这段故事。</p></noscript>
 <dialog class="dialog" id="route-image-dialog" aria-labelledby="route-image-title"><div class="dialog-head"><h2 id="route-image-title">第一章 · 西迁路线示意图</h2><button data-close="route-image-dialog" type="button">返回地图</button></div><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图"></dialog>
 <script type="application/json" id="story-data">{
@@ -829,8 +888,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
       "date": "1937 年 9 月 21 日",
       "bg": "IMG-30",
       "type": "action",
-      "text": "放好行李，把书本留在伸手能拿到的地方。这里将是你暂时的家。",
-      "button": "放好行李",
+      "text": "把行李拖到左侧下铺，把书籍拖到右侧书桌。先放哪一件都可以。\n\n这里将是你暂时的家。",
       "next": "scene-020"
     },
     {
@@ -2097,7 +2155,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校舍废墟",
       "date": "1939 年 2 月 5 日",
-      "bg": "IMG-13",
+      "bg": "IMG-52",
       "type": "choice",
       "text": "校舍尽毁，有教授提议停课一月。你选择参与哪一件事？",
       "choices": [
@@ -2191,7 +2249,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
       "date": "遵义办学期间",
       "bg": "IMG-14",
       "type": "typo",
-      "text": "替《浙大日刊》的校样挑一个错字：\n\n“国难党头”\n\n请点击其中印错的字。",
+      "text": "校对《青年与建国》这张校样。灯光只能照见中心，请先找出可见的两处错字。",
       "next": "scene-100"
     },
     {
@@ -2556,9 +2614,9 @@ body[data-scene-transition] .story-panel{cursor:wait}
     {
       "id": "scene-124",
       "chapter": "第五章 · 东方剑桥",
-      "location": "湄潭 · 夜街",
+      "location": "遵义 · 中正桥",
       "date": "1945 年 9 月 5 日",
-      "bg": "IMG-16",
+      "bg": "IMG-53",
       "type": "text",
       "text": "9 月 5 日，竺可桢与家人在遵义中正桥边留影。",
       "speaker": "字幕",
@@ -2780,7 +2838,7 @@ body[data-scene-transition] .story-panel{cursor:wait}
   ],
   "endings": {
     "qiushi": {
-      "title": "真结局 · 求是",
+      "title": "结局 · 求是",
       "text": "何九章：“先生们让我送你一句话——你这趟没白来。书在，人在，‘是’也在。”\n\n他把灯放进你手里：“带走吧，它认你。”\n\n白光起时，你听见全队列队唱校歌，唱的是送别的调子。"
     },
     "library": {
@@ -2855,6 +2913,7 @@ const files={
  inspire:'背景音乐/solvikmusic-epic-inspiring-611151.mp3',
  tragic:'背景音乐/jonasblakewood-epic-epic-music-562863.mp3',
  anthem:'校歌/a2ebdf90-3d5c-4d6a-8aa5-e3d26c650bb8.mp3',
+ anthemInstrumental:'校歌/d37043bc-044d-4e89-81b2-0911975669f2.wav',
  click:'按钮/dragon-studio-button-press-382713.mp3',
  page:'翻书声/creatorshome-turn-a-page-336933.mp3',
  shutter:'相机转场/dragon-studio-camera-shutter-effect-390310.mp3',
@@ -2862,13 +2921,14 @@ const files={
  siren:'防空警报/lazychillzone-air-raid-siren-225303.mp3',
  rain:'雨声/boons_freak-rain-sound-188158.mp3',
  fireworks:'胜利庆祝/alex_jauk-firecrackers-178799.mp3',
+ sob:'哭/小女孩抽泣声音效_爱给网_aigei_com.mp3',
  keyboard:'pc_keyboard.mp3'
 };
-const cues={"start":{"music":null,"volume":0.2},"scene-002":{"music":null,"volume":0.2},"interaction-1":{"music":"history","volume":0.15},"scene-004":{"music":"history","volume":0.05},"scene-005":{"music":null,"volume":0.2,"cut":true,"fx":["shutter"]},"chapter1-start":{"music":"books","volume":0.25,"fx":["cannon"]},"scene-007":{"music":"books","volume":0.22},"scene-008":{"music":"books","volume":0.22},"interaction-2":{"music":"books","volume":0.22},"scene-010":{"music":"history","volume":0.2},"scene-011":{"music":"history","volume":0.2},"scene-012":{"music":"history","volume":0.2},"scene-013":{"music":"history","volume":0.2},"interaction-3":{"music":"history","volume":0.2},"scene-015":{"music":"history","volume":0.2},"name-confirm":{"music":"history","volume":0.2},"scene-017":{"music":"history","volume":0.2},"scene-018":{"music":"piano","volume":0.2},"interaction-4":{"music":"piano","volume":0.2},"scene-020":{"music":"piano","volume":0.2,"fx":["cannon"]},"scene-021":{"music":null,"volume":0.2,"cut":true},"chapter2-news":{"music":"cinema","volume":0.22,"fx":["cannon","siren"]},"chapter2-start":{"music":"cinema","volume":0.22},"scene-023":{"music":"piano","volume":0.2},"scene-024":{"music":"piano","volume":0.2},"scene-025":{"music":"piano","volume":0.03},"scene-026":{"music":"piano","volume":0.03},"scene-027":{"music":"piano","volume":0.03},"scene-028":{"music":"piano","volume":0.03},"scene-029":{"music":"piano","volume":0.03},"scene-030":{"music":"piano","volume":0.03},"scene-031":{"music":"piano","volume":0.03},"scene-032":{"music":"piano","volume":0.03},"scene-033":{"music":"piano","volume":0.03},"scene-034":{"music":"piano","volume":0.03},"scene-035":{"music":"piano","volume":0.03},"scene-036":{"music":"piano","volume":0.03},"scene-036-pause":{"music":"piano","volume":0.03},"scene-037":{"music":"piano","volume":0.4},"scene-038":{"music":"piano","volume":0.4},"scene-039":{"music":"piano","volume":0.4},"scene-040":{"music":"piano","volume":0.4},"scene-041":{"music":null,"volume":0.2,"cut":true,"fx":["siren"]},"scene-042":{"music":"piano","volume":0.22},"scene-043":{"music":"piano","volume":0.22},"scene-044":{"music":"books","volume":0.2},"scene-045":{"music":"books","volume":0.2},"scene-046":{"music":"books","volume":0.2},"choice-1":{"music":"books","volume":0.2},"scene-048":{"music":"books","volume":0.12,"fx":["siren"]},"scene-049":{"music":"books","volume":0.12},"scene-050":{"music":"tragic","volume":0.2},"scene-051":{"music":"tragic","volume":0.2},"scene-052":{"music":"tragic","volume":0.2},"scene-053":{"music":"tragic","volume":0.2},"choice-2":{"music":"tragic","volume":0.03},"choice2-join-reply":{"music":"tragic","volume":0.2},"choice2-join-departure":{"music":"tragic","volume":0.2},"scene-055":{"music":"cinema","volume":0.6,"fx":["shutter"],"settle":0.2},"chapter3-start":{"music":"history","volume":0.2},"scene-057":{"music":"piano","volume":0.2},"interaction-5":{"music":"piano","volume":0.2},"scene-059":{"music":"inspire","volume":0.25},"scene-060":{"music":"inspire","volume":0.25},"scene-061":{"music":"inspire","volume":0.25},"scene-062":{"music":"inspire","volume":0.25},"interaction-6":{"music":"inspire","volume":0.25},"scene-064":{"music":"inspire","volume":0.25},"scene-065":{"music":"piano","volume":0.2},"scene-066":{"music":"piano","volume":0.2},"chengjiang-xiaoman-looks-up":{"music":"piano","volume":0.2},"scene-067":{"music":"piano","volume":0.2},"chengjiang-offer-school":{"music":"piano","volume":0.2},"scene-068":{"music":"piano","volume":0.2},"chengjiang-grip-broom":{"music":"piano","volume":0.2},"scene-069":{"music":"piano","volume":0.2},"scene-070":{"music":"piano","volume":0.2},"chengjiang-hold-sleeve":{"music":"piano","volume":0.2},"scene-071":{"music":"piano","volume":0.2},"scene-072":{"music":"piano","volume":0.04},"scene-073":{"music":"piano","volume":0.04},"protect-branch":{"music":"piano","volume":0.04},"protect-rain":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"interaction-7":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"scene-077":{"music":"books","volume":0.2},"chapter4-start":{"music":"cinema","volume":0.2,"fx":["cannon","siren"]},"chapter4-he-narration":{"music":"cinema","volume":0.2},"scene-079":{"music":"history","volume":0.18},"scene-080":{"music":"history","volume":0.18},"choice-3":{"music":"history","volume":0.03},"scene-082":{"music":"inspire","volume":0.25},"scene-083":{"music":"inspire","volume":0.25},"scene-084":{"music":"inspire","volume":0.25},"interaction-8":{"music":"inspire","volume":0.25},"anthem-meeting-context":{"music":"inspire","volume":0.25},"scene-086":{"music":"inspire","volume":0.25},"scene-087":{"music":"piano","volume":0.05},"scene-088":{"music":"piano","volume":0.05},"scene-089":{"music":"piano","volume":0.05},"scene-090":{"music":"piano","volume":0.05},"scene-091":{"music":"anthem","volume":0.3},"scene-092":{"music":"cinema","volume":0.2,"fx":["siren","cannon"],"bombing":true},"scene-093":{"music":null,"volume":0.2,"cut":true},"scene-094":{"music":null,"volume":0.2,"cut":true},"choice-4":{"music":null,"volume":0.2,"cut":true},"chapter5-start":{"music":"history","volume":0.22},"audit-guizhou-hezhi":{"music":"history","volume":0.22},"scene-097":{"music":"history","volume":0.22},"scene-098":{"music":"piano","volume":0.2},"interaction-9":{"music":"piano","volume":0.2},"scene-100":{"music":"piano","volume":0.2},"scene-101":{"music":"piano","volume":0.2},"scene-102":{"music":null,"volume":0.2,"cut":true},"scene-103":{"music":"piano","volume":0.2},"scene-104":{"music":"piano","volume":0.2},"scene-105":{"music":"piano","volume":0.2},"interaction-10":{"music":"piano","volume":0.2},"scene-107":{"music":"piano","volume":0.45},"scene-108":{"music":"piano","volume":0.45},"scene-109":{"music":"inspire","volume":0.45},"scene-110":{"music":"inspire","volume":0.45},"scene-111":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"scene-112":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-future-memory":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"choice-5":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-stop":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-silent":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-lift-case":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-silent-reply":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-gone":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-117":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.35,"delay":650},"scene-118":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.3},"scene-119":{"music":"inspire","volume":0.8,"ambient":"fireworks","ambientVolume":0.25},"scene-120":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-121":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-122":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-123":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-124":{"music":"inspire","volume":0.08,"fx":["shutter"]},"chapter6-start":{"music":"anthem","volume":0.45},"interaction-11":{"music":"anthem","volume":0.45},"scene-127":{"music":"anthem","volume":0.45},"montage":{"music":"piano","volume":0.6},"ending":{"music":"piano","volume":0.2},"audit-farewell-chase":{"music":"piano","volume":0.2},"scene-130":{"music":"piano","volume":0.2},"scene-131":{"music":"piano","volume":0.2},"scene-132":{"music":"history","volume":0.2,"fx":["page"]},"scene-133":{"music":"history","volume":0.2,"fx":["page"]},"scene-134":{"music":"history","volume":0.2,"fx":["page"]},"scene-135":{"music":"history","volume":0.2,"fx":["page"]},"scene-136":{"music":"history","volume":0.2,"fx":["page"]},"scene-137":{"music":null,"volume":0.2,"cut":true},"scene-138":{"music":null,"volume":0.2,"cut":true},"scene-139":{"music":null,"volume":0.2,"fx":["page"]},"scene-140":{"music":"piano","volume":0.08},"scene-141":{"music":"piano","volume":0.08},"reflection":{"music":"anthem","volume":0.8},"scene-002-page-2":{"music":null,"volume":0.2},"chapter1-start-page-2":{"music":"books","volume":0.25},"scene-010-page-2":{"music":"history","volume":0.2},"scene-010-page-3":{"music":"history","volume":0.2},"scene-018-page-2":{"music":"piano","volume":0.2},"chapter2-start-page-2":{"music":"cinema","volume":0.22},"scene-027-page-2":{"music":"piano","volume":0.03},"scene-031-page-2":{"music":"piano","volume":0.03},"scene-031-page-3":{"music":"piano","volume":0.03},"scene-032-page-2":{"music":"piano","volume":0.03},"scene-039-page-2":{"music":"piano","volume":0.4},"scene-044-page-2":{"music":"books","volume":0.2},"scene-049-page-2":{"music":"books","volume":0.12},"scene-050-page-2":{"music":"tragic","volume":0.2},"scene-053-page-2":{"music":"tragic","volume":0.2},"choice2-join-departure-page-2":{"music":"tragic","volume":0.2},"scene-059-page-2":{"music":"inspire","volume":0.25},"scene-061-page-2":{"music":"inspire","volume":0.25},"scene-079-page-2":{"music":"history","volume":0.18},"choice-3-chen-feedback-page-2":{"music":"history","volume":0.03},"scene-087-page-2":{"music":"piano","volume":0.05},"scene-090-page-2":{"music":"piano","volume":0.05},"scene-098-page-2":{"music":"piano","volume":0.2},"fei-gone-page-2":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-123-page-2":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-127-page-2":{"music":"anthem","volume":0.45},"scene-110-page-2":{"music":"inspire","volume":0.45}};
+const cues={"start":{"music":null,"volume":0.2},"scene-002":{"music":null,"volume":0.2},"scene-002-page-2":{"music":null,"volume":0.2},"interaction-1":{"music":"history","volume":0.15},"scene-004":{"music":"history","volume":0.05},"scene-005":{"music":null,"volume":0.2,"cut":true,"fx":["shutter"]},"chapter1-start":{"music":"books","volume":0.25,"fx":["cannon"]},"chapter1-start-page-2":{"music":"books","volume":0.25,"fx":["cannon"]},"scene-007":{"music":"books","volume":0.22},"scene-008":{"music":"books","volume":0.22},"interaction-2":{"music":"books","volume":0.22},"scene-010":{"music":"books","volume":0.22},"scene-010-page-2":{"music":"books","volume":0.22},"scene-010-page-3":{"music":"books","volume":0.22},"scene-011":{"music":"books","volume":0.22},"scene-012":{"music":"books","volume":0.22},"scene-013":{"music":"books","volume":0.22},"interaction-3":{"music":"books","volume":0.22},"scene-015":{"music":"books","volume":0.22},"name-confirm":{"music":"books","volume":0.22},"scene-017":{"music":"books","volume":0.22},"scene-018":{"music":"books","volume":0.22},"scene-018-page-2":{"music":"books","volume":0.22},"interaction-4":{"music":"books","volume":0.22},"scene-020":{"music":"books","volume":0.22,"fx":["cannon"]},"scene-021":{"music":"books","volume":0.22},"chapter2-news":{"music":"cinema","volume":0.22,"fx":["cannon"]},"chapter2-start":{"music":"cinema","volume":0.22},"chapter2-start-page-2":{"music":"cinema","volume":0.22},"scene-023":{"music":"piano","volume":0.2},"scene-024":{"music":"piano","volume":0.2},"scene-025":{"music":"piano","volume":0.2,"ambient":"sob","ambientVolume":0.08},"scene-026":{"music":"piano","volume":0.2,"ambient":"sob","ambientVolume":0.08},"scene-027":{"music":"piano","volume":0.2,"ambient":"sob","ambientVolume":0.08},"scene-027-page-2":{"music":"piano","volume":0.2,"ambient":"sob","ambientVolume":0.08},"scene-028":{"music":"piano","volume":0.2},"scene-029":{"music":"piano","volume":0.2},"scene-030":{"music":"piano","volume":0.2},"scene-031":{"music":"piano","volume":0.2},"scene-031-page-2":{"music":"piano","volume":0.2},"scene-031-page-3":{"music":"piano","volume":0.2},"scene-032":{"music":"piano","volume":0.2},"scene-032-page-2":{"music":"piano","volume":0.2},"scene-033":{"music":"piano","volume":0.2},"scene-034":{"music":"piano","volume":0.2},"scene-035":{"music":"piano","volume":0.2},"scene-036":{"music":"piano","volume":0.2},"scene-036-pause":{"music":"piano","volume":0.2},"scene-037":{"music":"piano","volume":0.2},"scene-038":{"music":"piano","volume":0.2},"scene-039":{"music":"piano","volume":0.2},"scene-039-page-2":{"music":"piano","volume":0.2},"scene-040":{"music":"piano","volume":0.2},"scene-041":{"music":"piano","volume":0.2},"scene-042":{"music":"piano","volume":0.2},"scene-043":{"music":"piano","volume":0.2},"scene-044":{"music":"piano","volume":0.2},"scene-044-page-2":{"music":"piano","volume":0.2},"scene-045":{"music":"piano","volume":0.2},"scene-046":{"music":"piano","volume":0.2},"choice-1":{"music":"piano","volume":0.2},"scene-048":{"music":"piano","volume":0.2},"scene-049":{"music":"piano","volume":0.2},"scene-049-page-2":{"music":"piano","volume":0.2},"scene-050":{"music":"tragic","volume":0.2},"scene-050-page-2":{"music":"tragic","volume":0.2},"scene-051":{"music":"tragic","volume":0.2},"scene-052":{"music":"tragic","volume":0.2},"scene-053":{"music":"tragic","volume":0.2},"scene-053-page-2":{"music":"tragic","volume":0.2},"choice-2":{"music":"tragic","volume":0.18},"choice2-join-reply":{"music":"tragic","volume":0.18},"choice2-join-departure":{"music":"tragic","volume":0.18},"choice2-join-departure-page-2":{"music":"tragic","volume":0.18},"scene-055":{"music":"tragic","volume":0.2,"fx":["shutter"]},"chapter3-start":{"music":"inspire","volume":0.25},"scene-057":{"music":"inspire","volume":0.25},"interaction-5":{"music":"inspire","volume":0.25},"scene-059":{"music":"inspire","volume":0.25},"scene-059-page-2":{"music":"inspire","volume":0.25},"scene-060":{"music":"inspire","volume":0.25},"scene-061":{"music":"inspire","volume":0.25},"scene-061-page-2":{"music":"inspire","volume":0.25},"scene-062":{"music":"inspire","volume":0.25},"interaction-6":{"music":"inspire","volume":0.25},"scene-064":{"music":"inspire","volume":0.25},"scene-065":{"music":"inspire","volume":0.25},"scene-066":{"music":"inspire","volume":0.25},"chengjiang-xiaoman-looks-up":{"music":"inspire","volume":0.25},"scene-067":{"music":"inspire","volume":0.25},"chengjiang-offer-school":{"music":"inspire","volume":0.25},"scene-068":{"music":"inspire","volume":0.25},"chengjiang-grip-broom":{"music":"inspire","volume":0.25},"scene-069":{"music":"inspire","volume":0.25},"scene-070":{"music":"inspire","volume":0.25},"chengjiang-hold-sleeve":{"music":"inspire","volume":0.25},"scene-071":{"music":"inspire","volume":0.25},"scene-072":{"music":"piano","volume":0.16},"scene-073":{"music":"piano","volume":0.16},"protect-branch":{"music":"piano","volume":0.16},"protect-rain":{"music":"books","volume":0.18,"ambient":"rain","ambientVolume":0.05},"interaction-7":{"music":"books","volume":0.18,"ambient":"rain","ambientVolume":0.05},"scene-077":{"music":"books","volume":0.18},"chapter4-start":{"music":"history","volume":0.18,"fx":["cannon"]},"chapter4-he-narration":{"music":"history","volume":0.18},"scene-079":{"music":"history","volume":0.18},"scene-079-page-2":{"music":"history","volume":0.18},"scene-080":{"music":"history","volume":0.18},"choice-3":{"music":"history","volume":0.18},"choice-3-chen-feedback-page-2":{"music":"history","volume":0.18},"scene-082":{"music":"history","volume":0.18},"scene-083":{"music":"history","volume":0.18},"scene-084":{"music":"history","volume":0.18},"interaction-8":{"music":"history","volume":0.18},"anthem-meeting-context":{"music":"history","volume":0.18},"scene-086":{"music":"history","volume":0.18},"scene-087":{"music":"history","volume":0.18},"scene-087-page-2":{"music":"history","volume":0.18},"scene-088":{"music":"history","volume":0.18},"scene-089":{"music":"history","volume":0.18},"scene-090":{"music":"history","volume":0.18},"scene-090-page-2":{"music":"history","volume":0.18},"scene-091":{"music":"history","volume":0.18},"scene-092":{"music":"tragic","volume":0.18,"bombing":true},"scene-093":{"music":"tragic","volume":0.18},"scene-094":{"music":"tragic","volume":0.18},"choice-4":{"music":"tragic","volume":0.18},"chapter5-start":{"music":"history","volume":0.22},"audit-guizhou-hezhi":{"music":"history","volume":0.22},"scene-097":{"music":"history","volume":0.22},"scene-098":{"music":"piano","volume":0.18},"scene-098-page-2":{"music":"piano","volume":0.18},"interaction-9":{"music":"piano","volume":0.18},"scene-100":{"music":"piano","volume":0.18},"scene-101":{"music":"piano","volume":0.18},"scene-102":{"music":"piano","volume":0.18},"scene-103":{"music":"piano","volume":0.18},"scene-104":{"music":"piano","volume":0.18},"scene-105":{"music":"piano","volume":0.18},"interaction-10":{"music":"piano","volume":0.18},"scene-107":{"music":"piano","volume":0.22},"scene-108":{"music":"piano","volume":0.22},"scene-109":{"music":"inspire","volume":0.24},"scene-110":{"music":"inspire","volume":0.24},"scene-110-page-2":{"music":"inspire","volume":0.24},"scene-111":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"scene-112":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"audit-fei-future-memory":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"choice-5":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"fei-stop":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"fei-silent":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"audit-fei-lift-case":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"audit-fei-silent-reply":{"music":"piano","volume":0.18,"ambient":"rain","ambientVolume":0.04},"fei-gone":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.08},"fei-gone-page-2":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.08},"scene-117":{"music":"inspire","volume":0.26,"ambient":"fireworks","ambientVolume":0.08},"scene-118":{"music":"inspire","volume":0.26,"ambient":"fireworks","ambientVolume":0.08},"scene-119":{"music":"inspire","volume":0.26,"ambient":"fireworks","ambientVolume":0.08},"scene-120":{"music":"inspire","volume":0.24,"ambient":"fireworks","ambientVolume":0.05},"scene-121":{"music":"inspire","volume":0.24,"ambient":"fireworks","ambientVolume":0.05},"scene-122":{"music":"inspire","volume":0.24,"ambient":"fireworks","ambientVolume":0.05},"scene-123":{"music":"inspire","volume":0.24,"ambient":"fireworks","ambientVolume":0.05},"scene-123-page-2":{"music":"inspire","volume":0.24,"ambient":"fireworks","ambientVolume":0.05},"scene-124":{"music":"inspire","volume":0.22,"fx":["shutter"]},"chapter6-start":{"music":"anthemInstrumental","volume":0.3},"interaction-11":{"music":"anthemInstrumental","volume":0.3},"scene-127":{"music":"anthemInstrumental","volume":0.3},"scene-127-page-2":{"music":"anthemInstrumental","volume":0.3},"montage":{"music":"anthemInstrumental","volume":0.3},"ending":{"music":"anthemInstrumental","volume":0.3},"audit-farewell-chase":{"music":"anthemInstrumental","volume":0.3},"scene-130":{"music":"anthemInstrumental","volume":0.3},"scene-131":{"music":"anthemInstrumental","volume":0.3},"scene-132":{"music":"anthemInstrumental","volume":0.3,"fx":["page"]},"scene-133":{"music":"anthemInstrumental","volume":0.3,"fx":["page"]},"scene-134":{"music":"anthemInstrumental","volume":0.3,"fx":["page"]},"scene-135":{"music":"anthemInstrumental","volume":0.3,"fx":["page"]},"scene-136":{"music":"anthemInstrumental","volume":0.3,"fx":["page"]},"scene-137":{"music":"piano","volume":0.16},"scene-138":{"music":"piano","volume":0.16},"scene-139":{"music":"piano","volume":0.16},"scene-140":{"music":"piano","volume":0.16},"scene-141":{"music":"piano","volume":0.16},"reflection":{"music":"piano","volume":0.16}};
 const $=id=>document.getElementById(id),key='qiushi-xixing:audio:v1';
 let settings={muted:false,volume:.7};
 try{const saved=JSON.parse(localStorage.getItem(key));if(saved&&typeof saved.muted==='boolean'&&Number.isFinite(saved.volume))settings={muted:saved.muted,volume:Math.max(0,Math.min(1,saved.volume))};}catch(_){}
-let context,master,unlocked=false,desired={},nodeKey='',sceneToken=0,sequence=0;
+let context,master,unlocked=false,desired={},nodeKey='',sceneToken=0,sequence=0,finaleAudio=null;
 const fileProtocol=location.protocol==='file:';
 const channels={music:null,ambient:null},live=new Set(),effects=new Set(),timers=new Set();
 let keyboardChannel=null;
@@ -2889,7 +2949,7 @@ function dispose(r){
  if(!r||r.disposed)return;r.disposed=true;clearTimeout(r.cleanup);cancelAnimationFrame(r.fade);
  r.audio.pause();r.audio.removeAttribute('src');r.audio.load();r.source?.disconnect();r.gain?.disconnect();live.delete(r);effects.delete(r);
 }
-function ramp(r,target,seconds=1.5){
+function ramp(r,target,seconds=3){
  if(!r||r.disposed)return;
  // Web Audio gain works on mobile browsers where media.volume may be fixed.
  if(r.gain){const g=r.gain.gain;g.cancelScheduledValues(context.currentTime);g.setValueAtTime(g.value,context.currentTime);g.linearRampToValueAtTime(target,context.currentTime+seconds);}
@@ -2911,26 +2971,39 @@ function play(r){
  const result=r.audio.play();
  if(result)result.catch(error=>{if(r.disposed||error.name==='AbortError')return;if(error.name==='NotAllowedError'){status('浏览器暂未允许播放，请点击“声音”按钮重试。');}else{status('音频暂不可用，可继续阅读，稍后通过声音按钮重试。');console.warn('音频播放失败：',r.id,error.name);} });
 }
-function switchChannel(name,id,volume,cut=false,rate=1){
+function captureFinale(){
+ const r=channels.music;if(!finaleAudio||!r||r.disposed||r.audio.loop||r.id!=='anthem')return;
+ if(Number.isFinite(r.audio.duration)&&r.audio.duration>0)finaleAudio.duration=r.audio.duration;
+ if(!r.seeking&&Number.isFinite(r.audio.currentTime))finaleAudio.time=r.audio.currentTime;
+ if(r.audio.ended)finaleAudio.finished=true;
+}
+function switchChannel(name,id,volume,cut=false,rate=1,loop=true){
  const previous=channels[name];
- if(!enabled()||!id){channels[name]=null;retire(previous,cut?0:1.5);return;}
- if(previous&&!previous.disposed&&previous.id===id&&previous.rate===rate){ramp(previous,volume);if(previous.audio.paused)play(previous);return;}
+ if(!enabled()||!id){channels[name]=null;retire(previous,cut?0:3);return;}
+ if(previous&&!previous.disposed&&previous.id===id&&previous.rate===rate&&previous.audio.loop===loop){ramp(previous,volume);if(name==='music'&&finaleAudio&&(finaleAudio.paused||finaleAudio.finished))previous.audio.pause();else if(previous.audio.paused)play(previous);return;}
  // Bound overlap even if the player skips quickly through many scenes.
  for(const r of [...live])if(r.channel===name&&r!==previous)dispose(r);
- retire(previous,cut?0:1.5);
- const r=make(id,true,rate);r.channel=name;channels[name]=r;play(r);ramp(r,volume,cut?0:1.5);
+ retire(previous,cut?0:3);
+ const r=make(id,loop,rate);r.channel=name;channels[name]=r;
+ if(name==='music'&&finaleAudio){
+  r.seeking=true;r.audio.preload='auto';
+  const resume=()=>{if(r.disposed||channels.music!==r||!finaleAudio)return;if(Number.isFinite(r.audio.duration)&&r.audio.duration>0)finaleAudio.duration=r.audio.duration;r.audio.currentTime=Math.min(finaleAudio.time,finaleAudio.duration);r.seeking=false;if(enabled()&&!finaleAudio.paused&&!finaleAudio.finished)play(r);};
+  r.audio.addEventListener('loadedmetadata',resume,{once:true});if(r.audio.readyState>=1)resume();
+ }else play(r);
+ ramp(r,volume,cut?0:3);
 }
 function sync(cut=false){
- switchChannel('music',desired.music,desired.volume??.2,cut||desired.cut,desired.rate||1);
+ captureFinale();
+ switchChannel('music',desired.music,desired.volume??.2,cut||desired.cut,desired.rate||1,!finaleAudio);
  switchChannel('ambient',desired.ambient,desired.ambientVolume??.2,cut||desired.cut);
 }
-function stop(){for(const r of [...live])dispose(r);channels.music=channels.ambient=null;}
+function stop(){captureFinale();for(const r of [...live])dispose(r);channels.music=channels.ambient=null;}
 function fx(id,volume){
  if(!enabled()||!files[id])return;
  // Keep UI effects short and avoid stacks after rapid clicking.
  for(const r of [...effects])if(r.id===id)dispose(r);
  if(effects.size>=4)dispose(effects.values().next().value);
- const levels={click:.16,page:.22,shutter:.55,cannon:.3,siren:.24};
+ const levels={click:.16,page:.12,shutter:.2,cannon:.1,siren:.06};
  const r=make(id,false);effects.add(r);play(r);ramp(r,volume??levels[id]??.25,0);
  r.audio.addEventListener('ended',()=>dispose(r),{once:true});
  r.cleanup=setTimeout(()=>dispose(r),['siren','cannon'].includes(id)?7000:2500);
@@ -2954,13 +3027,13 @@ function typing(active){
  }
 }
 function change(cue,keyValue,entry=true){
+ if(keyValue!=='finale')finaleAudio=null;
  const fresh=nodeKey!==keyValue;
  if(fresh){cancelCues();nodeKey=keyValue;}
  desired={...cue};
  if(fresh&&cue.delay&&enabled()){stop();schedule(()=>sync(),cue.delay);}else sync();
  if(fresh&&entry){
   for(const id of cue.fx||[])fx(id);
-  if(cue.bombing){schedule(()=>fx('cannon',.25),1500);schedule(()=>fx('cannon',.2),3200);schedule(()=>{desired={cut:true};cancelCues();sync(true);},4500);}
   if(cue.settle!==undefined)schedule(()=>{desired.volume=cue.settle;sync();},3000);
  }
 }
@@ -2991,12 +3064,23 @@ document.addEventListener('visibilitychange',()=>{
 window.addEventListener('pagehide',()=>{cancelCues();stopKeyboard();stop();});
 window.addEventListener('pageshow',()=>{if(enabled())sync();});
 globalThis.QiushiAudio={
- enter(n,state){const cue={...(cues[n.id]||{})};if(n.id==='interaction-10'&&state.lampLit)cue.volume=.45;if(n.id==='ending'&&state.ending==='qiushi')Object.assign(cue,{music:'anthem',volume:.6,rate:.9});change(cue,n.id);},
- title(){change({},'title',false);},map(){change({music:'history',volume:.15},'map',false);},
+ finaleStart(draft){stopKeyboard();stop();finaleAudio={time:draft.time||0,duration:146.207,paused:!!draft.paused,finished:draft.phase!=='lyrics'};change({music:'anthem',volume:.3},'finale',false);},
+ finaleTick(delta=0){
+  if(!finaleAudio)return null;captureFinale();
+  if(!document.hidden&&!finaleAudio.paused&&!finaleAudio.finished&&(settings.muted||settings.volume===0))finaleAudio.time=Math.min(finaleAudio.duration,finaleAudio.time+Math.max(0,Math.min(.25,delta)));
+  if(finaleAudio.time>=finaleAudio.duration)finaleAudio.finished=true;
+  const r=channels.music;return {...finaleAudio,blocked:!document.hidden&&!settings.muted&&settings.volume>0&&!finaleAudio.paused&&!finaleAudio.finished&&(!r||r.disposed||r.audio.paused)};
+ },
+ finalePause(paused){captureFinale();if(finaleAudio){finaleAudio.paused=paused;sync();}},
+ finaleFinish(){captureFinale();if(finaleAudio){finaleAudio.finished=true;finaleAudio.paused=true;channels.music?.audio.pause();}},
+ enter(n,state){const cue={...(cues[n.id]||{})};if(n.id==='interaction-10'&&state.lampLit)cue.volume=.22;change(cue,n.id);},
+ title(){change({},'title',false);},
+ // Maps keep the current score, including the anthem before the finale.
+ map(){change(desired.music?{music:desired.music,volume:desired.volume,rate:desired.rate}:{music:'history',volume:.15},'map',false);},
  exhibit(id){if(id==='diary')fx('page');if(id==='map'){desired={music:'history',volume:.05};sync();}},
- lamp(){desired={music:'piano',volume:.45};sync();},
- montage(index,ending){desired={music:'piano',volume:ending==='anonymous'?.15:.6};sync();fx('page');fx('shutter',.2);},
- page(n,index,count){if(n?.id==='scene-092'&&count>1&&index===count-1){cancelCues();stopKeyboard();desired={cut:true};sync(true);}},fx,type(){typeTick();},typing
+ lamp(){desired={music:'piano',volume:.22};sync();},
+ montage(){desired={...cues.montage};sync();},
+ page(){},fx,type(){typeTick();},typing
 };
 updateUI();
 })();
@@ -3008,7 +3092,7 @@ const story=JSON.parse(document.getElementById('story-data').textContent);
 const nodes=new Map(story.nodes.map(n=>[n.id,n]));
 const C=globalThis.QiushiCore;
 const sound=globalThis.QiushiAudio;
-let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null, rescueClock=null, rescueDrag=null, mottoDrag=null, studyClock=null;
+let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playing=false, nameConfirmed=false, advanceAction=null, schoolSignDrag=null, rescueClock=null, rescueDrag=null, mottoDrag=null, studyClock=null, packingDrag=null, finaleClock=null;
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
@@ -3053,13 +3137,16 @@ function validSave(s){
  if(v.quiz&&(n.type!=='quiz'||!Number.isInteger(v.quiz.index)||v.quiz.index<0||v.quiz.index>=n.questions.length||!Array.isArray(v.quiz.answers)||v.quiz.answers.length!==n.questions.length||!v.quiz.answers.every((a,i)=>a===null||(Number.isInteger(a)&&a>=0&&a<n.questions[i].options.length))))return false;
  if(v.words&&(!Array.isArray(v.words)||v.words.length>2||!v.words.every(x=>['求','是','力','行','敦','品','格','致'].includes(x))))return false;
  if(v.reflection&&(!Array.isArray(v.reflection)||v.reflection.length!==2||!v.reflection.every(x=>typeof x==='string'&&x.length<=1000)))return false;
+ if(v.finale!==undefined){const f=v.finale;if(n.id!=='reflection'||!f||!['lyrics','credits','closing'].includes(f.phase)||!Number.isFinite(f.time)||f.time<0||f.time>3600||typeof f.paused!=='boolean')return false;}
+ if(v.finale?.wait!==undefined&&(v.finale.phase!=='credits'||!Number.isFinite(v.finale.wait)||v.finale.wait<0||v.finale.wait>8000))return false;
  if(v.draftName!==undefined&&(typeof v.draftName!=='string'||v.draftName.length>40))return false;
  if(v.montage!==undefined&&(!Number.isInteger(v.montage)||v.montage<0||v.montage>4))return false;
  if(v.rescue!==undefined){const r=v.rescue;if(n.id!=='interaction-7'||!r||typeof r.started!=='boolean'||!Number.isFinite(r.remaining)||r.remaining<0||r.remaining>12000||!Array.isArray(r.moved)||r.moved.length>4||new Set(r.moved).size!==r.moved.length||!r.moved.every(i=>Number.isInteger(i)&&i>=0&&i<4)||(!r.started&&(r.moved.length||r.remaining!==12000)))return false;if(r.settleRemaining!==undefined&&(!r.started||r.moved.length!==4||!Number.isFinite(r.settleRemaining)||r.settleRemaining<0||r.settleRemaining>1500))return false;}
+ if(v.packing!==undefined){const p=v.packing;if(n.id!=='interaction-4'||!p||!Array.isArray(p.placed)||p.placed.length>2||new Set(p.placed).size!==p.placed.length||!p.placed.every(id=>['luggage','books'].includes(id))||(p.wait!==undefined&&(p.placed.length!==2||!Number.isFinite(p.wait)||p.wait<0||p.wait>900)))return false;}
  if(v.motto?.order!==undefined&&(!Array.isArray(v.motto.order)||v.motto.order.length!==8||new Set(v.motto.order).size!==8||!v.motto.order.every(c=>['求','是','力','行','敦','品','格','致'].includes(c))))return false;
  if(v.motto!==undefined){const m=v.motto;if(n.id!=='interaction-8'||!m||!['arrange','silence','reason'].includes(m.phase)||typeof m.reason!=='string'||m.reason.length>300||(m.phase!=='arrange'&&(!Array.isArray(v.words)||v.words.length!==2))||(m.phase==='silence'&&v.words?.join('')!=='求是')||(m.wait!==undefined&&(!Number.isFinite(m.wait)||m.wait<0||m.wait>3000)))return false;}
- if(v.typo!==undefined){const t=v.typo;if(n.id!=='interaction-9'||!t||typeof t.done!=='boolean'||(t.wait!==undefined&&(!Number.isFinite(t.wait)||t.wait<0||t.wait>600||!t.done)))return false;}
- if(v.lamp!==undefined){const l=v.lamp;if(n.id!=='interaction-10'||!l||!['collect','light','proof'].includes(l.step)||!Array.isArray(l.found)||l.found.length>2||new Set(l.found).size!==l.found.length||!l.found.every(i=>i===0||i===1)||(l.step!=='proof'&&l.found.length)||(l.step==='proof'&&!g.lampLit)||(l.wait!==undefined&&(!Number.isFinite(l.wait)||l.wait<0||l.wait>900||l.step!=='proof'||l.found.length!==2)))return false;}
+ if(v.typo!==undefined){const t=v.typo;if(n.id!=='interaction-9'||!t||typeof t.done!=='boolean'||!proofViewValid(t)||(t.sheet!==undefined&&(t.sheet!=='youth'||!Array.isArray(t.found)||t.found.length>2||new Set(t.found).size!==t.found.length||!t.found.every(i=>i===0||i===1)||t.done!==(t.found.length===2)))||(t.wait!==undefined&&(!Number.isFinite(t.wait)||t.wait<0||t.wait>600||!t.done)))return false;}
+ if(v.lamp!==undefined){const l=v.lamp,total=l?.sheet==='youth'?3:2;if(n.id!=='interaction-10'||!l||!proofViewValid(l)||(l.sheet!==undefined&&l.sheet!=='youth')||!['collect','light','proof'].includes(l.step)||!Array.isArray(l.found)||l.found.length>total||new Set(l.found).size!==l.found.length||!l.found.every(i=>Number.isInteger(i)&&i>=0&&i<total)||(l.step!=='proof'&&l.found.length)||(l.step==='proof'&&!g.lampLit)||(l.wait!==undefined&&(!Number.isFinite(l.wait)||l.wait<0||l.wait>900||l.step!=='proof'||l.found.length!==total)))return false;}
  if(v.blackout!==undefined&&(n.id!=='scene-048'||!v.blackout||!Number.isFinite(v.blackout.elapsed)||v.blackout.elapsed<0||v.blackout.elapsed>3200))return false;
  if(v.flashShown!==undefined&&(!['scene-005','scene-137'].includes(n.id)||typeof v.flashShown!=='boolean'))return false;
  if(v.signAngle!==undefined&&(n.id!=='interaction-11'||!Number.isFinite(v.signAngle)||Math.abs(v.signAngle)>28))return false;
@@ -3145,7 +3232,7 @@ function openReview(index){
   const entry=cards[page];$('review-title').textContent='回顾 · '+stations[index].name;
   $('review-heading').textContent=chapterNames[index];
   const root=$('review-body');root.replaceChildren();$('review-school-sign').hidden=true;renderAnthemGallery(entry?reviewBackground(entry):'',true);
-  if(entry){const bg=reviewBackground(entry);$('review-image').src=sceneImagePath(nodes.get(entry.nodeId),bg);$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
+  if(entry){const bg=reviewBackground(entry);$('review-image').src=sceneImagePath(nodes.get(entry.nodeId),bg,entry);$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44','IMG-53'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
   else root.append(el('p','review-text','这一站还没有留下记录。'));
   const nav=$('review-nav');nav.replaceChildren();
   const previous=btn('上一页',()=>{page--;draw();},'small-button');previous.disabled=page===0;
@@ -3235,7 +3322,7 @@ let blackoutClock=null;
 function renderAnthemGallery(bg,review=false){
 const gallery=$(review?'review-anthem-gallery':'anthem-gallery'),image=$(review?'review-image':'scene-image');
 const visible=['IMG-40','IMG-41','IMG-42'].includes(bg);gallery.hidden=!visible;image.hidden=visible;
-if(visible&&!gallery.children.length){for(const [i,id] of ['IMG-40','IMG-41','IMG-42'].entries()){const page=el('img');page.src='./assets/images/'+id+'.webp';page.alt='校歌曲谱 · 第'+(i+1)+'页';gallery.append(page);}}
+if(visible&&!gallery.children.length){for(const [i,id] of ['IMG-40','IMG-42','IMG-41'].entries()){const page=el('img');page.src='./assets/images/'+id+'.webp';page.alt='校歌曲谱 · 第'+(i+1)+'页';gallery.append(page);}}
 }
 function stopBlackout(){
 if(blackoutClock){clearInterval(blackoutClock.timer);blackoutClock=null;}
@@ -3266,11 +3353,12 @@ function playTimeFlash(n){
 if(!['scene-005','scene-137'].includes(n.id)||view.flashShown)return;
 view.flashShown=true;const flash=$('time-flash');flash.hidden=false;flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');
 }
-function clearTimer(){stopBlackout();clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
-function clearView(){stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+function clearTimer(){cancelPackingDrag();stopBlackout();clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
+function clearView(){hideFinale();clearPacking();stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src=sceneImagePath(n,bg);if(image.getAttribute('src')!==src)image.src=src;
 image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';renderAnthemGallery(bg);
-if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg))image.classList.add('framed');
+if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44','IMG-53'].includes(bg))image.classList.add('framed');
+if(n.id==='interaction-4'){if(view.phase==='feedback'||state.completedActions.includes('action:interaction-4'))image.src='./assets/props/packing-finished.webp';layoutPacking();}
 if(bg==='IMG-44')image.classList.add('school-sign-scene');
 if(bg==='IMG-49')image.classList.add('ceremony-scene');
 if(bg==='IMG-51')image.classList.add('cambridge-scene');
@@ -3287,7 +3375,7 @@ $('scene').classList.remove('flash','quake');
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
 function writeText(n){const sub=n.speaker==='字幕';if(n.speaker&&!sub){const speaker=n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker;content.append(el('p','speaker',speaker+(n.delivery==='inner'?' · 内心':'')));}if(n.direction)content.append(el('p','stage-direction',n.direction));const p=el('p',sub?'story-text subtitle':'story-text',n.text);p.tabIndex=-1;content.append(p);}
-function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){sound.fx('page');notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
+function apply(key,effects,journal){const changed=C.applyOnce(state,key,effects,journal);if(changed&&journal){notice.textContent='已写入手账 · '+text(journal.title);remember('journal:'+journal.id,journal.text,'手账 · '+journal.title);}return changed;}
 function readableText(value){
 return text(value).replace(/([。！？；][”’」』]?)(?![”’」』。！？；\n]|$)/g,'$1\n');
 }
@@ -3314,6 +3402,7 @@ const source=String(value||'');
 if(!source)return [''];
 const lines=source.split(/\n+/).filter(line=>line.trim());
 const pieces=[];
+const latinMeasure=/[A-Za-z]/.test(source)&&paragraph?latinLineMeasure(paragraph):null;
 let perLine=window.innerWidth<=600?18:36,limit=window.innerWidth<=600?90:180,maxLines=4;
 if(avail!==undefined){
   const m=storyMetrics(paragraph);
@@ -3322,6 +3411,15 @@ if(avail!==undefined){
   limit=Math.max(perLine,perLine*maxLines);
 }
 for(let line of lines){
+  if(latinMeasure&&/[A-Za-z]/.test(line)){
+    while(latinMeasure.width(line)>content.clientWidth){
+      const chars=Array.from(line);let lo=1,hi=chars.length;
+      while(lo<hi){const mid=Math.ceil((lo+hi)/2);if(latinMeasure.width(chars.slice(0,mid).join(''))<=content.clientWidth)lo=mid;else hi=mid-1;}
+      let cut=lo;for(let i=cut-1;i>=Math.floor(cut*.55);i--){if(/[，、；。！？\s]/.test(chars[i])){cut=i+1;break;}}
+      pieces.push(chars.slice(0,cut).join(''));line=chars.slice(cut).join('');
+    }
+    if(line)pieces.push(line);continue;
+  }
   while(Array.from(line).length>perLine){
     const chars=Array.from(line);let cut=perLine;
     for(let i=perLine-1;i>=Math.floor(perLine*.55);i--){if(/[，、；。！？\s]/.test(chars[i])){cut=i+1;break;}}
@@ -3332,10 +3430,16 @@ for(let line of lines){
 const pages=[];let page='',size=0,count=0;
 for(const piece of pieces){
   const pieceLen=Array.from(piece).length;
-  if(page&&(size+pieceLen>limit||count>=maxLines)){pages.push(page);page='';size=0;count=0;}
+  if(page&&((!latinMeasure&&size+pieceLen>limit)||count>=maxLines)){pages.push(page);page='';size=0;count=0;}
   page+=(page?'\n':'')+piece;size+=pieceLen;count++;
 }
 if(page)pages.push(page);return pages.length?pages:[''];
+}
+function latinLineMeasure(paragraph){
+const context=document.createElement('canvas').getContext('2d');if(!context)return null;
+const s=getComputedStyle(paragraph);context.font=[s.fontStyle,s.fontWeight,s.fontSize,s.fontFamily].join(' ');
+const spacing=parseFloat(s.letterSpacing)||0;
+return {width:value=>context.measureText(value).width+Array.from(value).length*spacing};
 }
 // Typewriter reveal: characters appear one by one; a click or keypress first completes, then advances.
 let typeState=null;
@@ -3425,7 +3529,7 @@ writeText(n);
 switch(n.type){
 case 'exhibits':showExhibits(n);break;
 case 'choice':showChoices(n);break;
-case 'action':{if(n.id==='interaction-10'){showLampInteraction(n);break;}if(n.id==='interaction-7'){showBookRescue(n);break;}if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
+case 'action':{if(n.id==='interaction-4'){showPacking(n);break;}if(n.id==='interaction-10'){showLampInteraction(n);break;}if(n.id==='interaction-7'){showBookRescue(n);break;}if(n.id==='interaction-11'){showSchoolSign(n);break;}const b=btn(n.button||'继续',()=>{remember('action:'+n.id,n.button||n.text,'当时的行动');apply('action:'+n.id,n.effects,n.journal);if(n.effects&&n.effects.lampLit){sound.lamp();setScene(n);feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);}else go(n.next);});b.dataset.action=n.id;controls.append(b);typeBody();break;}
 case 'nameConfirm':showNameConfirm(n);break;
 case 'quiz':showQuiz(n);break;
 case 'wordpick':showWords(n);break;
@@ -3653,6 +3757,74 @@ $('reading-hint').textContent='选好答案后进入下一题 · 三题完成后
 }
 draw();
 }
+// Room coordinates stay attached to the full illustration on every viewport.
+function packingItemLayout(id,placed){
+if(id==='luggage')return placed?{x:.22,y:.735,w:.30,h:.22}:{x:.572,y:.821,w:.17,h:.177};
+return placed?{x:.843,y:.487,w:.115,h:.125}:{x:.684,y:.846,w:.104,h:.158};
+}
+function packingTarget(id){return id==='luggage'?{x:.045,y:.59,w:.435,h:.285}:{x:.745,y:.405,w:.24,h:.185};}
+function packingArtworkBounds(width,height){const cover=width/height>=1.55&&width/height<=2.65,scale=(cover?Math.max:Math.min)(width/2730,height/1536),w=2730*scale,h=1536*scale;return {x:(width-w)/2,y:cover?height-h:(height-h)/2,width:w,height:h};}
+function layoutPacking(){
+if(current?.id!=='interaction-4')return;
+const scene=$('scene'),cover=scene.clientWidth/scene.clientHeight>=1.55&&scene.clientWidth/scene.clientHeight<=2.65;$('scene-image').style.setProperty('--packing-fit',cover?'cover':'contain');$('scene-image').style.setProperty('--packing-y',cover?'100%':'50%');
+const stage=$('packing-stage'),canvas=$('packing-canvas');if(stage.hidden||!canvas)return;
+const a=packingArtworkBounds(stage.clientWidth,stage.clientHeight);Object.assign(canvas.style,{left:a.x+'px',top:a.y+'px',width:a.width+'px',height:a.height+'px'});
+for(const item of canvas.querySelectorAll('.packing-item')){const p=packingItemLayout(item.dataset.item,view.packing?.placed.includes(item.dataset.item));Object.assign(item.style,{left:(p.x-p.w/2)*100+'%',top:(p.y-p.h/2)*100+'%',width:p.w*100+'%',height:p.h*100+'%'});}
+}
+function cancelPackingDrag(){
+const d=packingDrag;if(!d)return;packingDrag=null;d.item.classList.remove('dragging');
+const stage=$('packing-stage');if(stage.hasPointerCapture(d.id))stage.releasePointerCapture(d.id);
+stage.querySelectorAll('.packing-target').forEach(t=>t.classList.remove('drop-ready'));layoutPacking();
+}
+function clearPacking(){const stage=$('packing-stage');cancelPackingDrag();if(!stage.hidden)$('scene-image').hidden=false;stage.hidden=true;stage.replaceChildren();}
+function packingCanRun(){return current?.id==='interaction-4'&&studyCanRun()&&view.packing?.placed.length<2;}
+function finishPacking(){
+if(current?.id!=='interaction-4'||view.phase==='feedback'||view.packing?.placed.length!==2)return;
+const n=current;apply('action:'+n.id,n.effects,n.journal);remember('action:'+n.id,'把行李放在下铺，把书籍放到书桌。','安顿行李');
+$('scene-image').src='./assets/props/packing-finished.webp';feedback('行李安置好了，书本就在伸手能拿到的地方。',n.next);autoSave();
+}
+function placePackingItem(id){
+if(!packingCanRun()||!['luggage','books'].includes(id)||view.packing.placed.includes(id))return;
+cancelPackingDrag();finishTyping();view.packing.placed.push(id);if(view.packing.placed.length===2)view.packing.wait=900;
+showPacking(current,true);autoSave();
+}
+function packingDropAllowed(id,x,y,rect){const t=packingTarget(id);return x>=rect.left+rect.width*t.x&&x<=rect.left+rect.width*(t.x+t.w)&&y>=rect.top+rect.height*t.y&&y<=rect.top+rect.height*(t.y+t.h);}
+function releasePackingItem(event,cancelled){
+const d=packingDrag;if(!d||d.id!==event.pointerId)return;event.preventDefault();event.stopPropagation();
+const drop=!cancelled&&d.moved&&packingDropAllowed(d.item.dataset.item,event.clientX,event.clientY,$('packing-canvas').getBoundingClientRect()),id=d.item.dataset.item;
+cancelPackingDrag();if(drop)placePackingItem(id);
+}
+function showPacking(n,redraw=false){
+stopStudyClock();clearPacking();controls.replaceChildren();advanceAction=null;
+if(state.completedActions.includes('action:'+n.id)){$('scene-image').src='./assets/props/packing-finished.webp';feedback('行李安置好了，书本就在伸手能拿到的地方。',n.next);return;}
+const draft=view.packing??={placed:[]},stage=$('packing-stage'),canvas=el('div','packing-canvas');canvas.id='packing-canvas';
+const room=el('img','packing-room');room.alt='天目山宿舍，下铺在左，书桌在右';room.draggable=false;room.src=draft.placed.length===2?'./assets/props/packing-finished.webp':'./assets/props/packing-empty.webp';canvas.append(room);
+if(draft.placed.length<2)for(const id of ['luggage','books']){
+const placed=draft.placed.includes(id),label=id==='luggage'?'行李':'书籍',target=el('div','packing-target'),t=packingTarget(id);target.dataset.item=id;
+Object.assign(target.style,{left:t.x*100+'%',top:t.y*100+'%',width:t.w*100+'%',height:t.h*100+'%'});target.hidden=placed;target.append(el('span','',id==='luggage'?'下铺 · 放行李':'书桌 · 放书籍'));canvas.append(target);
+const item=el('button','packing-item');item.type='button';item.dataset.item=id;item.disabled=placed;item.setAttribute('aria-label',label+'，拖到'+(id==='luggage'?'左侧下铺':'右侧书桌')+'，或按回车放置');
+const art=el('img');art.src=id==='luggage'?'./assets/props/packing-luggage.webp':'./assets/props/packing-books.webp';art.alt='';art.draggable=false;item.append(art);
+item.addEventListener('click',event=>{event.stopPropagation();if(event.detail===0)placePackingItem(id);});canvas.append(item);
+}
+stage.append(canvas);stage.hidden=false;$('scene-image').hidden=true;layoutPacking();
+const status=el('p','packing-progress','已安置 '+draft.placed.length+' / 2'+(draft.placed.length===2?' · 收拾好了。':' · 拖动物品到对应位置'));status.setAttribute('role','status');controls.append(status);
+$('reading-hint').textContent='拖放行李和书籍 · 先放哪件都可以';if(!redraw)typeBody();
+if(draft.placed.length===2){draft.wait??=900;startStudyWait(draft,finishPacking);}
+}
+const packingStage=$('packing-stage');
+packingStage.addEventListener('pointerdown',event=>{
+const item=event.target.closest('.packing-item');if(!item||item.disabled||event.button!==0||event.isPrimary===false||!packingCanRun())return;
+event.preventDefault();event.stopPropagation();const r=item.getBoundingClientRect();packingDrag={id:event.pointerId,item,x:event.clientX,y:event.clientY,offsetX:event.clientX-r.left,offsetY:event.clientY-r.top,moved:false};item.classList.add('dragging');packingStage.setPointerCapture(event.pointerId);
+});
+packingStage.addEventListener('pointermove',event=>{
+const d=packingDrag;if(!d||d.id!==event.pointerId)return;event.preventDefault();const r=$('packing-canvas').getBoundingClientRect();d.moved ||= Math.hypot(event.clientX-d.x,event.clientY-d.y)>=6;
+d.item.style.left=event.clientX-r.left-d.offsetX+'px';d.item.style.top=event.clientY-r.top-d.offsetY+'px';
+for(const t of packingStage.querySelectorAll('.packing-target'))t.classList.toggle('drop-ready',t.dataset.item===d.item.dataset.item&&packingDropAllowed(d.item.dataset.item,event.clientX,event.clientY,r));
+});
+packingStage.addEventListener('pointerup',e=>releasePackingItem(e,false));packingStage.addEventListener('pointercancel',e=>releasePackingItem(e,true));packingStage.addEventListener('lostpointercapture',e=>releasePackingItem(e,true));
+if('ResizeObserver' in window){const packingResize=new ResizeObserver(()=>{cancelPackingDrag();layoutPacking();});packingResize.observe($('scene'));}
+document.addEventListener('visibilitychange',()=>{cancelPackingDrag();});
+document.addEventListener('toggle',event=>{if(event.target.tagName==='DIALOG')cancelPackingDrag();},true);
 function interactionPages(n){
 const paras=String(text(n.text)||'').split(/\n\n+/).map(s=>s.trim()).filter(Boolean);
 if(paras.length>1)return {lead:paras.slice(0,-1).join('\n\n'),tail:paras[paras.length-1]};
@@ -3673,7 +3845,8 @@ clock.last=now;clock.running=studyCanRun();
 if(clock.draft.wait<=0){const done=clock.done;stopStudyClock();done();autoSave();}
 }
 function startStudyWait(draft,done){stopStudyClock();studyClock={draft,done,last:performance.now(),running:studyCanRun(),timer:setInterval(updateStudyClock,100)};updateStudyClock();}
-function sceneImagePath(n,bg){
+function sceneImagePath(n,bg,entry){
+if(n?.id==='interaction-4')return entry&&/^(action|feedback):/.test(entry.id)?'./assets/props/packing-finished.webp':'./assets/props/packing-start.webp';
 if(n?.id==='interaction-8')return './assets/props/motto-board.webp';
 if(n?.id==='interaction-9')return './assets/props/proof-desk.webp';
 if(bg==='IMG-14')return './assets/props/dormitory-no-lamps.webp';
@@ -3746,68 +3919,113 @@ $('reading-hint').textContent='必须写一句依据才能继续';
 }
 }
 function flashStudy(){const scene=$('scene');scene.classList.remove('study-flicker');void scene.offsetWidth;scene.classList.add('study-flicker');}
-function checkProofLetter(n,char){
-const draft=view.typo;if(!draft||draft.done||!studyCanRun())return;
-const right=char==='党';remember('typo:'+n.id,char,'当时指出的错字');
-// Retried guesses are visual only: the original key settles the first answer once.
-apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});
-if(right){draft.done=true;draft.wait=600;remember('typo-correct:'+n.id,'将“党”改为“当”：国难当头。','校样改正');showTypo(n);}
-else{flashStudy();notice.textContent='灯光晃了一下。再仔细看一遍。';}
-autoSave();
+function proofCorrections(){
+// Percent coordinates refer to the supplied 3:4 proof, including its original margins.
+return [
+ {wrong:'背',right:'备',phrase:'完背',fixed:'完备',x:30.6,y:48.4,w:3.5,h:2.9},
+ {wrong:'固',right:'顾',phrase:'都固到',fixed:'都顾到',x:63.3,y:48.4,w:3.5,h:2.9},
+ {wrong:'挤挤',right:'济济',phrase:'人才挤挤',fixed:'人才济济',x:33.6,y:24.1,w:6.5,h:2.9},
+ {wrong:'砖',right:'专',phrase:'砖门学问',fixed:'专门学问',x:10.0,y:28.7,w:3.5,h:2.9},
+ {wrong:'片',right:'偏',phrase:'一片之见',fixed:'一偏之见',x:87.2,y:37.8,w:3.5,h:2.9}
+];
 }
-function proofSheet(title,dim){
-const sheet=el('article','proof-sheet'+(dim?' dim':''));sheet.setAttribute('aria-label',title);sheet.append(el('h3','proof-title','浙大日刊'),el('p','proof-caption',title));return sheet;
+function proofViewValid(draft){
+return (draft.zoom===undefined||(Number.isFinite(draft.zoom)&&draft.zoom>=1&&draft.zoom<=4))&&
+(draft.pan===undefined||(draft.pan&&['x','y'].every(k=>Number.isFinite(draft.pan[k])&&draft.pan[k]>=0&&draft.pan[k]<=1)));
+}
+function layoutProofPaper(){
+const viewport=$('proof-viewport'),paper=$('proof-paper');if(!paper||!viewport||$('study-surface').hidden)return;
+const draft=current?.id==='interaction-9'?view.typo:view.lamp;if(!draft||draft.sheet!=='youth')return;
+const r=viewport.getBoundingClientRect(),width=Math.min(r.width,r.height*.75)*(draft.zoom||1);
+paper.style.width=width+'px';const pan=draft.pan||{x:.5,y:.495};
+viewport.scrollLeft=Math.max(0,(width-r.width)*pan.x);viewport.scrollTop=Math.max(0,(width*4/3-r.height)*pan.y);
+}
+function renderProofPaper(draft,dim){
+const surface=$('study-surface');surface.className='study-surface youth-proof-surface';surface.hidden=false;
+const viewport=el('div','proof-viewport');viewport.id='proof-viewport';viewport.setAttribute('aria-label','校样，可放大并滚动查看');
+const paper=el('div','proof-paper');paper.id='proof-paper';
+const image=el('img','proof-image');image.src='./assets/props/youth-proof.webp';image.alt='《青年与建国》校刊校样';image.draggable=false;paper.append(image);
+const corrections=proofCorrections();
+corrections.forEach((item,index)=>{
+ const found=dim?draft.found.includes(index):(index<2||draft.found.includes(index-2));
+ if(dim&&index>=2)return;
+ const mark=found?el('span','proof-hit corrected',item.right):btn('',()=>dim?checkProofLetter(current,index):checkLampProof(index-2),'proof-hit');
+ mark.dataset.proofTarget=String(index);mark.style.left=item.x+'%';mark.style.top=item.y+'%';mark.style.width=item.w+'%';mark.style.height=item.h+'%';
+ mark.setAttribute('aria-label',found?item.phrase+'已改为'+item.fixed:'校样中的“'+item.phrase+'”');
+ if(!found)mark.disabled=dim?draft.done:draft.found.length===3;
+ paper.append(mark);
+});
+if(dim){const shade=el('div','proof-vignette');shade.setAttribute('aria-hidden','true');paper.append(shade);}
+paper.addEventListener('click',event=>{
+ if(event.target.closest('button,.proof-hit'))return;
+ const r=paper.getBoundingClientRect(),x=(event.clientX-r.left)/r.width,y=(event.clientY-r.top)/r.height;
+ if(x<.07||x>.94||y<.19||y>.85)return;
+ if(dim&&Math.hypot((x-.5)/.47,(y-.495)/.23)>.65)return;
+ if(dim)checkProofLetter(current,null);else{flashStudy();notice.textContent='再读一遍，找出纸面上的错字。';}
+});
+viewport.append(paper);surface.append(viewport);layoutProofPaper();
+viewport.addEventListener('scroll',()=>{
+ const maxX=viewport.scrollWidth-viewport.clientWidth,maxY=viewport.scrollHeight-viewport.clientHeight;
+ draft.pan={x:maxX>0?Math.max(0,Math.min(1,viewport.scrollLeft/maxX)):.5,y:maxY>0?Math.max(0,Math.min(1,viewport.scrollTop/maxY)):.495};
+});
+const tools=el('div','proof-tools');
+const zoom=delta=>{draft.zoom=Math.max(1,Math.min(4,(draft.zoom||1)+delta));layoutProofPaper();label.textContent='校样 '+Math.round(draft.zoom*100)+'%';minus.disabled=draft.zoom<=1;plus.disabled=draft.zoom>=4;};
+const minus=btn('缩小',()=>zoom(-1),'small-button'),plus=btn('放大校样',()=>zoom(1),'small-button'),label=el('span','proof-zoom-label','校样 '+Math.round((draft.zoom||1)*100)+'%');
+minus.id='proof-zoom-out';plus.id='proof-zoom-in';minus.disabled=(draft.zoom||1)<=1;plus.disabled=(draft.zoom||1)>=4;
+tools.append(minus,label,plus);controls.append(tools);
+}
+function checkProofLetter(n,index){
+const draft=view.typo;if(!draft||draft.done||draft.sheet!=='youth'||!studyCanRun())return;
+const right=index===0||index===1;if(right&&draft.found.includes(index))return;
+remember('typo:'+n.id,right?proofCorrections()[index].phrase:'点击了其他文字','当时指出的校样文字');
+// Keep the original first-judgment settlement key, even when two corrections are required.
+apply('typo:'+n.id,right?{qiuzhen:1}:{mistakes:1});
+if(right){draft.found.push(index);sound.fx('page');draft.done=draft.found.length===2;if(draft.done){draft.wait=600;remember('typo-correct:'+n.id,'完背 → 完备；都固到 → 都顾到。','昏灯下的校样');}showTypo(n);}
+else{flashStudy();notice.textContent='灯光太暗。再读一遍中心能看清的文字。';}
+autoSave();
 }
 function showTypo(n){
 clearStudy();content.replaceChildren();controls.replaceChildren();
-const draft=view.typo??={done:false},surface=$('study-surface');surface.className='study-surface proof-surface';surface.hidden=false;
-const sheet=proofSheet('校样 · 圈出一个错别字',true),line=el('div','proof-line');line.setAttribute('role','group');line.setAttribute('aria-label','国难党头，点击印错的字');
-for(const char of ['国','难','党','头']){
-const b=btn(char,()=>checkProofLetter(n,char),'proof-letter'+(draft.done&&char==='党'?' circled':''));b.dataset.proofChar=char;b.setAttribute('aria-label','校样中的'+char+'字');b.disabled=draft.done;line.append(b);
-}
-sheet.append(line,el('p','proof-context',draft.done?'“党”应改为“当”：国难当头。':'灯焰小，油烟重。请把印错的字圈出来。'));surface.append(sheet);
-content.append(el('p','story-text','替《浙大日刊》的校样挑一个错字，点击那个字，把它圈出来。'));
-$('reading-hint').textContent='点击纸面上的字 · 四周仍然昏暗';
-if(draft.done){draft.wait??=600;startStudyWait(draft,()=>feedback('是“党”字。应当写作“国难当头”。',n.next));}
+const draft=view.typo??={done:false,sheet:'youth',found:[],zoom:2.5};
+if(!draft.sheet){if(draft.done){draft.wait??=600;content.append(el('p','story-text','这处校样已经校正。'));startStudyWait(draft,()=>feedback('校样已经校正。',n.next));return;}Object.assign(draft,{sheet:'youth',found:[],zoom:2.5});}
+renderProofPaper(draft,true);
+content.append(el('p','story-text',draft.done?'中心两处已经校正。纸页四周仍藏在暗处。':'灯焰只能照见校样中心。请点击中心印错的字，先校正这两处。'));
+content.append(el('p','proof-progress','已校正 '+draft.found.length+' / 2 处'));
+$('reading-hint').textContent='点击错字 · 放大后可滚动查看';
+if(draft.done){draft.wait??=600;startStudyWait(draft,()=>feedback('中心两处改好了：完备，都顾到。其余文字隐在暗处，暂时看不清。',n.next));}
 }
 function lightFeigongLamp(){
 if(current?.id!=='interaction-10'||view.lamp?.step!=='light'||!studyCanRun())return;
 view.lamp.step='proof';apply('action:'+current.id,current.effects,current.journal);remember('action:'+current.id,'领到费巩灯，回到宿舍罩上玻璃灯罩，点亮灯芯。','领灯与点亮');
 sound.lamp();setScene(current);showLampInteraction(current);autoSave();
 }
-function checkLampProof(index,char){
-const draft=view.lamp;if(draft?.step!=='proof'||draft.found.length===2||!studyCanRun())return;
-const wrong=['事','傅'][index];if(char!==wrong){flashStudy();notice.textContent='再读一遍，找出这一句里印错的字。';return;}
-if(draft.found.includes(index))return;draft.found.push(index);sound.fx('page');
-if(draft.found.length===2){draft.wait=900;remember('lamp-proof','实事求事 → 实事求是；薪火相傅 → 薪火相传。','亮灯后的校样');}
+function checkLampProof(index){
+const draft=view.lamp;if(draft?.step!=='proof'||draft.sheet!=='youth'||draft.found.length===3||!studyCanRun())return;
+if(!Number.isInteger(index)||index<0||index>2||draft.found.includes(index))return;
+draft.found.push(index);sound.fx('page');
+if(draft.found.length===3){draft.wait=900;remember('lamp-proof','人才挤挤 → 人才济济；砖门学问 → 专门学问；一片之见 → 一偏之见。','亮灯后的校样');}
 showLampInteraction(current);autoSave();
 }
 function showLampInteraction(n){
 clearStudy();content.replaceChildren();controls.replaceChildren();
 if(!view.lamp&&state.completedActions.includes('action:'+n.id)){feedback('灯亮起来了。书页上的字，终于清清楚楚。',n.next);return;}
-const draft=view.lamp??={step:'light',found:[]},surface=$('study-surface');
-// Older v1 drafts stopped before collecting; resume with the lamp already on the desk.
+const draft=view.lamp??={step:'light',found:[],sheet:'youth'},surface=$('study-surface');
+// Old completed proofs keep their result; unfinished older drafts retain the lamp reward and use the new paper.
+if(!draft.sheet){if(draft.step==='proof'&&draft.found.length===2){draft.wait??=900;content.append(el('p','story-text','两处校样已经校正。'));startStudyWait(draft,()=>feedback('校样已经校正，灯火照亮了整张纸。',n.next));return;}Object.assign(draft,{sheet:'youth',found:[]});delete draft.wait;}
 if(draft.step==='collect')draft.step='light';
 surface.hidden=false;
 if(draft.step==='proof'){
-surface.className='study-surface proof-surface lamp-proof-surface';
-const sheet=proofSheet('灯亮以后 · 再找出两处错字',false);
-for(const [index,chars] of [['实','事','求','事'],['薪','火','相','傅']].entries()){
-const line=el('div','proof-line');line.setAttribute('role','group');line.setAttribute('aria-label',(index===0?'第一行：':'第二行：')+(draft.found.includes(index)?['实事求是','薪火相传'][index]:['实事求事','薪火相傅'][index]));
-chars.forEach((char,i)=>{const found=draft.found.includes(index),display=found&&i===3?['是','传'][index]:char;
-const b=btn(display,()=>{if(i===3)checkLampProof(index,char);else{flashStudy();notice.textContent='再仔细看一遍这一句。';}},'proof-letter'+(found&&i===3?' circled':''));
-b.dataset.proofRow=index;b.dataset.proofIndex=i;b.disabled=found;b.setAttribute('aria-label','第 '+(index+1)+' 行第 '+(i+1)+' 字：'+display);line.append(b);});sheet.append(line);
-}
-sheet.append(el('p','proof-context','已校正 '+draft.found.length+' / 2 处'));surface.append(sheet);
-content.append(el('p','story-text','灯芯被点燃，火苗“呼”地立起来。四周的暗晕散开，纸上的字终于清楚了。'));
-$('reading-hint').textContent='在亮堂的纸面上，再圈出两处错别字';
-if(draft.found.length===2){draft.wait??=900;startStudyWait(draft,()=>feedback('两处错字都改好了：实事求是，薪火相传。\n灯亮起来，周围也第一次这样清楚。',n.next));}
+renderProofPaper(draft,false);
+content.append(el('p','story-text','灯亮了，整张校样显现。请找出先前暗处的另外三处错字。'));
+content.append(el('p','proof-progress','新校正 '+draft.found.length+' / 3 处 · 全页共 5 处'));
+$('reading-hint').textContent='点击外围错字 · 可放大、滚动查看整页';
+if(draft.found.length===3){draft.wait??=900;startStudyWait(draft,()=>feedback('另外三处也改好了：人才济济，专门学问，一偏之见。\n整张校样的五处错误都已校正。',n.next));}
 }else{
 surface.className='study-surface lamp-desk-surface';
 const lamp=btn('',lightFeigongLamp,'desk-lamp');lamp.id='light-lamp';lamp.setAttribute('aria-label','点击点亮桌上的费巩灯');
 const image=el('img','study-lamp-image');image.src='./assets/props/feigong-lamp-unlit.webp';image.alt='';image.draggable=false;lamp.append(image);
 surface.append(lamp,el('p','desk-lamp-hint','点击灯，点亮灯芯'));
-content.append(el('p','story-text','你已在总务处登记领到费巩先生出资定做的灯。回到宿舍，灯放上书桌，玻璃灯罩也已罩好。轻轻点亮灯芯吧。'));
+content.append(el('p','story-text','你已在总务处登记领到费巩先生出资定做的灯。回到宿舍，灯放上书桌，玻璃灯罩也已罩好。轻轻点亮灯芯，再看看先前那张校样吧。'));
 $('reading-hint').textContent='点击桌上的费巩灯 · 也可用 Tab 选中后按回车';
 }
 }
@@ -3825,7 +4043,7 @@ let drop=false;if(!cancelled&&d.moved)for(const slot of studySurface.querySelect
 const char=d.word;cancelMottoDrag();if(drop)placeMottoWord(char);
 }
 studySurface.addEventListener('pointerup',e=>releaseMottoWord(e,false));studySurface.addEventListener('pointercancel',e=>releaseMottoWord(e,true));studySurface.addEventListener('lostpointercapture',e=>releaseMottoWord(e,true));
-window.addEventListener('resize',cancelMottoDrag);
+window.addEventListener('resize',()=>{cancelMottoDrag();layoutProofPaper();});
 document.addEventListener('visibilitychange',()=>{cancelMottoDrag();updateStudyClock();autoSave();});
 document.addEventListener('toggle',event=>{if(event.target.tagName==='DIALOG'){cancelMottoDrag();updateStudyClock();autoSave();}},true);
 function showMontage(n){state.ending=C.resolveEnding(state);let index=view.montage||0;const memories=[['IMG-04','天目山 · 禅源寺','1937.9.27 天目山禅源寺。一座庙，开学的钟声和远处的炮声一起响。'],['IMG-06','建德 · 文脉西运','1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。'],['IMG-09','泰和 · 赣江大堤','1938 年，泰和。赣江边跑测量，一寸一尺，修的是保命的大堤。'],['IMG-14','遵义 · 费巩灯','遵义办学期间，费先生给我们一人做了一盏灯。后来我才懂，他给自己留的，是黑。'],['IMG-16','湄潭 · 胜利的灯火','灯还点吗？\n点。路还长。']];
@@ -3839,8 +4057,75 @@ const index=state.journal.findIndex(item=>item.id===id);
 if(answers.some(answer=>answer.trim())){if(index<0)state.journal.push(entry);else state.journal[index]=entry;}
 else if(index>=0)state.journal.splice(index,1);
 }
-function showReflection(n){clearTimer();syncReflectionJournal();if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
-const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;syncReflectionJournal();autoSave();});label.append(input);grid.append(label);}content.append(grid); controls.append(btn('翻开这一程的手账',openJournal),btn('重新启程',()=>showDialog('restart-dialog')));$('reading-hint').textContent='旅程完结 · 求是 · 回答已同步手账并保存在本机';typeBody();}
+function showReflection(n){clearTimer();syncReflectionJournal();if(view.finale){showFinale();return;}if(n){content.replaceChildren();controls.replaceChildren();writeText(n);}else{clearView();setScene({bg:'IMG-01',location:'紫金港 · 校史馆',date:'2026 年 10 月',chapter:'终章 · 回到此刻'});content.append(el('p','story-text','他们在破庙里点的灯，真的亮到了今天。现在，轮到你了。'));}
+const grid=el('div','reflection-grid');for(const [i,question] of ['到浙大来做什么？','将来毕业后要做什么样的人？'].entries()){const label=el('label','reflection-label',question);label.htmlFor='reflection-'+i;const input=el('textarea','reflection-input');input.id='reflection-'+i;input.maxLength=1000;input.placeholder='写下此刻的回答，也可以留白。';view.reflection??=['',''];input.value=view.reflection[i];input.addEventListener('input',()=>{view.reflection[i]=input.value;syncReflectionJournal();autoSave();});label.append(input);grid.append(label);}content.append(grid);controls.append(btn('重新启程',()=>showDialog('restart-dialog')),btn('翻开这一程的手账',openJournal),btn('听校歌，走完这一程',()=>{syncReflectionJournal();view.finale={phase:'lyrics',time:0,paused:false};showFinale();autoSave();}));$('reading-hint').textContent='旅程完结 · 求是 · 回答已同步手账并保存在本机';typeBody();}
+// Lyrics: Zhejiang University official school song, https://www.zju.edu.cn/574/listm.htm
+const finaleLyrics=[
+ '大不自多，海纳江河。','惟学无际，际于天地。','形上谓道兮，形下谓器。',
+ '礼主别异兮，乐主和同。','知其不二兮，尔听斯聪。','国有成均，在浙之滨。',
+ '昔言求是，实启尔求真。','习坎示教，始见经纶。','无曰已是，无曰遂真。',
+ '靡革匪因，靡故匪新。','何以新之，开物前民。','嗟尔髦士，尚其有闻。',
+ '念哉典学，思睿观通。','有文有质，有农有工。','兼总条贯，知至知终。',
+ '成章乃达，若金之在熔。','尚亨于野，无吝于宗。','树我邦国，天下来同。'
+];
+// User-recorded vocal entrances; omitted minutes after 1:07 continue in minute one.
+const finaleLineStarts=[22,28,34,41,47,54,61,67,73,76,80,84,91,96,103,109,115,123];
+function hideFinale(){
+ stopStudyClock();
+ if(finaleClock){cancelAnimationFrame(finaleClock.frame);finaleClock=null;}
+ $('finale').hidden=true;delete document.body.dataset.finale;
+ for(const id of ['scene','route-map','story-panel'])$(id).inert=false;
+}
+function finaleLinePosition(time){
+// Monotone cubic interpolation keeps each sung line centered without stops or jumps.
+const points=[[16,-1.5],...finaleLineStarts.map((t,i)=>[t,i]),[134,18.5],[146.207,20.5]];
+if(time<16)return -1.5;if(time>=146.207)return 20.5;
+const slopes=points.slice(1).map((p,i)=>(p[1]-points[i][1])/(p[0]-points[i][0]));
+const tangent=i=>{if(!i)return 0;if(i===points.length-1)return slopes.at(-1);const before=points[i][0]-points[i-1][0],after=points[i+1][0]-points[i][0],w1=2*after+before,w2=after+2*before;return (w1+w2)/(w1/slopes[i-1]+w2/slopes[i]);};
+const i=points.findIndex((p,j)=>j<points.length-1&&time<points[j+1][0]),a=points[i],b=points[i+1],h=b[0]-a[0],t=(time-a[0])/h;
+return (2*t**3-3*t**2+1)*a[1]+(t**3-2*t**2+t)*h*tangent(i)+(-2*t**3+3*t**2)*b[1]+(t**3-t**2)*h*tangent(i+1);
+}
+function showFinale(){
+ hideFinale();clearTyping();advanceAction=null;delete document.body.dataset.advance;
+ const root=$('finale'),draft=view.finale;root.replaceChildren();root.hidden=false;document.body.dataset.finale=draft.phase;
+ for(const id of ['scene','route-map','story-panel'])$(id).inert=true;
+ sound.finaleStart(draft);
+ const actions=el('div','finale-actions');
+ const back=()=>{delete view.finale;renderCurrent();autoSave();$('reflection-0').focus();};
+ const replay=()=>{view.finale={phase:'lyrics',time:0,paused:false};showFinale();autoSave();};
+ if(draft.phase==='closing'){
+  const closing=el('div','finale-closing');closing.append(el('p','finale-kicker','浙江大学西迁 · 历史互动故事'),el('h1','finale-end-title','求是西行：1937'),el('p','finale-end-note','一段西行，八十九年的回响'));
+  const menu=el('nav','finale-menu');menu.setAttribute('aria-label','旅程结束后的选项');
+  menu.append(btn('翻看手账',openJournal),btn('回到两问',back),btn('重新启程',()=>showDialog('restart-dialog')),btn('重听校歌',replay));closing.append(menu);root.append(closing);root.focus();return;
+ }
+ if(draft.phase==='credits'){
+  const credits=el('div','finale-credits');credits.append(el('p','finale-kicker','求是西行 · 1937'),el('h2','','大学生思想文化素养'),el('p','finale-group','祝99组'));
+  const team=el('dl','finale-team');
+  for(const [role,names] of [['组长','周子暖'],['成员','陈长逸　丁乐倩　黄业翔　李俊宸　屈之彧　汪安琪　张维濂　张紫岩']]){const people=el('dd','');for(const name of names.split('　'))people.append(el('span','finale-name',name));team.append(el('dt','',role),people);}
+  const guidance=el('p','finale-guidance');guidance.append(el('span','','老师：王君'),el('span','','助教：李婉茹'));
+  credits.append(team,el('p','finale-order-note','成员按姓名拼音排序'),guidance,el('p','finale-ai','本作品制作过程中使用了 AI 辅助。'));root.append(credits);
+  const next=()=>{draft.phase='closing';draft.paused=true;delete draft.wait;showFinale();autoSave();};
+  actions.append(btn('重听校歌',replay),btn('回到两问',back),btn('继续 →',next,'choice finale-next'));root.append(actions);root.focus();draft.wait??=8000;startStudyWait(draft,next);return;
+ }
+ root.append(el('p','finale-kicker','求是西行 · 1937'),el('h2','finale-title','浙江大学校歌'),el('p','finale-author','马一浮 词　·　应尚能 曲'));
+ const window=el('div','finale-window'),track=el('div','finale-lyrics');for(const line of finaleLyrics)track.append(el('p','',line));window.append(track);root.append(window);
+ const pause=btn(draft.paused?'继续播放':'暂停',()=>{draft.paused=!draft.paused;sound.finalePause(draft.paused);pause.textContent=draft.paused?'继续播放':'暂停';autoSave();});
+ const finish=()=>{sound.finaleFinish();draft.phase='credits';draft.paused=true;showFinale();autoSave();};
+ actions.append(pause,btn('查看制作名单',finish),btn('回到两问',back));
+ const status=el('p','finale-status');root.append(actions,status);root.focus();
+ const clock=finaleClock={last:performance.now(),saved:performance.now(),frame:null};
+ const tick=now=>{
+  if(finaleClock!==clock)return;const audio=sound.finaleTick((now-clock.last)/1000);clock.last=now;
+  if(!audio)return;draft.time=audio.time;
+  if(audio.finished){finish();return;}
+  const position=finaleLinePosition(audio.time);window.style.opacity=String(Math.max(0,Math.min(1,(audio.time-14)/2)));
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+   const start=Math.max(0,Math.min(15,Math.floor(position/3)*3));[...track.children].forEach((line,i)=>{line.hidden=i<start||i>=start+3;});track.style.transform='translateY('+Math.max(0,(window.clientHeight-track.scrollHeight)/2)+'px)';
+  }else{[...track.children].forEach(line=>{line.hidden=false;});const lineHeight=track.children[0].offsetHeight;track.style.transform='translateY('+(window.clientHeight/2-(position+.5)*lineHeight)+'px)';}
+  status.textContent=audio.paused?'已暂停':audio.blocked?'正在准备校歌；若未播放，可通过右上角声音按钮重试。':'';
+  if(now-clock.saved>=2000){clock.saved=now;autoSave();}clock.frame=requestAnimationFrame(tick);
+ };clock.frame=requestAnimationFrame(tick);
+}
 function showDialog(id){$(id).showModal();}
 function openJournal(){
 sound.fx('page');

@@ -105,9 +105,10 @@ test('offline navigation works at a repository subpath, preserves queries, and e
 });
 
 test('cached audio handles full, bounded, open-ended, suffix, clamped and invalid byte ranges', async () => {
+ for(const [selector,mime] of [['AUDIO_FILES[0]','audio/mpeg'],['AUDIO_FILES.find(path => path.endsWith(".wav"))','audio/wav']]){
   const w = worker({ fail: () => true });
-  const url = w.get('urlFor(AUDIO_FILES[0])');
-  await (await w.caches.open(w.get('AUDIO_CACHE'))).put(url, new Response('0123456789', { headers: { 'Content-Type': 'audio/mpeg' } }));
+  const url = w.get('urlFor('+selector+')');
+  await (await w.caches.open(w.get('AUDIO_CACHE'))).put(url, new Response('0123456789', { headers: { 'Content-Type': mime } }));
   const full = await w.dispatch('fetch', { request: new Request(url) });
   assert.equal(full.status, 200); assert.equal(await full.text(), '0123456789');
   for (const [range, text, contentRange] of [
@@ -117,12 +118,13 @@ test('cached audio handles full, bounded, open-ended, suffix, clamped and invali
     const result = await w.dispatch('fetch', { request: new Request(url, { headers: { Range: range } }) });
     assert.equal(result.status, 206); assert.equal(result.headers.get('Content-Range'), contentRange);
     assert.equal(result.headers.get('Content-Length'), String(text.length));
-    assert.equal(result.headers.get('Content-Type'), 'audio/mpeg'); assert.equal(await result.text(), text);
+    assert.equal(result.headers.get('Content-Type'), mime); assert.equal(await result.text(), text);
   }
   for (const range of ['bytes=10-', 'bytes=7-2', 'bytes=-0', 'bytes=-', 'bytes=0-1,3-4']) {
     const result = await w.dispatch('fetch', { request: new Request(url, { headers: { Range: range } }) });
     assert.equal(result.status, 416); assert.equal(result.headers.get('Content-Range'), 'bytes */10');
   }
+ }
 });
 
 test('failed audio downloads retain completed files and retry only missing files', async () => {
@@ -133,7 +135,7 @@ test('failed audio downloads retain completed files and retry only missing files
   offline = false;
   assert.equal((await w.message('DOWNLOAD_AUDIO')).at(-1).type, 'DONE');
   const status = (await w.message('STATUS')).at(-1);
-  assert.equal(status.audioCount, 15); assert.equal(status.audioTotal, 15);
+  assert.equal(status.audioCount, w.get('AUDIO_FILES.length')); assert.equal(status.audioTotal, w.get('AUDIO_FILES.length'));
   assert.equal(w.requests.filter(u => u.includes('atlasaudio')).length, 1);
 });
 
@@ -145,5 +147,5 @@ test('concurrent audio requests share one download and uncached streaming does n
   w.requests.length = 0;
   const results = await Promise.all([w.message('DOWNLOAD_AUDIO'), w.message('DOWNLOAD_AUDIO')]);
   assert.ok(results.every(messages => messages.at(-1).type === 'DONE'));
-  assert.equal(w.requests.length, 15);
+  assert.equal(w.requests.length, w.get('AUDIO_FILES.length'));
 });
