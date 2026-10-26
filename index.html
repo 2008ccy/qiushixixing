@@ -487,14 +487,31 @@ main{position:relative}
 }
 @media(max-height:600px){.motto-heading{top:24%;font-size:14px}.motto-slots{top:41%}.motto-slot{width:48px;height:48px;font-size:32px}.motto-pool{bottom:9%;max-width:480px}.motto-tile{font-size:26px;max-height:42px}.proof-sheet{gap:4px;padding:8px}.proof-title{font-size:17px;padding-bottom:3px}.proof-caption,.proof-context{font-size:11px}.proof-letter{font-size:25px;min-height:36px;min-width:36px}.lamp-proof-surface .proof-sheet{gap:3px}}
 @media(prefers-reduced-motion:reduce){.room-veil{transition:none}.room-glow,.scene.study-flicker{animation:none}}
+
+.anthem-gallery{--anthem-gap:16px;position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:var(--anthem-gap);padding:88px 12px 22px;background:#111a1d}
+.anthem-gallery img{display:block;flex:0 1 auto;width:auto;max-width:calc((100% - var(--anthem-gap) - var(--anthem-gap))/3);height:100%;min-width:0;min-height:0;object-fit:contain}
+.review-scene:has(.anthem-gallery:not([hidden])){height:clamp(130px,26dvh,230px);margin-bottom:14px}
+.review-scene .anthem-gallery{--anthem-gap:6px;padding:4px}
+#lantern-before{position:absolute;inset:0;pointer-events:none;transition:none}
+body[data-scene-transition] .story-panel{cursor:wait}
+@media(max-width:600px){.scene-image.ceremony-scene{object-position:22% 52%}.scene-image.cambridge-scene{object-position:72% 52%}.anthem-gallery{--anthem-gap:6px;padding:85px 4px 64px}.scene:has(>.anthem-gallery:not([hidden])){min-height:0}.review-scene .anthem-gallery{padding:3px}}
+
+#time-flash{position:fixed;inset:0;width:100vw;height:100dvh;background:#fff;opacity:0;z-index:1000;pointer-events:none}
+#time-flash.active{animation:time-flash 560ms linear both}
+@keyframes time-flash{0%{opacity:0}18%,38%{opacity:1}100%{opacity:0}}
+@keyframes time-flash-reduced{0%,100%{opacity:0}50%{opacity:.32}}
+@media(prefers-reduced-motion:reduce){#time-flash.active{animation:time-flash-reduced 700ms linear both!important}}
 </style>
 </head>
 <body>
+<div id="time-flash" aria-hidden="true" hidden></div>
 <div id="rescue-edge" aria-hidden="true" hidden></div>
 <main id="game">
 <div class="audio-dock" role="group" aria-label="声音与应用设置"><button id="audio-toggle" type="button" aria-pressed="false">声音：开</button><button id="audio-settings" type="button" aria-haspopup="dialog">音量</button><button id="pwa-settings" type="button" aria-haspopup="dialog">应用</button></div>
 <section class="scene" id="scene" aria-label="故事场景">
 <img class="scene-image" id="scene-image" src="./assets/images/IMG-01.webp" alt="校史馆场景示意图">
+<div id="anthem-gallery" class="anthem-gallery" role="group" aria-label="校歌曲谱三页并排" hidden></div>
+<img id="lantern-before" class="scene-image" src="./assets/images/IMG-47.webp" alt="" aria-hidden="true" hidden>
 <div id="room-veil" class="room-veil" aria-hidden="true" hidden></div>
 <div id="room-glow" class="room-glow" aria-hidden="true" hidden></div>
 <div id="study-surface" class="study-surface" hidden></div>
@@ -534,7 +551,7 @@ main{position:relative}
 <dialog class="dialog" id="chapters-dialog" aria-labelledby="chapters-title"><div class="dialog-head"><h2 id="chapters-title">西行的足迹</h2><button data-close="chapters-dialog">回到故事</button></div><div id="chapters-content"></div></dialog>
 <dialog class="dialog" id="restart-dialog" aria-labelledby="restart-title"><div class="dialog-head"><h2 id="restart-title">重新启程</h2><button data-close="restart-dialog">继续故事</button></div><p class="empty">重新开始会重置地图、选择和手账，并覆盖自动存档。手动存档会保留。</p><div class="confirm-actions"><button id="cancel-restart">留在这一页</button><button id="confirm-restart">确认重新开始</button></div></dialog>
 <dialog class="dialog" id="save-dialog" aria-labelledby="save-title"><div class="dialog-head"><h2 id="save-title">存档与继续</h2><button data-close="save-dialog">返回</button></div><div id="save-content"></div></dialog>
-<dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><div class="review-scene"><img id="review-image" alt="回顾场景"><img id="review-school-sign" src="./assets/images/IMG-45.webp" alt="" hidden></div><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
+<dialog class="dialog" id="review-dialog" aria-labelledby="review-title"><div class="dialog-head"><h2 id="review-title">回顾</h2><button data-close="review-dialog">返回地图</button></div><p id="review-heading" class="review-heading"></p><div class="review-scene"><img id="review-image" alt="回顾场景"><div id="review-anthem-gallery" class="anthem-gallery" role="group" aria-label="校歌曲谱三页并排" hidden></div><img id="review-school-sign" src="./assets/images/IMG-45.webp" alt="" hidden></div><div id="review-body"></div><div id="review-nav" class="review-nav"></div><p class="field-note">回顾只展示这一程留下的记录，不改变进度与分数。</p></dialog>
 <noscript><p style="padding:30px;font-size:22px">请开启浏览器的 JavaScript 功能，即可开始这段故事。</p></noscript>
 <dialog class="dialog" id="route-image-dialog" aria-labelledby="route-image-title"><div class="dialog-head"><h2 id="route-image-title">第一章 · 西迁路线示意图</h2><button data-close="route-image-dialog" type="button">返回地图</button></div><img src="./assets/images/IMG-22.webp" alt="浙江大学西迁路线示意图"></dialog>
 <script type="application/json" id="story-data">{
@@ -556,7 +573,17 @@ main{position:relative}
       "date": "2026 年 10 月",
       "bg": "IMG-01",
       "type": "text",
-      "text": "你带着一根按动笔、一本手账本，走进展厅。玻璃后面，是一段被时间封存的西行。\n\n——然后，你碰了不该碰的东西。",
+      "text": "你带着一根按动笔、一本手账本，走进展厅。\n\n玻璃后面，是一段被时间封存的西行。",
+      "next": "scene-002-page-2"
+    },
+    {
+      "id": "scene-002-page-2",
+      "chapter": "序章 · 照片里的录取",
+      "location": "紫金港校史馆",
+      "date": "2026 年 10 月",
+      "bg": "IMG-01",
+      "type": "text",
+      "text": "——然后，你碰了不该碰的东西。",
       "next": "interaction-1"
     },
     {
@@ -566,7 +593,7 @@ main{position:relative}
       "date": "2026 年 10 月",
       "bg": "IMG-01",
       "type": "exhibits",
-      "text": "在展厅里查看四件展品。先读完箱子、合影和日记的故事，再点开护送路线图。",
+      "text": "在展厅里查看四件展品。",
       "next": "scene-004"
     },
     {
@@ -576,7 +603,7 @@ main{position:relative}
       "date": "2026 年 10 月",
       "bg": "IMG-22",
       "type": "text",
-      "text": "你最后点开路线图，手指沿着西迁路线移动。\n\n当年西迁好艰苦啊！\n\n手指回到杭州，视线忽然被这个地名吸住。白光一闪，传来一声快门。",
+      "text": "你最后点开路线图，手指沿着西迁路线移动。\n\n当年西迁好艰苦啊！\n\n手指回到杭州，忽然白光一闪，传来一声快门。",
       "next": "scene-005"
     },
     {
@@ -591,7 +618,7 @@ main{position:relative}
       "journal": {
         "id": "museum",
         "title": "照片里的录取",
-        "text": "2026，校史馆。竺可桢校长的日记手稿，把我扔进烽火连天的一九三七。"
+        "text": "2026，校史馆。那张西迁路线图，把我扔进烽火连天的一九三七。"
       },
       "next": "chapter1-start"
     },
@@ -602,7 +629,17 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-27",
       "type": "text",
-      "text": "报纸号外飞落：七七事变、八一三淞沪会战。街上逃难的人挑着担子往南站。米价牌上的数字被人一次次改写。\n\n民国二十六年，七月卢沟桥，八月上海。杭州的桂花照开，可报童喊的已经不是桂花的事了。",
+      "text": "报纸号外飞落：七七事变、八一三淞沪会战。\n\n街上逃难的人挑着担子往南站。米价牌上的数字被人一次次改写。",
+      "next": "chapter1-start-page-2"
+    },
+    {
+      "id": "chapter1-start-page-2",
+      "chapter": "第一章 · 烽火开学",
+      "location": "杭州 · 国立浙江大学校门",
+      "date": "1937 年 9 月",
+      "bg": "IMG-27",
+      "type": "text",
+      "text": "民国二十六年，七月卢沟桥，八月上海。杭州的桂花照开，可报童喊的已经不是桂花的事了。",
       "next": "scene-007"
     },
     {
@@ -612,7 +649,7 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-02",
       "type": "text",
-      "text": "杭州，国立浙江大学校门口。你落在校门口，手里捏着一张录取通知书，上面写着你的名字。",
+      "text": "杭州，国立浙江大学校门口。\n\n你落在校门口，手里捏着一张录取通知书，上面写着你的名字。",
       "next": "scene-008"
     },
     {
@@ -622,7 +659,7 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-28",
       "type": "text",
-      "text": "新生？新生不上这儿报到——一年级迁天目山了，禅源寺。喏，路上吃。",
+      "text": "新生？新生不上这儿报到——一年级迁天目山了，禅源寺。\n\n喏，路上吃。",
       "speaker": "门房",
       "next": "interaction-2"
     },
@@ -649,7 +686,27 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-29",
       "type": "text",
-      "text": "去天目山的独轮车上，同车有两人。\n\n陈砚秋是土木工程系新生，绍兴人，抱着一个布包着的测量水准仪，不许别人碰。\n\n何九章是中文系二年级，建德人，怀里一把二胡。",
+      "text": "去天目山的独轮车上，同车有两人。",
+      "next": "scene-010-page-2"
+    },
+    {
+      "id": "scene-010-page-2",
+      "chapter": "第一章 · 烽火开学",
+      "location": "去往西天目山的山路",
+      "date": "1937 年 9 月",
+      "bg": "IMG-29",
+      "type": "text",
+      "text": "陈砚秋是土木工程系新生，绍兴人，抱着一个布包着的测量水准仪，不许别人碰。",
+      "next": "scene-010-page-3"
+    },
+    {
+      "id": "scene-010-page-3",
+      "chapter": "第一章 · 烽火开学",
+      "location": "去往西天目山的山路",
+      "date": "1937 年 9 月",
+      "bg": "IMG-29",
+      "type": "text",
+      "text": "何九章是中文系二年级，建德人，怀里一把二胡。",
       "next": "scene-011"
     },
     {
@@ -659,7 +716,7 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-29",
       "type": "text",
-      "text": "喂，新生。你这笔——\n\n（她盯着你的口袋）",
+      "text": "你也是新生吗？你这笔——\n\n（她盯着你的口袋）",
       "speaker": "陈砚秋",
       "next": "scene-012"
     },
@@ -680,7 +737,7 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-29",
       "type": "text",
-      "text": "——按一下就出水的？给我看看。",
+      "text": "——按一下就出水的？可以给我看看吗。",
       "speaker": "陈砚秋",
       "next": "interaction-3"
     },
@@ -696,7 +753,7 @@ main{position:relative}
         {
           "id": "lend",
           "text": "递给她看看",
-          "feedback": "她按了三下，还给你：“好笔。等到了天目山，借我画三天图纸。”",
+          "feedback": "她按了三下，还给你：“好笔。等到了天目山，借我画两天图纸。”",
           "effects": {
             "renxin": 1
           },
@@ -719,7 +776,7 @@ main{position:relative}
       "date": "1937 年 9 月",
       "bg": "IMG-29",
       "type": "text",
-      "text": "别理她。我叫何九章，九章算术的九章。你呢？",
+      "text": "你好。我叫何九章，九章算术的九章。你呢？",
       "speaker": "何九章",
       "next": "name-confirm"
     },
@@ -752,7 +809,17 @@ main{position:relative}
       "date": "1937 年 9 月 21 日",
       "bg": "IMG-04",
       "type": "text",
-      "text": "千年银杏，寺墙斑驳。妙定方丈收下了这批借宿的师生，僧人帮忙搬黑板。\n\n你的铺位就在余屋里。",
+      "text": "千年银杏，寺墙斑驳。",
+      "next": "scene-018-page-2"
+    },
+    {
+      "id": "scene-018-page-2",
+      "chapter": "第一章 · 烽火开学",
+      "location": "西天目山 · 禅源寺",
+      "date": "1937 年 9 月 21 日",
+      "bg": "IMG-04",
+      "type": "text",
+      "text": "妙定方丈收下了这批借宿的师生，僧人帮忙搬黑板。\n\n你的铺位就在余屋里。",
       "next": "interaction-4"
     },
     {
@@ -800,7 +867,7 @@ main{position:relative}
       "bg": "IMG-32",
       "id": "chapter2-news",
       "type": "text",
-      "text": "11 月 5 日日军在杭州湾登陆的消息传开；街上人挤人，惊呼声与讨论声不绝于耳。",
+      "text": "11 月 5 日日军在杭州湾登陆的消息传开。\n\n街上人挤人，惊呼声与讨论声不绝于耳。",
       "next": "chapter2-start"
     },
     {
@@ -810,8 +877,19 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-32",
       "type": "text",
-      "text": "十一月五号，日本人在全公亭登陆。学校布告贴出来：全校迁建德，水路，分批启程。",
+      "text": "十一月五号，日本人在全公亭登陆。",
       "speaker": "何九章",
+      "next": "chapter2-start-page-2"
+    },
+    {
+      "id": "chapter2-start-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-32",
+      "speaker": "何九章",
+      "type": "text",
+      "text": "学校布告贴出来：全校迁建德，水路，分批启程。",
       "next": "scene-023"
     },
     {
@@ -821,7 +899,7 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "步行途中，暮色，山风卷着枯叶。队伍沿路跋涉，背着书籍、行囊，队伍拉得很长。",
+      "text": "步行途中，暮色，山风卷着枯叶。\n\n队伍沿路跋涉，背着书籍、行囊。队伍拉得很长。",
       "next": "scene-024"
     },
     {
@@ -831,7 +909,7 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "{name}，跟上些，前面转过山坳就有歇脚的平地。天快黑了，要赶在入夜前到达。",
+      "text": "{name}，跟上些，前面转过山坳就有歇脚的平地。\n\n天快黑了，要赶在入夜前到达。",
       "speaker": "陈砚秋",
       "next": "scene-025",
       "direction": "回头，压低声音"
@@ -843,7 +921,7 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-03",
       "type": "text",
-      "text": "你正要应声，正要迈步，听见路边枯草堆里传来极轻的抽噎声。",
+      "text": "你正要应声，听见路边枯草堆里传来极轻的抽噎声。",
       "next": "scene-026"
     },
     {
@@ -865,7 +943,17 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "两人拨开枯黄的茅草，看见蜷缩在土坡下的小女孩。小女孩头发凌乱，裤脚划破，脚上的布鞋磨破了洞，看见来人，吓得往后缩，紧紧把包袱搂在胸前。",
+      "text": "两人拨开枯黄的茅草，看见蜷缩在土坡下有一个小女孩。",
+      "next": "scene-027-page-2"
+    },
+    {
+      "id": "scene-027-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-33",
+      "type": "text",
+      "text": "她头发凌乱，裤脚划破，脚上的布鞋磨破了洞。\n\n看见来人，吓得往后缩，紧紧把包袱搂在胸前。",
       "next": "scene-028"
     },
     {
@@ -875,10 +963,10 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "小朋友，别怕，我们是学生，不是坏人。你叫什么名字？",
+      "text": "小朋友，别怕，我们是学生，不是坏人。\n\n你叫什么名字？",
       "speaker": "陈砚秋",
       "next": "scene-029",
-      "direction": "放缓语调，慢慢蹲下身，不靠近"
+      "direction": "放缓语调，慢慢蹲下身"
     },
     {
       "id": "scene-029",
@@ -911,10 +999,34 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "路上…… 走散了。炮响的时候，娘把我推到草丛里。等我再出来，就找不到他们了。\n\n（把怀里的布包抱紧，里面是半块干硬的麦饼）\n我跟着逃难的人走，走不动，掉队了。",
+      "text": "路上…… 走散了。炮响的时候，娘把我推到草丛里。等我再出来，就找不到他们了。",
       "speaker": "小满",
-      "next": "scene-032",
+      "next": "scene-031-page-2",
       "direction": "眼泪一下子滚下来"
+    },
+    {
+      "id": "scene-031-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-33",
+      "speaker": "小满",
+      "direction": "眼泪一下子滚下来",
+      "type": "text",
+      "text": "她把怀里的布包抱紧，你们看到里面有半块干硬的麦饼。",
+      "next": "scene-031-page-3"
+    },
+    {
+      "id": "scene-031-page-3",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-33",
+      "speaker": "小满",
+      "direction": "眼泪一下子滚下来",
+      "type": "text",
+      "text": "我跟着逃难的人走，走不动，掉队了。",
+      "next": "scene-032"
     },
     {
       "id": "scene-032",
@@ -923,7 +1035,17 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "山风掠过江面，远处隐约传来隆隆闷响。陈砚秋解下自己背上的粗布干粮袋，拿出一小块饼递过去。小满盯着干粮，不敢伸手。",
+      "text": "山风掠过江面，远处隐约传来隆隆闷响。",
+      "next": "scene-032-page-2"
+    },
+    {
+      "id": "scene-032-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-33",
+      "type": "text",
+      "text": "陈砚秋解下自己背上的粗布干粮袋，拿出一小块饼递过去。\n\n小满盯着干粮，不敢伸手。",
       "next": "scene-033"
     },
     {
@@ -956,7 +1078,7 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "我们带着学校的书，往建德去。战火来了，可读书不能断。",
+      "text": "我们带着学校的书，往建德去。\n\n战火来了，可读书不能断。",
       "speaker": "陈砚秋",
       "next": "scene-036"
     },
@@ -989,7 +1111,7 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-33",
       "type": "text",
-      "text": "国难路上，没有人该被丢下。只是前路很苦，还要继续赶路。",
+      "text": "国难路上，没有人该被丢下。\n\n只是前路很苦，还要继续赶路。",
       "speaker": "{name}",
       "next": "scene-038"
     },
@@ -1012,7 +1134,17 @@ main{position:relative}
       "date": "1937 年 11 月",
       "bg": "IMG-34",
       "type": "text",
-      "text": "陈砚秋伸手，小心牵住小满冻得冰凉的小手，带着她追上前行的队伍。前方，师生们的身影在暮色里向着建德方向绵延而去。",
+      "text": "陈砚秋伸手，小心牵住小满冻得冰凉的小手，带着她追上前行的队伍。",
+      "next": "scene-039-page-2"
+    },
+    {
+      "id": "scene-039-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "天目山 → 建德梅城",
+      "date": "1937 年 11 月",
+      "bg": "IMG-34",
+      "type": "text",
+      "text": "前方，师生们的身影在暮色里向着建德方向绵延而去。",
       "next": "scene-040"
     },
     {
@@ -1032,9 +1164,9 @@ main{position:relative}
       "chapter": "第二章 · 夜渡钱塘",
       "location": "建德梅城",
       "date": "1937 年 11—12 月",
-      "bg": "IMG-05",
+      "bg": "IMG-46",
       "type": "text",
-      "text": "富春江边的古城，城墙上有防空哨。白天上课，黄昏警报一响，师生把黑板抬进祠堂深处接着讲。",
+      "text": "富春江边的古城，城墙上有防空哨。\n\n白天上课，黄昏警报一响，师生把黑板抬进祠堂深处接着讲。",
       "next": "scene-042"
     },
     {
@@ -1044,7 +1176,7 @@ main{position:relative}
       "date": "1937 年 11—12 月",
       "bg": "IMG-36",
       "type": "text",
-      "text": "在孙宅门口，你第一次近距离见到竺可桢校长。他正蹲着给脚上的水泡挑破。",
+      "text": "在孙宅门口，你第一次近距离见到竺可桢校长。\n\n他正蹲着给脚上的水泡挑破。",
       "next": "scene-043"
     },
     {
@@ -1054,9 +1186,10 @@ main{position:relative}
       "date": "1937 年 11—12 月",
       "bg": "IMG-36",
       "type": "text",
-      "text": "新生？天目山下来的？\n\n（他抬头看你一眼）\n脚上的泡，挑破了才好走路。学校也一样——疼一下，接着走。",
+      "text": "新生？天目山下来的？\n\n脚上的泡，挑破了才好走路。学校也一样——疼一下，接着走。",
       "speaker": "竺可桢",
-      "next": "scene-044"
+      "next": "scene-044",
+      "direction": "他抬头看向你"
     },
     {
       "id": "scene-044",
@@ -1065,7 +1198,17 @@ main{position:relative}
       "date": "1937 年 11—12 月",
       "bg": "IMG-06",
       "type": "text",
-      "text": "深夜，木箱摞到房梁。图书馆员开箱验潮，你在旁边打下手。这些书，是随学校一起西行的文澜阁《四库全书》。",
+      "text": "深夜，木箱摞到房梁。",
+      "next": "scene-044-page-2"
+    },
+    {
+      "id": "scene-044-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "建德 · 古籍仓房",
+      "date": "1937 年 11—12 月",
+      "bg": "IMG-06",
+      "type": "text",
+      "text": "图书馆员开箱验潮，你在旁边打下手。\n\n这些书，是随学校一起西行的文澜阁《四库全书》。",
       "next": "scene-045"
     },
     {
@@ -1075,7 +1218,7 @@ main{position:relative}
       "date": "1937 年 11—12 月",
       "bg": "IMG-06",
       "type": "text",
-      "text": "乾隆年间抄的，太平军进城那年散过一回，一页一页赎回来补的。杭州人守了它一百年。",
+      "text": "乾隆年间抄的。太平军进城散过一回，杭州人从火里一页一页抢回来、补齐全。",
       "speaker": "图书馆员",
       "next": "scene-046"
     },
@@ -1113,7 +1256,7 @@ main{position:relative}
         },
         {
           "id": "school",
-          "text": "不报名，留在学校，随校继续迁往泰和",
+          "text": "不报名",
           "feedback": "你留在学校，继续课程，跟随师生一起迁移。",
           "effects": {
             "qiuzhen": 1,
@@ -1142,13 +1285,24 @@ main{position:relative}
       "date": "1937 年 12 月 24 日",
       "bg": "IMG-05",
       "type": "text",
-      "text": "十二月二十四，杭州没了。我们在梅城的严子陵祠落脚。严先生当年不肯做官，躲到江边钓鱼；我们不一样，我们是躲着，还要把书念完。",
+      "text": "十二月二十四，杭州没了。我们在梅城的严子陵祠落脚。",
       "speaker": "何九章",
       "journal": {
         "id": "meicheng",
         "title": "文脉西运",
         "text": "1937.11 建德梅城。警报声声，我们躲着战火，捧着古书，要把文脉一路护往内地。"
       },
+      "next": "scene-049-page-2"
+    },
+    {
+      "id": "scene-049-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "建德梅城",
+      "date": "1937 年 12 月 24 日",
+      "bg": "IMG-05",
+      "speaker": "何九章",
+      "type": "text",
+      "text": "严先生当年不肯做官，躲到江边钓鱼。\n\n我们不一样，我们是躲着，还要把书念完。",
       "next": "scene-050"
     },
     {
@@ -1158,7 +1312,17 @@ main{position:relative}
       "date": "1937 年底",
       "bg": "IMG-07",
       "type": "text",
-      "text": "你铺位旁边的铺盖已经卷好了，用麻绳捆得方方正正。周念东蹲在地上，往包袱里塞最后一样东西——是他那本《物理学概论》，塞到一半，又抽出来，放回桌上。",
+      "text": "你铺位旁边的铺盖已经卷好了，用麻绳捆得方方正正。",
+      "next": "scene-050-page-2"
+    },
+    {
+      "id": "scene-050-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "学生宿舍",
+      "date": "1937 年底",
+      "bg": "IMG-07",
+      "type": "text",
+      "text": "周念东蹲在地上，往包袱里塞最后一样东西——是他那本《物理学概论》，塞到一半，又抽出来，放回桌上。",
       "next": "scene-051"
     },
     {
@@ -1190,10 +1354,22 @@ main{position:relative}
       "date": "1937 年底",
       "bg": "IMG-07",
       "type": "text",
-      "text": "我昨晚想了一宿。国家有难，我要去参军保家卫国。……你要不要一起来？",
+      "text": "我昨晚想了一宿。国家有难，我要去参军保家卫国。",
       "speaker": "周念东",
-      "next": "choice-2",
+      "next": "scene-053-page-2",
       "direction": "他顿了顿，声音低下去"
+    },
+    {
+      "id": "scene-053-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "学生宿舍",
+      "date": "1937 年底",
+      "bg": "IMG-07",
+      "speaker": "周念东",
+      "direction": "他顿了顿，声音低下去",
+      "type": "text",
+      "text": "……你要不要一起来？",
+      "next": "choice-2"
     },
     {
       "id": "choice-2",
@@ -1253,7 +1429,17 @@ main{position:relative}
       "bg": "IMG-07",
       "id": "choice2-join-departure",
       "type": "text",
-      "text": "他摆摆手，没让你送。第二天天亮，铺位空了。桌上压着一张纸，是那本《物理学概论》的扉页，写着一行字：\n\n“替我读下去，等我回来考试。”",
+      "text": "他摆摆手，没让你送。",
+      "next": "choice2-join-departure-page-2"
+    },
+    {
+      "id": "choice2-join-departure-page-2",
+      "chapter": "第二章 · 夜渡钱塘",
+      "location": "学生宿舍",
+      "date": "1937 年底",
+      "bg": "IMG-07",
+      "type": "text",
+      "text": "第二天天亮，铺位空了。桌上压着一张纸，是那本《物理学概论》的扉页，写着一行字：\n\n“替我读下去，等我回来考试。”",
       "next": "scene-055"
     },
     {
@@ -1274,7 +1460,7 @@ main{position:relative}
       "date": "1937 年 12 月—1938 年 2 月",
       "bg": "IMG-24",
       "type": "text",
-      "text": "十二月二十四号，我们从建德分批启程。坐船、搭车、走路，有的从常山走到玉山。第二年一月，到了江西吉安；二月，又迁泰和。",
+      "text": "十二月二十四号，我们从建德分批启程。\n\n坐船、搭车、走路，有的从常山走到玉山。\n\n第二年一月，到了江西吉安；二月，又迁泰和。",
       "speaker": "何九章",
       "next": "scene-057"
     },
@@ -1285,7 +1471,7 @@ main{position:relative}
       "date": "1938 年 1—2 月",
       "bg": "IMG-08",
       "type": "text",
-      "text": "借来的教室里，课程仍在继续。白鹭洲的夜色落下，你借着油灯复习。明天的考试，也没有因为迁徙停下来。",
+      "text": "借来的教室里，课程仍在继续。\n\n白鹭洲的夜色落下，你借着油灯复习。明天的考试，也没有因为迁徙停下来。",
       "next": "interaction-5"
     },
     {
@@ -1334,7 +1520,17 @@ main{position:relative}
       "date": "1938 年 4—6 月",
       "bg": "IMG-09",
       "type": "text",
-      "text": "陈砚秋挎着测绘仪器，手里攥着图纸。你帮她扛着三脚架，一同走在泥泞河滩。你将三脚架扎进松软滩土，架设好水平仪，江面的日光反射在镜片上，晃得人不由眯起双眼。",
+      "text": "陈砚秋挎着测绘仪器，手里攥着图纸。\n\n你帮她扛着三脚架，一同走在泥泞河滩。",
+      "next": "scene-059-page-2"
+    },
+    {
+      "id": "scene-059-page-2",
+      "chapter": "第三章 · 文军长征",
+      "location": "泰和 · 赣江大堤",
+      "date": "1938 年 4—6 月",
+      "bg": "IMG-09",
+      "type": "text",
+      "text": "你将三脚架扎进松软滩土，架设好水平仪。\n\n江面的日光反射在镜片上，晃得人不由眯起双眼。",
       "next": "scene-060"
     },
     {
@@ -1344,7 +1540,7 @@ main{position:relative}
       "date": "1938 年 4—6 月",
       "bg": "IMG-09",
       "type": "text",
-      "text": "这里地基松软，三脚架一定要踩实。堤是要替泰和挡几十年水的，半分数据都马虎不得。",
+      "text": "这里地基松软，三脚架一定要踩实。\n\n堤是要替泰和挡几十年水的，半分数据都马虎不得。",
       "speaker": "陈砚秋",
       "next": "scene-061"
     },
@@ -1355,7 +1551,17 @@ main{position:relative}
       "date": "1938 年 4—6 月",
       "bg": "IMG-09",
       "type": "text",
-      "text": "二人俯身紧盯仪器，反复调整校正，一次次记下堤段高程读数。几番核对，一组组可靠的测量数据终于完整记录在测绘本上。\n\n陈砚秋低头落笔记下最后一组数字，指尖沾了泥土。",
+      "text": "二人俯身紧盯仪器，反复调整校正，一次次记下堤段高程读数。\n\n几番核对，一组组可靠的测量数据终于完整记录在测绘本上。",
+      "next": "scene-061-page-2"
+    },
+    {
+      "id": "scene-061-page-2",
+      "chapter": "第三章 · 文军长征",
+      "location": "泰和 · 赣江大堤",
+      "date": "1938 年 4—6 月",
+      "bg": "IMG-09",
+      "type": "text",
+      "text": "陈砚秋低头落笔记下最后一组数字，指尖沾了泥土。",
       "next": "scene-062"
     },
     {
@@ -1365,7 +1571,7 @@ main{position:relative}
       "date": "1938 年 4—6 月",
       "bg": "IMG-09",
       "type": "text",
-      "text": "高程若是差上几寸，汛期大水一来，田地村落便都要受淹。我们来到此地，不只是读书求学，更要做落地实在的事。去下一个测点吧。",
+      "text": "高程若是差上几寸，汛期大水一来，田地村落便都要受淹。\n\n我们来到此地，不只是读书求学，更要做落地实在的事。去下一个测点吧。",
       "speaker": "陈砚秋",
       "next": "interaction-6"
     },
@@ -1422,7 +1628,7 @@ main{position:relative}
       "date": "1938 年",
       "bg": "IMG-10",
       "type": "text",
-      "text": "澄江学校的院子里，小满握着一把破旧竹扫帚，正帮着打扫。祠堂里传来孩童读书的声音。",
+      "text": "澄江学校的院子里，小满握着一把破旧竹扫帚，正帮着打扫。\n\n祠堂里传来孩童读书的声音。",
       "next": "scene-066"
     },
     {
@@ -1474,7 +1680,7 @@ main{position:relative}
       "date": "1938 年",
       "bg": "IMG-10",
       "type": "text",
-      "text": "别担心，这里是浙大办的澄江学校。这学堂不光收教职工的孩子，乡间、逃难来的孩子也能入学，不收学费。我想送你来这里上学。",
+      "text": "别担心，这里是浙大办的澄江学校。\n\n这学堂不光收教职工的孩子，乡间、逃难来的孩子也能入学，不收学费。我想送你来这里上学。",
       "speaker": "{name}",
       "next": "chengjiang-grip-broom"
     },
@@ -1506,7 +1712,7 @@ main{position:relative}
       "date": "1938 年",
       "bg": "IMG-10",
       "type": "text",
-      "text": "当然。竺校长之所以创办澄江学校，就是希望战火之中，孩子们也能有书可读。只要你愿意读书，就可以来。",
+      "text": "当然。竺校长之所以创办澄江学校，就是希望战火之中，孩子们也能有书可读。\n\n只要你愿意读书，就可以来。",
       "speaker": "{name}",
       "next": "chengjiang-hold-sleeve"
     },
@@ -1543,7 +1749,7 @@ main{position:relative}
       "date": "1938 年夏",
       "bg": "IMG-37",
       "type": "text",
-      "text": "西迁途中，缺医少药。校长夫人张侠魂与次子竺衡感染痢疾，相继病殁。校长正在考察新校址的路上，没见到儿子的最后一面。",
+      "text": "西迁途中，缺医少药。校长夫人张侠魂与次子竺衡感染痢疾，相继病殁。\n\n校长正在考察新校址的路上，没见到儿子的最后一面。",
       "next": "scene-073"
     },
     {
@@ -1581,7 +1787,7 @@ main{position:relative}
       "date": "插叙 · 1939 年",
       "bg": "IMG-35",
       "type": "text",
-      "text": "插叙：1939 年，押运队继续西行。\n\n你曾报名护书。一个雨夜，独轮车陷进泥里，书箱上的遮布被风掀起。",
+      "text": "1939 年，押运队继续西行。\n\n你曾报名护书。一个雨夜，独轮车陷进泥里，书箱上的遮布被风掀起。",
       "next": "interaction-7"
     },
     {
@@ -1591,7 +1797,7 @@ main{position:relative}
       "date": "插叙 · 1939 年",
       "bg": "IMG-35",
       "type": "action",
-      "text": "雨越下越急，独轮车陷在泥里。趁书卷受潮前，按住书箱，拖到高处石台上松手。",
+      "text": "雨越下越急，独轮车陷在泥里。\n趁书卷受潮前，按住书箱，拖到高处石台上松手。",
       "next": "scene-077"
     },
     {
@@ -1601,7 +1807,7 @@ main{position:relative}
       "date": "插叙 · 1939 年",
       "bg": "IMG-35",
       "type": "text",
-      "text": "这些书后来迁至贵阳地母洞。你记住了雨里抬起书箱的重量。\n\n插叙结束，故事回到 1938 年的迁校路上。",
+      "text": "这些书后来迁至贵阳地母洞。你记住了雨里抬起书箱的重量。",
       "next": "chapter4-start"
     },
     {
@@ -1622,7 +1828,7 @@ main{position:relative}
       "bg": "IMG-24",
       "id": "chapter4-he-narration",
       "type": "text",
-      "text": "七月九江丢了，泰和待不住。校长去广西看了地，全校迁宜山。水路旱路换着走，有的学生走了四十天。",
+      "text": "七月九江丢了，泰和待不住。\n\n校长去广西看了地，全校迁宜山。水路旱路换着走，有的学生走了四十天。",
       "next": "scene-079",
       "speaker": "何九章"
     },
@@ -1633,7 +1839,17 @@ main{position:relative}
       "date": "1938 年 10—11 月",
       "bg": "IMG-11",
       "type": "text",
-      "text": "临时教室是草棚，夜里靠小油灯照明。有人站着听课，把小木板拴在腰间记笔记。疾病也跟着迁徙而来。",
+      "text": "临时教室是草棚，夜里靠小油灯照明。\n\n有人站着听课，把小木板拴在腰间记笔记。",
+      "next": "scene-079-page-2"
+    },
+    {
+      "id": "scene-079-page-2",
+      "chapter": "第四章 · 求是",
+      "location": "宜山 · 草棚大学",
+      "date": "1938 年 10—11 月",
+      "bg": "IMG-11",
+      "type": "text",
+      "text": "疾病也跟着迁徙而来。",
       "next": "scene-080"
     },
     {
@@ -1658,7 +1874,7 @@ main{position:relative}
         {
           "id": "chen",
           "text": "请求给陈砚秋",
-          "feedback": "你开口求校医：“她是我们一道修堤的。”前面同学看了看，让给了陈砚秋。她退了烧。三天后，你在转重症送县城的名单里听到了那个一年级学生的名字。",
+          "feedback": "你开口求校医：“她是我们一道修堤的。”前面同学看了看，让给了陈砚秋。\n\n她退了烧。",
           "effects": {
             "renxin": 1
           },
@@ -1667,7 +1883,7 @@ main{position:relative}
             "title": "认识的人",
             "text": "我选了认识的人。这算不算错，我不知道。"
           },
-          "next": "scene-082"
+          "next": "choice-3-chen-feedback-page-2"
         },
         {
           "id": "queue",
@@ -1695,11 +1911,21 @@ main{position:relative}
       "prompt": "最后一支药，要给谁？"
     },
     {
+      "id": "choice-3-chen-feedback-page-2",
+      "chapter": "第四章 · 求是",
+      "location": "宜山 · 草棚大学",
+      "date": "1938 年 10—11 月",
+      "bg": "IMG-38",
+      "type": "text",
+      "text": "三天后，你在转重症送县城的名单里听到了那个一年级学生的名字。",
+      "next": "scene-082"
+    },
+    {
       "id": "scene-082",
       "chapter": "第四章 · 求是",
       "location": "宜山 · 开学典礼",
       "date": "1938 年 11 月 1 日",
-      "bg": "IMG-12",
+      "bg": "IMG-48",
       "type": "text",
       "text": "新学期开学典礼上，竺可桢校长讲起王阳明，也讲起眼前的艰危。",
       "next": "scene-083"
@@ -1709,7 +1935,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 开学典礼",
       "date": "1938 年 11 月 1 日",
-      "bg": "IMG-12",
+      "bg": "IMG-49",
       "type": "text",
       "text": "今浙大以时局影响而侨江西，而入桂，正是蹑着先生的遗踪而来；这并不是偶然的事，我们正不应随便放过，而宜景慕体念，接受他那艰危中立身报国的伟大精神。",
       "speaker": "竺可桢",
@@ -1720,7 +1946,7 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 开学典礼",
       "date": "1938 年 11 月 1 日",
-      "bg": "IMG-12",
+      "bg": "IMG-49",
       "type": "text",
       "text": "求是精神，就是排万难、冒万死以求真知的精神。",
       "speaker": "竺可桢",
@@ -1733,7 +1959,7 @@ main{position:relative}
       "date": "1938 年 11 月 19 日",
       "bg": "IMG-39",
       "type": "wordpick",
-      "text": "你作为学生记录员旁听。黑板上散落着八个字：求、是、力、行、敦、品、格、致。\n\n请把两个字拖入黑板上的格子，写下浙大的校训。",
+      "text": "你作为学生记录员旁听，请把两个字拖入黑板上的格子，写下浙大的校训。",
       "next": "anthem-meeting-context"
     },
     {
@@ -1764,7 +1990,17 @@ main{position:relative}
       "date": "插叙 · 后来",
       "bg": "IMG-40",
       "type": "text",
-      "text": "后来——\n\n马一浮的词很快写成了：四言文言，一百四十八字，开篇是“大不自多，海纳江河”。\n\n竺校长喜欢它，也犯愁它——文理太深。",
+      "text": "后来——\n\n马一浮的词很快写成了：四言文言，一百四十八字，开篇是“大不自多，海纳江河”。",
+      "next": "scene-087-page-2"
+    },
+    {
+      "id": "scene-087-page-2",
+      "chapter": "第四章 · 求是",
+      "location": "宜山 · 校务会议",
+      "date": "插叙 · 后来",
+      "bg": "IMG-40",
+      "type": "text",
+      "text": "竺校长喜欢它，也犯愁它——文理太深。",
       "next": "scene-088"
     },
     {
@@ -1796,7 +2032,17 @@ main{position:relative}
       "date": "1938 年 11 月",
       "bg": "IMG-40",
       "type": "text",
-      "text": "回到 1938 年，宜山的祠堂里。\n\n你帮先生们抱着那摞文件出门。你不知道的是，你怀里的某一张纸，要等三年才唱得出声；而等它唱出声的那一天，这首歌会一直被唱到你来的那个年代——",
+      "text": "回到 1938 年，宜山的祠堂里。\n\n你帮先生们抱着那摞文件出门。",
+      "next": "scene-090-page-2"
+    },
+    {
+      "id": "scene-090-page-2",
+      "chapter": "第四章 · 求是",
+      "location": "宜山 · 祠堂",
+      "date": "1938 年 11 月",
+      "bg": "IMG-40",
+      "type": "text",
+      "text": "你不知道的是，你怀里的某一张纸，要等三年才唱得出声。\n\n而等它唱出声的那一天，这首歌会一直被唱到你来的那个年代——",
       "next": "scene-091"
     },
     {
@@ -1806,12 +2052,12 @@ main{position:relative}
       "date": "1938 年 11 月",
       "bg": "IMG-40",
       "type": "text",
-      "text": "大不自多，海纳江河。惟学无际，际于天地。",
+      "text": "大不自多，海纳江河。惟学无际，际于天地……",
       "speaker": "校歌",
       "journal": {
         "id": "anthem",
         "title": "三年后唱响的歌",
-        "text": "1938 年，马一浮先生为校歌作词。\n1941 年，应尚能谱曲，校歌开始传唱。大不自多，海纳江河。惟学无际，际于天地。"
+        "text": "1938 年，马一浮先生为校歌作词。\n1941 年，应尚能谱曲，校歌开始传唱。大不自多，海纳江河。惟学无际，际于天地……"
       },
       "next": "scene-092"
     },
@@ -1830,9 +2076,9 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校舍废墟",
       "date": "1939 年 2 月 5 日",
-      "bg": "IMG-13",
+      "bg": "IMG-50",
       "type": "text",
-      "text": "何九章站在烧毁的钢琴前，捡起一枚琴键。往后，他的二胡成了全校的“乐队”。",
+      "text": "何九章站在烧毁的钢琴前，捡起一枚琴键。\n\n往后，他的二胡成了全校的“乐队”。",
       "next": "scene-094"
     },
     {
@@ -1840,9 +2086,9 @@ main{position:relative}
       "chapter": "第四章 · 求是",
       "location": "宜山 · 校舍废墟",
       "date": "1939 年 2 月 5 日",
-      "bg": "IMG-13",
+      "bg": "IMG-50",
       "type": "text",
-      "text": "全校就这么一架琴。从上海跟着船，一路抬到宜山，没舍得丢。今天没了。",
+      "text": "全校就这么一架琴。今天没了。",
       "speaker": "何九章",
       "next": "choice-4"
     },
@@ -1904,7 +2150,7 @@ main{position:relative}
       "bg": "IMG-24",
       "id": "audit-guizhou-hezhi",
       "type": "text",
-      "text": "南宁一丢，宜山也待不住了。这一回，去贵州。湄潭县的严县长带人在城门口接，把全县最好的房子都让给了我们。",
+      "text": "南宁一丢，宜山也待不住了。\n\n这一回，去贵州。湄潭县的严县长带人在城门口接，把全县最好的房子都让给了我们。",
       "next": "scene-097",
       "speaker": "何九章"
     },
@@ -1925,7 +2171,17 @@ main{position:relative}
       "date": "遵义办学期间",
       "bg": "IMG-14",
       "type": "text",
-      "text": "何家巷学生宿舍，夜。宿舍里是上下铺，你盘腿坐在床上，就着一盏桐油灯写作业。灯焰小，油烟重，宿舍里常年蒙着一层昏黄。",
+      "text": "何家巷学生宿舍，夜。",
+      "next": "scene-098-page-2"
+    },
+    {
+      "id": "scene-098-page-2",
+      "chapter": "第五章 · 东方剑桥",
+      "location": "遵义 · 何家巷学生宿舍",
+      "date": "遵义办学期间",
+      "bg": "IMG-14",
+      "type": "text",
+      "text": "宿舍里是上下铺，你盘腿坐在床上，就着一盏桐油灯写作业。\n\n灯焰小，油烟重，宿舍里常年蒙着一层昏黄。",
       "next": "interaction-9"
     },
     {
@@ -1999,7 +2255,7 @@ main{position:relative}
       "date": "遵义办学期间",
       "bg": "IMG-14",
       "type": "text",
-      "text": "后来，校长请束星北、杨守珍两位教授改良植物油灯。铁香烟罐、玻璃灯罩和灯芯，让光焰更稳，也少了浓烟。\n\n设计完成后，费巩自己出资做了八百余盏，发给学生。",
+      "text": "后来，校长请束星北、杨守珍两位教授改良植物油灯。\n\n铁香烟罐、玻璃灯罩和灯芯，让光焰更稳，也少了浓烟。\n\n设计完成后，费巩自己出资做了八百余盏，发给学生。",
       "next": "interaction-10"
     },
     {
@@ -2048,7 +2304,7 @@ main{position:relative}
       "chapter": "第五章 · 东方剑桥",
       "location": "湄潭 · 文庙",
       "date": "1944 年",
-      "bg": "IMG-12",
+      "bg": "IMG-51",
       "type": "text",
       "text": "破庙里，基础课程与研究都没有停下来。李约瑟来到浙大访问，看见了艰苦条件下的学术空气。",
       "next": "scene-110"
@@ -2058,15 +2314,27 @@ main{position:relative}
       "chapter": "第五章 · 东方剑桥",
       "location": "湄潭 · 文庙",
       "date": "1944 年",
-      "bg": "IMG-12",
+      "bg": "IMG-51",
       "type": "text",
       "text": "李约瑟访问了在遵义、湄潭办学的浙大，高度评价师生在艰苦条件下坚持研究、取得成果。后来广为流传的“东方剑桥”之誉，与这些访问密切相关。",
       "speaker": "旁白",
       "journal": {
         "id": "cambridge",
         "title": "东方剑桥",
-        "text": "1944 年，遵义、湄潭。李约瑟来访，看见了破屋檐下没有停歇的研究。“东方剑桥”这几个字，让我记住了灯下的师生。"
+        "text": "1944 年，遵义、湄潭。李约瑟来访，看见了破屋檐下没有停歇的研究。\n\n“东方剑桥”这几个字，让我记住了灯下的师生。"
       },
+      "next": "scene-110-page-2"
+    },
+    {
+      "id": "scene-110-page-2",
+      "chapter": "第五章 · 东方剑桥",
+      "location": "湄潭 · 文庙",
+      "date": "1944 年",
+      "bg": "IMG-51",
+      "type": "text",
+      "text": "\"Chekiang University, one of the best four in China.\"\n\n——栖身破庙，却是中国最好的四所大学之一。",
+      "speaker": "李约瑟",
+      "direction": "望着文庙的破屋檐，笑了笑",
       "next": "scene-111"
     },
     {
@@ -2181,12 +2449,22 @@ main{position:relative}
       "date": "1945 年 3 月 5 日",
       "bg": "IMG-15",
       "type": "text",
-      "text": "告别后，费巩赴重庆讲学。日子翻过一页又一页。\n\n1945 年 3 月 5 日凌晨，他在重庆千厮门码头准备乘船赴北碚时失踪。校长四处查问，学生罢课抗议，营救无果。",
+      "text": "告别后，费巩赴重庆讲学。日子翻过一页又一页。",
       "journal": {
         "id": "farewell-fei",
         "title": "光是留给我们的",
         "text": "1945 年初，遵义。赴渝前的一晚，我送费先生到校门口。灯是他送的，光是留给我们的。"
       },
+      "next": "fei-gone-page-2"
+    },
+    {
+      "id": "fei-gone-page-2",
+      "chapter": "第五章 · 东方剑桥",
+      "location": "重庆 · 千厮门码头",
+      "date": "1945 年 3 月 5 日",
+      "bg": "IMG-15",
+      "type": "text",
+      "text": "1945 年 3 月 5 日凌晨，他在重庆千厮门码头准备乘船赴北碚时失踪。\n\n校长四处查问，学生罢课抗议，营救无果。",
       "next": "scene-117"
     },
     {
@@ -2260,8 +2538,19 @@ main{position:relative}
       "date": "1945 年 8 月",
       "bg": "IMG-43",
       "type": "text",
-      "text": "1945 年 8 月，抗战胜利。自 1937 年离杭西迁，已近八年。\n\n来时 2600 多公里，师生行李之外，是 140 箱《四库全书》、两三百箱图书仪器。一路护送的文脉，还将传下去。",
+      "text": "1945 年 8 月，抗战胜利。自 1937 年离杭西迁，已近八年。",
       "speaker": "字幕",
+      "next": "scene-123-page-2"
+    },
+    {
+      "id": "scene-123-page-2",
+      "chapter": "第五章 · 东方剑桥",
+      "location": "湄潭 · 夜街",
+      "date": "1945 年 8 月",
+      "bg": "IMG-43",
+      "speaker": "字幕",
+      "type": "text",
+      "text": "来时 2600 多公里，师生行李之外，是 140 箱《四库全书》、两三百箱图书仪器。一路护送的文脉，还将传下去。",
       "next": "scene-124"
     },
     {
@@ -2302,7 +2591,17 @@ main{position:relative}
       "date": "1946 年 5—6 月",
       "bg": "IMG-17",
       "type": "text",
-      "text": "木牌终于挂正。当年报到的新生，如今已经完成学业，留下协助迁校。你和同伴们一起，把课堂和书卷护送回了杭州。\n\n1946 年的夏夜，你独自走过校园。白光渐起——你要回去了。",
+      "text": "木牌终于挂正。当年报到的新生，如今已经完成学业，留下协助迁校。",
+      "next": "scene-127-page-2"
+    },
+    {
+      "id": "scene-127-page-2",
+      "chapter": "终章 · 走马灯与回答",
+      "location": "杭州 · 大学路校舍",
+      "date": "1946 年 5—6 月",
+      "bg": "IMG-17",
+      "type": "text",
+      "text": "你和同伴们一起，把课堂和书卷护送回了杭州。\n\n1946 年的夏夜，你独自走过校园。白光渐起——你要回去了。",
       "next": "montage"
     },
     {
@@ -2565,7 +2864,7 @@ const files={
  fireworks:'胜利庆祝/alex_jauk-firecrackers-178799.mp3',
  keyboard:'pc_keyboard.mp3'
 };
-const cues={"start":{"music":null,"volume":0.2},"scene-002":{"music":null,"volume":0.2},"interaction-1":{"music":"history","volume":0.15},"scene-004":{"music":"history","volume":0.05},"scene-005":{"music":null,"volume":0.2,"cut":true,"fx":["shutter"]},"chapter1-start":{"music":"books","volume":0.25,"fx":["cannon"]},"scene-007":{"music":"books","volume":0.22},"scene-008":{"music":"books","volume":0.22},"interaction-2":{"music":"books","volume":0.22},"scene-010":{"music":"history","volume":0.2},"scene-011":{"music":"history","volume":0.2},"scene-012":{"music":"history","volume":0.2},"scene-013":{"music":"history","volume":0.2},"interaction-3":{"music":"history","volume":0.2},"scene-015":{"music":"history","volume":0.2},"name-confirm":{"music":"history","volume":0.2},"scene-017":{"music":"history","volume":0.2},"scene-018":{"music":"piano","volume":0.2},"interaction-4":{"music":"piano","volume":0.2},"scene-020":{"music":"piano","volume":0.2,"fx":["cannon"]},"scene-021":{"music":null,"volume":0.2,"cut":true},"chapter2-news":{"music":"cinema","volume":0.22,"fx":["cannon","siren"]},"chapter2-start":{"music":"cinema","volume":0.22},"scene-023":{"music":"piano","volume":0.2},"scene-024":{"music":"piano","volume":0.2},"scene-025":{"music":"piano","volume":0.03},"scene-026":{"music":"piano","volume":0.03},"scene-027":{"music":"piano","volume":0.03},"scene-028":{"music":"piano","volume":0.03},"scene-029":{"music":"piano","volume":0.03},"scene-030":{"music":"piano","volume":0.03},"scene-031":{"music":"piano","volume":0.03},"scene-032":{"music":"piano","volume":0.03},"scene-033":{"music":"piano","volume":0.03},"scene-034":{"music":"piano","volume":0.03},"scene-035":{"music":"piano","volume":0.03},"scene-036":{"music":"piano","volume":0.03},"scene-036-pause":{"music":"piano","volume":0.03},"scene-037":{"music":"piano","volume":0.4},"scene-038":{"music":"piano","volume":0.4},"scene-039":{"music":"piano","volume":0.4},"scene-040":{"music":"piano","volume":0.4},"scene-041":{"music":null,"volume":0.2,"cut":true,"fx":["siren"]},"scene-042":{"music":"piano","volume":0.22},"scene-043":{"music":"piano","volume":0.22},"scene-044":{"music":"books","volume":0.2},"scene-045":{"music":"books","volume":0.2},"scene-046":{"music":"books","volume":0.2},"choice-1":{"music":"books","volume":0.2},"scene-048":{"music":"books","volume":0.12,"fx":["siren"]},"scene-049":{"music":"books","volume":0.12},"scene-050":{"music":"tragic","volume":0.2},"scene-051":{"music":"tragic","volume":0.2},"scene-052":{"music":"tragic","volume":0.2},"scene-053":{"music":"tragic","volume":0.2},"choice-2":{"music":"tragic","volume":0.03},"choice2-join-reply":{"music":"tragic","volume":0.2},"choice2-join-departure":{"music":"tragic","volume":0.2},"scene-055":{"music":"cinema","volume":0.6,"fx":["shutter"],"settle":0.2},"chapter3-start":{"music":"history","volume":0.2},"scene-057":{"music":"piano","volume":0.2},"interaction-5":{"music":"piano","volume":0.2},"scene-059":{"music":"inspire","volume":0.25},"scene-060":{"music":"inspire","volume":0.25},"scene-061":{"music":"inspire","volume":0.25},"scene-062":{"music":"inspire","volume":0.25},"interaction-6":{"music":"inspire","volume":0.25},"scene-064":{"music":"inspire","volume":0.25},"scene-065":{"music":"piano","volume":0.2},"scene-066":{"music":"piano","volume":0.2},"chengjiang-xiaoman-looks-up":{"music":"piano","volume":0.2},"scene-067":{"music":"piano","volume":0.2},"chengjiang-offer-school":{"music":"piano","volume":0.2},"scene-068":{"music":"piano","volume":0.2},"chengjiang-grip-broom":{"music":"piano","volume":0.2},"scene-069":{"music":"piano","volume":0.2},"scene-070":{"music":"piano","volume":0.2},"chengjiang-hold-sleeve":{"music":"piano","volume":0.2},"scene-071":{"music":"piano","volume":0.2},"scene-072":{"music":"piano","volume":0.04},"scene-073":{"music":"piano","volume":0.04},"protect-branch":{"music":"piano","volume":0.04},"protect-rain":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"interaction-7":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"scene-077":{"music":"books","volume":0.2},"chapter4-start":{"music":"cinema","volume":0.2,"fx":["cannon","siren"]},"chapter4-he-narration":{"music":"cinema","volume":0.2},"scene-079":{"music":"history","volume":0.18},"scene-080":{"music":"history","volume":0.18},"choice-3":{"music":"history","volume":0.03},"scene-082":{"music":"inspire","volume":0.25},"scene-083":{"music":"inspire","volume":0.25},"scene-084":{"music":"inspire","volume":0.25},"interaction-8":{"music":"inspire","volume":0.25},"anthem-meeting-context":{"music":"inspire","volume":0.25},"scene-086":{"music":"inspire","volume":0.25},"scene-087":{"music":"piano","volume":0.05},"scene-088":{"music":"piano","volume":0.05},"scene-089":{"music":"piano","volume":0.05},"scene-090":{"music":"piano","volume":0.05},"scene-091":{"music":"anthem","volume":0.3},"scene-092":{"music":"cinema","volume":0.2,"fx":["siren","cannon"],"bombing":true},"scene-093":{"music":null,"volume":0.2,"cut":true},"scene-094":{"music":null,"volume":0.2,"cut":true},"choice-4":{"music":null,"volume":0.2,"cut":true},"chapter5-start":{"music":"history","volume":0.22},"audit-guizhou-hezhi":{"music":"history","volume":0.22},"scene-097":{"music":"history","volume":0.22},"scene-098":{"music":"piano","volume":0.2},"interaction-9":{"music":"piano","volume":0.2},"scene-100":{"music":"piano","volume":0.2},"scene-101":{"music":"piano","volume":0.2},"scene-102":{"music":null,"volume":0.2,"cut":true},"scene-103":{"music":"piano","volume":0.2},"scene-104":{"music":"piano","volume":0.2},"scene-105":{"music":"piano","volume":0.2},"interaction-10":{"music":"piano","volume":0.2},"scene-107":{"music":"piano","volume":0.45},"scene-108":{"music":"piano","volume":0.45},"scene-109":{"music":"inspire","volume":0.45},"scene-110":{"music":"inspire","volume":0.45},"scene-111":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"scene-112":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-future-memory":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"choice-5":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-stop":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-silent":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-lift-case":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-silent-reply":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-gone":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-117":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.35,"delay":650},"scene-118":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.3},"scene-119":{"music":"inspire","volume":0.8,"ambient":"fireworks","ambientVolume":0.25},"scene-120":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-121":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-122":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-123":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-124":{"music":"inspire","volume":0.08,"fx":["shutter"]},"chapter6-start":{"music":"anthem","volume":0.45},"interaction-11":{"music":"anthem","volume":0.45},"scene-127":{"music":"anthem","volume":0.45},"montage":{"music":"piano","volume":0.6},"ending":{"music":"piano","volume":0.2},"audit-farewell-chase":{"music":"piano","volume":0.2},"scene-130":{"music":"piano","volume":0.2},"scene-131":{"music":"piano","volume":0.2},"scene-132":{"music":"history","volume":0.2,"fx":["page"]},"scene-133":{"music":"history","volume":0.2,"fx":["page"]},"scene-134":{"music":"history","volume":0.2,"fx":["page"]},"scene-135":{"music":"history","volume":0.2,"fx":["page"]},"scene-136":{"music":"history","volume":0.2,"fx":["page"]},"scene-137":{"music":null,"volume":0.2,"cut":true},"scene-138":{"music":null,"volume":0.2,"cut":true},"scene-139":{"music":null,"volume":0.2,"fx":["page"]},"scene-140":{"music":"piano","volume":0.08},"scene-141":{"music":"piano","volume":0.08},"reflection":{"music":"anthem","volume":0.8}};
+const cues={"start":{"music":null,"volume":0.2},"scene-002":{"music":null,"volume":0.2},"interaction-1":{"music":"history","volume":0.15},"scene-004":{"music":"history","volume":0.05},"scene-005":{"music":null,"volume":0.2,"cut":true,"fx":["shutter"]},"chapter1-start":{"music":"books","volume":0.25,"fx":["cannon"]},"scene-007":{"music":"books","volume":0.22},"scene-008":{"music":"books","volume":0.22},"interaction-2":{"music":"books","volume":0.22},"scene-010":{"music":"history","volume":0.2},"scene-011":{"music":"history","volume":0.2},"scene-012":{"music":"history","volume":0.2},"scene-013":{"music":"history","volume":0.2},"interaction-3":{"music":"history","volume":0.2},"scene-015":{"music":"history","volume":0.2},"name-confirm":{"music":"history","volume":0.2},"scene-017":{"music":"history","volume":0.2},"scene-018":{"music":"piano","volume":0.2},"interaction-4":{"music":"piano","volume":0.2},"scene-020":{"music":"piano","volume":0.2,"fx":["cannon"]},"scene-021":{"music":null,"volume":0.2,"cut":true},"chapter2-news":{"music":"cinema","volume":0.22,"fx":["cannon","siren"]},"chapter2-start":{"music":"cinema","volume":0.22},"scene-023":{"music":"piano","volume":0.2},"scene-024":{"music":"piano","volume":0.2},"scene-025":{"music":"piano","volume":0.03},"scene-026":{"music":"piano","volume":0.03},"scene-027":{"music":"piano","volume":0.03},"scene-028":{"music":"piano","volume":0.03},"scene-029":{"music":"piano","volume":0.03},"scene-030":{"music":"piano","volume":0.03},"scene-031":{"music":"piano","volume":0.03},"scene-032":{"music":"piano","volume":0.03},"scene-033":{"music":"piano","volume":0.03},"scene-034":{"music":"piano","volume":0.03},"scene-035":{"music":"piano","volume":0.03},"scene-036":{"music":"piano","volume":0.03},"scene-036-pause":{"music":"piano","volume":0.03},"scene-037":{"music":"piano","volume":0.4},"scene-038":{"music":"piano","volume":0.4},"scene-039":{"music":"piano","volume":0.4},"scene-040":{"music":"piano","volume":0.4},"scene-041":{"music":null,"volume":0.2,"cut":true,"fx":["siren"]},"scene-042":{"music":"piano","volume":0.22},"scene-043":{"music":"piano","volume":0.22},"scene-044":{"music":"books","volume":0.2},"scene-045":{"music":"books","volume":0.2},"scene-046":{"music":"books","volume":0.2},"choice-1":{"music":"books","volume":0.2},"scene-048":{"music":"books","volume":0.12,"fx":["siren"]},"scene-049":{"music":"books","volume":0.12},"scene-050":{"music":"tragic","volume":0.2},"scene-051":{"music":"tragic","volume":0.2},"scene-052":{"music":"tragic","volume":0.2},"scene-053":{"music":"tragic","volume":0.2},"choice-2":{"music":"tragic","volume":0.03},"choice2-join-reply":{"music":"tragic","volume":0.2},"choice2-join-departure":{"music":"tragic","volume":0.2},"scene-055":{"music":"cinema","volume":0.6,"fx":["shutter"],"settle":0.2},"chapter3-start":{"music":"history","volume":0.2},"scene-057":{"music":"piano","volume":0.2},"interaction-5":{"music":"piano","volume":0.2},"scene-059":{"music":"inspire","volume":0.25},"scene-060":{"music":"inspire","volume":0.25},"scene-061":{"music":"inspire","volume":0.25},"scene-062":{"music":"inspire","volume":0.25},"interaction-6":{"music":"inspire","volume":0.25},"scene-064":{"music":"inspire","volume":0.25},"scene-065":{"music":"piano","volume":0.2},"scene-066":{"music":"piano","volume":0.2},"chengjiang-xiaoman-looks-up":{"music":"piano","volume":0.2},"scene-067":{"music":"piano","volume":0.2},"chengjiang-offer-school":{"music":"piano","volume":0.2},"scene-068":{"music":"piano","volume":0.2},"chengjiang-grip-broom":{"music":"piano","volume":0.2},"scene-069":{"music":"piano","volume":0.2},"scene-070":{"music":"piano","volume":0.2},"chengjiang-hold-sleeve":{"music":"piano","volume":0.2},"scene-071":{"music":"piano","volume":0.2},"scene-072":{"music":"piano","volume":0.04},"scene-073":{"music":"piano","volume":0.04},"protect-branch":{"music":"piano","volume":0.04},"protect-rain":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"interaction-7":{"music":"books","volume":0.05,"ambient":"rain","ambientVolume":0.25},"scene-077":{"music":"books","volume":0.2},"chapter4-start":{"music":"cinema","volume":0.2,"fx":["cannon","siren"]},"chapter4-he-narration":{"music":"cinema","volume":0.2},"scene-079":{"music":"history","volume":0.18},"scene-080":{"music":"history","volume":0.18},"choice-3":{"music":"history","volume":0.03},"scene-082":{"music":"inspire","volume":0.25},"scene-083":{"music":"inspire","volume":0.25},"scene-084":{"music":"inspire","volume":0.25},"interaction-8":{"music":"inspire","volume":0.25},"anthem-meeting-context":{"music":"inspire","volume":0.25},"scene-086":{"music":"inspire","volume":0.25},"scene-087":{"music":"piano","volume":0.05},"scene-088":{"music":"piano","volume":0.05},"scene-089":{"music":"piano","volume":0.05},"scene-090":{"music":"piano","volume":0.05},"scene-091":{"music":"anthem","volume":0.3},"scene-092":{"music":"cinema","volume":0.2,"fx":["siren","cannon"],"bombing":true},"scene-093":{"music":null,"volume":0.2,"cut":true},"scene-094":{"music":null,"volume":0.2,"cut":true},"choice-4":{"music":null,"volume":0.2,"cut":true},"chapter5-start":{"music":"history","volume":0.22},"audit-guizhou-hezhi":{"music":"history","volume":0.22},"scene-097":{"music":"history","volume":0.22},"scene-098":{"music":"piano","volume":0.2},"interaction-9":{"music":"piano","volume":0.2},"scene-100":{"music":"piano","volume":0.2},"scene-101":{"music":"piano","volume":0.2},"scene-102":{"music":null,"volume":0.2,"cut":true},"scene-103":{"music":"piano","volume":0.2},"scene-104":{"music":"piano","volume":0.2},"scene-105":{"music":"piano","volume":0.2},"interaction-10":{"music":"piano","volume":0.2},"scene-107":{"music":"piano","volume":0.45},"scene-108":{"music":"piano","volume":0.45},"scene-109":{"music":"inspire","volume":0.45},"scene-110":{"music":"inspire","volume":0.45},"scene-111":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"scene-112":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-future-memory":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"choice-5":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-stop":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-silent":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-lift-case":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"audit-fei-silent-reply":{"music":"piano","volume":0.03,"ambient":"rain","ambientVolume":0.2},"fei-gone":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-117":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.35,"delay":650},"scene-118":{"music":"inspire","volume":0.6,"ambient":"fireworks","ambientVolume":0.3},"scene-119":{"music":"inspire","volume":0.8,"ambient":"fireworks","ambientVolume":0.25},"scene-120":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-121":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-122":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-123":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-124":{"music":"inspire","volume":0.08,"fx":["shutter"]},"chapter6-start":{"music":"anthem","volume":0.45},"interaction-11":{"music":"anthem","volume":0.45},"scene-127":{"music":"anthem","volume":0.45},"montage":{"music":"piano","volume":0.6},"ending":{"music":"piano","volume":0.2},"audit-farewell-chase":{"music":"piano","volume":0.2},"scene-130":{"music":"piano","volume":0.2},"scene-131":{"music":"piano","volume":0.2},"scene-132":{"music":"history","volume":0.2,"fx":["page"]},"scene-133":{"music":"history","volume":0.2,"fx":["page"]},"scene-134":{"music":"history","volume":0.2,"fx":["page"]},"scene-135":{"music":"history","volume":0.2,"fx":["page"]},"scene-136":{"music":"history","volume":0.2,"fx":["page"]},"scene-137":{"music":null,"volume":0.2,"cut":true},"scene-138":{"music":null,"volume":0.2,"cut":true},"scene-139":{"music":null,"volume":0.2,"fx":["page"]},"scene-140":{"music":"piano","volume":0.08},"scene-141":{"music":"piano","volume":0.08},"reflection":{"music":"anthem","volume":0.8},"scene-002-page-2":{"music":null,"volume":0.2},"chapter1-start-page-2":{"music":"books","volume":0.25},"scene-010-page-2":{"music":"history","volume":0.2},"scene-010-page-3":{"music":"history","volume":0.2},"scene-018-page-2":{"music":"piano","volume":0.2},"chapter2-start-page-2":{"music":"cinema","volume":0.22},"scene-027-page-2":{"music":"piano","volume":0.03},"scene-031-page-2":{"music":"piano","volume":0.03},"scene-031-page-3":{"music":"piano","volume":0.03},"scene-032-page-2":{"music":"piano","volume":0.03},"scene-039-page-2":{"music":"piano","volume":0.4},"scene-044-page-2":{"music":"books","volume":0.2},"scene-049-page-2":{"music":"books","volume":0.12},"scene-050-page-2":{"music":"tragic","volume":0.2},"scene-053-page-2":{"music":"tragic","volume":0.2},"choice2-join-departure-page-2":{"music":"tragic","volume":0.2},"scene-059-page-2":{"music":"inspire","volume":0.25},"scene-061-page-2":{"music":"inspire","volume":0.25},"scene-079-page-2":{"music":"history","volume":0.18},"choice-3-chen-feedback-page-2":{"music":"history","volume":0.03},"scene-087-page-2":{"music":"piano","volume":0.05},"scene-090-page-2":{"music":"piano","volume":0.05},"scene-098-page-2":{"music":"piano","volume":0.2},"fei-gone-page-2":{"music":null,"volume":0.2,"ambient":"rain","ambientVolume":0.25},"scene-123-page-2":{"music":"inspire","volume":0.25,"ambient":"fireworks","ambientVolume":0.12},"scene-127-page-2":{"music":"anthem","volume":0.45},"scene-110-page-2":{"music":"inspire","volume":0.45}};
 const $=id=>document.getElementById(id),key='qiushi-xixing:audio:v1';
 let settings={muted:false,volume:.7};
 try{const saved=JSON.parse(localStorage.getItem(key));if(saved&&typeof saved.muted==='boolean'&&Number.isFinite(saved.volume))settings={muted:saved.muted,volume:Math.max(0,Math.min(1,saved.volume))};}catch(_){}
@@ -2713,7 +3012,7 @@ let state=C.createInitialState(), current=null, pageVersion=0, timer=null, playi
 const $=id=>document.getElementById(id);
 const content=$('content'), controls=$('controls'), notice=$('notification');
 const chapterNames=['序章 · 照片里的录取','第一章 · 烽火开学','第二章 · 夜渡钱塘','第三章 · 文军长征','第四章 · 求是','第五章 · 东方剑桥','终章 · 走马灯与回答'];
-const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'迁校队伍山路跋涉','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房验书','IMG-07':'周念东收拾铺盖参军','IMG-08':'白鹭洲夜读','IMG-09':'赣江大堤测量','IMG-10':'小满进入澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍夜读','IMG-15':'费巩办公室捆书','IMG-16':'湄潭胜利街景','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线示意','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学','IMG-32':'杭州湾登陆消息与迁校布告','IMG-33':'草丛中发现小满','IMG-34':'牵着小满追上队伍','IMG-36':'孙宅门口见竺可桢','IMG-37':'悼念与侠魂奖学金','IMG-35':'雨夜护送书箱','IMG-38':'校医处与奎宁选择','IMG-39':'黑板字块与拼校训','IMG-40':'校歌曲谱第一页','IMG-41':'校歌曲谱第二页','IMG-42':'校歌曲谱第三页','IMG-43':'湄潭夜景与遍城灯火','IMG-44':'返杭校门空牌位','IMG-45':'国立浙江大学木牌'};
+const names={'IMG-01':'校史馆','IMG-02':'杭州校门','IMG-03':'迁校队伍山路跋涉','IMG-04':'禅源寺','IMG-05':'建德梅城','IMG-06':'古籍仓房验书','IMG-07':'周念东收拾铺盖参军','IMG-08':'白鹭洲夜读','IMG-09':'赣江大堤测量','IMG-10':'小满进入澄江学校','IMG-11':'宜山草棚大学','IMG-12':'校务会议','IMG-13':'宜山废墟','IMG-14':'遵义宿舍夜读','IMG-15':'费巩办公室捆书','IMG-16':'湄潭胜利街景','IMG-17':'返杭校门','IMG-22':'西迁路线图','IMG-24':'西迁路线示意','IMG-26':'费巩灯','IMG-27':'战时杭州街头','IMG-28':'门房递饼','IMG-29':'天目山路同行','IMG-30':'禅源寺铺位','IMG-31':'禅源寺开学','IMG-32':'杭州湾登陆消息与迁校布告','IMG-33':'草丛中发现小满','IMG-34':'牵着小满追上队伍','IMG-36':'孙宅门口见竺可桢','IMG-37':'悼念与侠魂奖学金','IMG-35':'雨夜护送书箱','IMG-38':'校医处与奎宁选择','IMG-39':'黑板字块与拼校训','IMG-40':'校歌曲谱第一页','IMG-41':'校歌曲谱第二页','IMG-42':'校歌曲谱第三页','IMG-43':'湄潭夜景与遍城灯火','IMG-44':'返杭校门空牌位','IMG-45':'国立浙江大学木牌','IMG-46':'梅城师生抬黑板进祠堂','IMG-47':'梅城戒严前的灯火','IMG-48':'宜山开学典礼全景','IMG-49':'宜山开学典礼演讲','IMG-50':'轰炸废墟中的钢琴','IMG-51':'文庙课堂与东方剑桥'};
 // Route navigation and versioned, browser-local saves.
 const stations=[
  {id:'museum',name:'校史馆',entry:'start',summary:'从一张旧照片走进西迁岁月。'},
@@ -2757,9 +3056,12 @@ function validSave(s){
  if(v.draftName!==undefined&&(typeof v.draftName!=='string'||v.draftName.length>40))return false;
  if(v.montage!==undefined&&(!Number.isInteger(v.montage)||v.montage<0||v.montage>4))return false;
  if(v.rescue!==undefined){const r=v.rescue;if(n.id!=='interaction-7'||!r||typeof r.started!=='boolean'||!Number.isFinite(r.remaining)||r.remaining<0||r.remaining>12000||!Array.isArray(r.moved)||r.moved.length>4||new Set(r.moved).size!==r.moved.length||!r.moved.every(i=>Number.isInteger(i)&&i>=0&&i<4)||(!r.started&&(r.moved.length||r.remaining!==12000)))return false;if(r.settleRemaining!==undefined&&(!r.started||r.moved.length!==4||!Number.isFinite(r.settleRemaining)||r.settleRemaining<0||r.settleRemaining>1500))return false;}
+ if(v.motto?.order!==undefined&&(!Array.isArray(v.motto.order)||v.motto.order.length!==8||new Set(v.motto.order).size!==8||!v.motto.order.every(c=>['求','是','力','行','敦','品','格','致'].includes(c))))return false;
  if(v.motto!==undefined){const m=v.motto;if(n.id!=='interaction-8'||!m||!['arrange','silence','reason'].includes(m.phase)||typeof m.reason!=='string'||m.reason.length>300||(m.phase!=='arrange'&&(!Array.isArray(v.words)||v.words.length!==2))||(m.phase==='silence'&&v.words?.join('')!=='求是')||(m.wait!==undefined&&(!Number.isFinite(m.wait)||m.wait<0||m.wait>3000)))return false;}
  if(v.typo!==undefined){const t=v.typo;if(n.id!=='interaction-9'||!t||typeof t.done!=='boolean'||(t.wait!==undefined&&(!Number.isFinite(t.wait)||t.wait<0||t.wait>600||!t.done)))return false;}
  if(v.lamp!==undefined){const l=v.lamp;if(n.id!=='interaction-10'||!l||!['collect','light','proof'].includes(l.step)||!Array.isArray(l.found)||l.found.length>2||new Set(l.found).size!==l.found.length||!l.found.every(i=>i===0||i===1)||(l.step!=='proof'&&l.found.length)||(l.step==='proof'&&!g.lampLit)||(l.wait!==undefined&&(!Number.isFinite(l.wait)||l.wait<0||l.wait>900||l.step!=='proof'||l.found.length!==2)))return false;}
+ if(v.blackout!==undefined&&(n.id!=='scene-048'||!v.blackout||!Number.isFinite(v.blackout.elapsed)||v.blackout.elapsed<0||v.blackout.elapsed>3200))return false;
+ if(v.flashShown!==undefined&&(!['scene-005','scene-137'].includes(n.id)||typeof v.flashShown!=='boolean'))return false;
  if(v.signAngle!==undefined&&(n.id!=='interaction-11'||!Number.isFinite(v.signAngle)||Math.abs(v.signAngle)>28))return false;
  return true;
 }
@@ -2842,7 +3144,7 @@ function openReview(index){
  function draw(){
   const entry=cards[page];$('review-title').textContent='回顾 · '+stations[index].name;
   $('review-heading').textContent=chapterNames[index];
-  const root=$('review-body');root.replaceChildren();$('review-school-sign').hidden=true;
+  const root=$('review-body');root.replaceChildren();$('review-school-sign').hidden=true;renderAnthemGallery(entry?reviewBackground(entry):'',true);
   if(entry){const bg=reviewBackground(entry);$('review-image').src=sceneImagePath(nodes.get(entry.nodeId),bg);$('review-image').alt=(names[bg]||stations[index].name)+' · 回顾场景';$('review-image').classList.toggle('framed',['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg));$('review-school-sign').hidden=!['chapter6-start','interaction-11'].includes(entry.nodeId);$('review-school-sign').style.setProperty('--sign-angle',entry.nodeId==='interaction-11'&&entry.id.startsWith('action:')?'0deg':'-14deg');requestAnimationFrame(layoutSchoolSign);root.append(el('p','speaker',entry.title),el('p','review-text',entry.body));}
   else root.append(el('p','review-text','这一站还没有留下记录。'));
   const nav=$('review-nav');nav.replaceChildren();
@@ -2929,12 +3231,49 @@ renderSchoolSign(current);if(signIsLevel(view.signAngle))finishSchoolSign();else
 $('scene-image').addEventListener('load',layoutSchoolSign);$('review-image').addEventListener('load',layoutSchoolSign);
 window.addEventListener('resize',()=>{cancelSchoolSignDrag();layoutSchoolSign();});
 if('ResizeObserver' in window){const signResize=new ResizeObserver(layoutSchoolSign);signResize.observe($('scene'));signResize.observe($('review-image'));}
-function clearTimer(){clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
-function clearView(){clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
+let blackoutClock=null;
+function renderAnthemGallery(bg,review=false){
+const gallery=$(review?'review-anthem-gallery':'anthem-gallery'),image=$(review?'review-image':'scene-image');
+const visible=['IMG-40','IMG-41','IMG-42'].includes(bg);gallery.hidden=!visible;image.hidden=visible;
+if(visible&&!gallery.children.length){for(const [i,id] of ['IMG-40','IMG-41','IMG-42'].entries()){const page=el('img');page.src='./assets/images/'+id+'.webp';page.alt='校歌曲谱 · 第'+(i+1)+'页';gallery.append(page);}}
+}
+function stopBlackout(){
+if(blackoutClock){clearInterval(blackoutClock.timer);blackoutClock=null;}
+$('lantern-before').hidden=true;delete document.body.dataset.sceneTransition;$('scene').removeAttribute('aria-busy');
+}
+function drawBlackout(){
+const elapsed=view.blackout.elapsed,reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('lantern-before').style.opacity=String(reduced?(elapsed<1700?1:0):Math.max(0,Math.min(1,1-(elapsed-600)/2200)));
+}
+function updateBlackout(){
+if(!blackoutClock)return;
+const clock=blackoutClock,now=performance.now();
+const running=!document.hidden&&!document.querySelector('dialog[open]')&&view.mode==='story'&&$('scene-image').complete&&$('lantern-before').complete;
+if(clock.running&&running)view.blackout.elapsed=Math.min(3200,view.blackout.elapsed+now-clock.last);
+clock.last=now;clock.running=running;drawBlackout();
+if(view.blackout.elapsed>=3200){stopBlackout();autoSave();}
+}
+function startBlackout(n){
+if(n.id!=='scene-048')return;
+view.blackout??={elapsed:0};if(view.blackout.elapsed>=3200)return;
+$('lantern-before').hidden=false;document.body.dataset.sceneTransition='blackout';$('scene').setAttribute('aria-busy','true');drawBlackout();
+blackoutClock={last:performance.now(),running:false,timer:setInterval(updateBlackout,40)};updateBlackout();
+}
+function stopTimeFlash(){
+const flash=$('time-flash');flash.classList.remove('active');flash.hidden=true;
+}
+function playTimeFlash(n){
+if(!['scene-005','scene-137'].includes(n.id)||view.flashShown)return;
+view.flashShown=true;const flash=$('time-flash');flash.hidden=false;flash.classList.remove('active');void flash.offsetWidth;flash.classList.add('active');
+}
+function clearTimer(){stopBlackout();clearStudy();stopRescueClock();if(timer){clearInterval(timer);timer=null;}}
+function clearView(){stopTimeFlash();stopBlackout();clearStudy();stopRescueClock();cancelSchoolSignDrag();delete document.body.dataset.quizResult;pageVersion++;advanceAction=null;clearTyping();delete document.body.dataset.advance;delete document.body.dataset.page;delete document.body.dataset.pages;content.replaceChildren();controls.replaceChildren();controls.className='controls';notice.textContent='';$('story-panel').scrollTop=0;}
 function setScene(n,overrideBg){const requestedBg=overrideBg||n.bg||'IMG-01';const bg=requestedBg==='IMG-25'?'IMG-07':requestedBg;const image=$('scene-image');const src=sceneImagePath(n,bg);if(image.getAttribute('src')!==src)image.src=src;
-image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';
+image.alt=(n.id==='interaction-9'?'油灯下的校样':names[bg]||n.location||'西行')+'场景示意图';image.className='scene-image';renderAnthemGallery(bg);
 if(['IMG-22','IMG-24','IMG-30','IMG-39','IMG-40','IMG-41','IMG-42','IMG-44'].includes(bg))image.classList.add('framed');
 if(bg==='IMG-44')image.classList.add('school-sign-scene');
+if(bg==='IMG-49')image.classList.add('ceremony-scene');
+if(bg==='IMG-51')image.classList.add('cambridge-scene');
 if(n.id==='interaction-7')image.classList.add('rescue-scene');
 if(n.id==='interaction-8')image.classList.add('motto-scene');
 if(n.id==='interaction-9')image.classList.add('proof-night');
@@ -2944,7 +3283,7 @@ if(/夜|暮|雨/.test(String(n.location||'')+' '+String(n.date||''))&&bg!=='IMG-
 $('location').firstChild.textContent=n.location||names[bg]||'西行途中';$('scene-date').textContent=n.date||'';$('chapter-label').textContent=n.chapter||'';
 $('lamp-object').hidden=!(bg==='IMG-14'&&state.lampLit);$('map-caption').hidden=true;$('map-caption').textContent=n.id==='chapter3-start'?'建德 · 金华 · 南昌 · 樟树 · 吉安':'杭州 · 天目山 · 建德 · 吉安 · 泰和 · 宜山 · 遵义／湄潭';
 renderSchoolSign(n);
-$('scene').classList.remove('flash','quake');if(n.id==='scene-005'){void $('scene').offsetWidth;$('scene').classList.add('flash');}
+$('scene').classList.remove('flash','quake');
 if(n.id==='scene-092'||(bg==='IMG-13'&&n.id.includes('bomb'))) {void $('scene').offsetWidth;$('scene').classList.add('quake');}}
 $('scene-image').addEventListener('error',function(){this.style.opacity='.35';});$('scene-image').addEventListener('load',function(){this.style.opacity='1';});
 function writeText(n){const sub=n.speaker==='字幕';if(n.speaker&&!sub){const speaker=n.speaker==='你'?(nameConfirmed?state.name:'你'):n.speaker;content.append(el('p','speaker',speaker+(n.delivery==='inner'?' · 内心':'')));}if(n.direction)content.append(el('p','stage-direction',n.direction));const p=el('p',sub?'story-text subtitle':'story-text',n.text);p.tabIndex=-1;content.append(p);}
@@ -3093,6 +3432,7 @@ case 'wordpick':showWords(n);break;
 case 'typo':showTypo(n);break;
 default:continueButton(n.next);
 }
+startBlackout(n);playTimeFlash(n);
 }
 function showTitle(){
 sound.title();
@@ -3361,6 +3701,14 @@ const old=state.journal.find(e=>e.id===entry.id);if(old)Object.assign(old,entry)
 remember('journal:motto-reason',entry.text,'手账 · 选择的依据');
 feedback('竺可桢没有否定你，只问：“你选这两个字，依据是什么？”\n你把自己的依据写进了手账。',current.next);autoSave();return true;
 }
+function shuffleMottoWords(){
+const order=['求','是','力','行','敦','品','格','致'];
+for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+if(['求','是'].includes(order[0])){const i=order.findIndex(c=>!['求','是'].includes(c));[order[0],order[i]]=[order[i],order[0]];}
+const q=order.indexOf('求'),s=order.indexOf('是');
+if(Math.abs(q-s)===1){const i=order.findIndex((c,i)=>i>0&&!['求','是'].includes(c)&&Math.abs(i-q)>1);[order[s],order[i]]=[order[i],order[s]];}
+return order;
+}
 function showWords(n){
 clearStudy();content.replaceChildren();controls.replaceChildren();
 const selected=view.words??=[],draft=view.motto??={phase:'arrange',reason:''},surface=$('study-surface');
@@ -3375,7 +3723,8 @@ slot.disabled=draft.phase!=='arrange';slots.append(slot);
 surface.append(slots);
 if(draft.phase==='arrange'){
 const pool=el('div','motto-pool');pool.setAttribute('role','group');pool.setAttribute('aria-label','待选字块');
-for(const char of ['求','是','力','行','敦','品','格','致']){
+draft.order??=shuffleMottoWords();
+for(const char of draft.order){
 const tile=el('button','motto-tile',char);tile.type='button';tile.dataset.word=char;tile.disabled=selected.includes(char);
 tile.setAttribute('aria-label',char+'字，拖上黑板，或按回车选入');tile.addEventListener('click',event=>{if(event.detail===0)placeMottoWord(char);});pool.append(tile);
 }
@@ -3508,6 +3857,7 @@ pager.append(previous,el('p','page-progress',(index+1)+' / '+state.journal.lengt
 }
 draw();showDialog('journal-dialog');
 }
+$('time-flash').addEventListener('animationend',stopTimeFlash);
 $('journal-button').addEventListener('click',openJournal);
 $('chapters-button').textContent='地图';$('chapters-button').addEventListener('click',()=>{if(playing)openMap();else{$('save-status').textContent='开始西行后，可以随时打开地图。';}});
 $('save-button').addEventListener('click',openSaves);
@@ -3515,9 +3865,10 @@ $('restart-button').addEventListener('click',()=>playing?showDialog('restart-dia
 $('confirm-restart').addEventListener('click',()=>{$('restart-dialog').close();try{localStorage.removeItem(SAVE_PREFIX+'auto');}catch(error){storageMessage='浏览器无法清除自动存档。';}delete document.body.dataset.ending;showTitle();state=C.createInitialState();journey=freshJourney();go('start',true);window.scrollTo({top:0,behavior:'instant'});});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
  $('chapter-route-art').addEventListener('click',()=>showDialog('route-image-dialog'));
-window.addEventListener('pagehide',autoSave);
+window.addEventListener('pagehide',()=>{stopTimeFlash();updateBlackout();autoSave();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTimeFlash();updateBlackout();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)autoSave();});
-function advance(){if(document.querySelector('dialog[open]'))return;if(typeState){finishTyping();return;}if(!advanceAction)return;const action=advanceAction;action();autoSave();}
+function advance(){if(blackoutClock)return;if(document.querySelector('dialog[open]'))return;if(typeState){finishTyping();return;}if(!advanceAction)return;const action=advanceAction;action();autoSave();}
 $('story-panel').tabIndex=0;
 $('story-panel').addEventListener('click',event=>{
 if(event.target.closest('button,a,input,textarea,select,label,[contenteditable="true"]'))return;
