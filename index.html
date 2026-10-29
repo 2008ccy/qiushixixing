@@ -3189,7 +3189,7 @@ const stations=[
  {id:'home',map:{x:0.89,y:0.34,labelX:-48,labelY:24},name:'杭州 · 归来',entry:'chapter6-start',summary:'重挂校牌，把一路的回答带回今天。'}
 ];
 const SAVE_VERSION=1;
-let SAVE_PREFIX='qiushi-xixing:save:v1:';
+const SAVE_PREFIX='qiushi-xixing:save:v1:';
 let journey=freshJourney(), view=freshView('start'), storageMessage='';
 function freshJourney(){return {completed:[],pending:null,finaleStarted:false,history:[]};}
 function freshView(id){return {mode:'story',nodeId:id,phase:'node',page:0};}
@@ -4307,29 +4307,6 @@ if(document.querySelector('dialog[open]')||event.target.closest('input,textarea,
 if(event.target.closest('button,a')&&['Enter',' '].includes(event.key))return;
 if(advanceAction||typeState){event.preventDefault();advance();}
 });
-// BEGIN OPTIONAL DEVELOPER TOOLS — remove this block to disable completely.
-if(new URLSearchParams(location.search).get('debug')==='1'){
- SAVE_PREFIX='qiushi-xixing:debug:save:v1:';
- import('./dev-tools.js').then(({mountDeveloperTools})=>mountDeveloperTools({
-  chapters:stations.map((station,index)=>({id:station.id,label:chapterNames[index]+' · '+station.name})),
-  jump(stationId){
-   const index=stations.findIndex(station=>station.id===stationId);
-   if(index<0)return;
-   clearTimer();document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
-   delete document.body.dataset.ending;
-   state=C.createInitialState();journey=freshJourney();
-   // Simulate route prerequisites only; do not invent choices, scores or review records.
-   journey.completed=stations.slice(0,index).map(station=>station.id);
-   nameConfirmed=index>1;current=null;
-   go(stations[index].entry,true);
-   $('story-panel').focus({preventScroll:true});
-  }
- })).catch(error=>{
-  console.error('开发工具加载失败',error);
-  $('save-status').textContent='开发工具加载失败，请检查 dev-tools.js；当前仍使用独立调试存档。';
- });
-}
-// END OPTIONAL DEVELOPER TOOLS
 showTitle();
 })();
 </script>

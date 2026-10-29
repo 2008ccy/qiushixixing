@@ -1,2 +1,9 @@
 .DS_Store
 index_qiushi.html
+
+# Local-only developer tools and tests (excluded from the published repository).
+/dev-tools.js
+/开发调试说明.md
+/test.html
+/test.css
+/tests/

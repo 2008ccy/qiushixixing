@@ -2,7 +2,7 @@
 
 // Bump SHELL_VERSION for every HTML, JS, image, icon or manifest release.
 // Bump AUDIO_VERSION when audio files change; UI-only releases retain downloaded music.
-const SHELL_VERSION = '2026-10-26-19';
+const SHELL_VERSION = '2026-10-29-1';
 const AUDIO_VERSION = '3';
 const BASE = new URL('./', self.location.href);
 const PREFIX = 'qiushi-pwa:' + BASE.pathname + ':';
@@ -10,7 +10,7 @@ const SHELL_CACHE = PREFIX + 'shell-' + SHELL_VERSION;
 const AUDIO_CACHE = PREFIX + 'audio-' + AUDIO_VERSION;
 const urlFor = path => new URL(path, BASE).href;
 const SHELL_FILES = [
-  './', './index.html', './manifest.webmanifest', './pwa.js', './dev-tools.js',
+  './', './index.html', './manifest.webmanifest', './pwa.js',
   './assets/icons/icon.svg', './assets/icons/apple-touch-icon.png',
   './assets/props/chapter-route-clean.webp',
   './assets/props/dormitory-no-lamps.webp', './assets/props/motto-board.webp', './assets/props/proof-desk.webp', './assets/props/youth-proof.webp', './assets/props/feigong-lamp-unlit.webp', './assets/props/feigong-lamp-lit.webp',
@@ -81,21 +81,6 @@ async function audioRange(response, range) {
   return new Response(blob.slice(start, end + 1), { status: 206, headers });
 }
 
-function isDebugURL(value) {
-  try {
-    const url = new URL(value);
-    return url.origin === BASE.origin && url.pathname.startsWith(BASE.pathname)
-      && url.searchParams.get('debug') === '1';
-  } catch (_) { return false; }
-}
-
-async function isDebugRequest(event) {
-  if (isDebugURL(event.request.url) || isDebugURL(event.request.referrer)) return true;
-  if (!event.clientId) return false;
-  const client = await self.clients.get(event.clientId);
-  return isDebugURL(client?.url);
-}
-
 self.addEventListener('fetch', event => {
   const request = event.request, url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== BASE.origin || !url.pathname.startsWith(BASE.pathname)) return;
@@ -104,19 +89,10 @@ self.addEventListener('fetch', event => {
   const navigation = request.mode === 'navigate' && (key === BASE.href || key === urlFor('./index.html'));
   if (navigation) {
     event.respondWith((async () => {
-      // Avoid both the installed shell and HTTP cache when reading current source.
-      if (new URL(request.url).searchParams.get('debug') === '1') {
-        try { const response = await fetch(request, { cache: 'no-store' }); if (response.ok) return response; } catch (_) {}
-      }
       return await (await caches.open(SHELL_CACHE)).match(urlFor('./index.html')) || fetch(request);
     })());
   } else if (shellURLs.has(key) || audioURLs.has(key)) {
     event.respondWith((async () => {
-      // Asset URLs do not carry ?debug=1: identify their originating game window.
-      // Keep the installed release intact for ordinary and offline sessions.
-      if (await isDebugRequest(event)) {
-        try { const response = await fetch(request, { cache: 'no-store' }); if (response.ok) return response; } catch (_) {}
-      }
       const cache = await caches.open(audioURLs.has(key) ? AUDIO_CACHE : SHELL_CACHE);
       const cached = await cache.match(key);
       if (!cached) return fetch(request);

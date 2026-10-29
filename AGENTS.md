@@ -27,7 +27,7 @@
 | `README.md` | 初版运行、部署和内容说明，部分内容已过时。 |
 | `design-qa.md` | 初版界面验收记录，不代表当前版本已重新完成全部验收。 |
 | `.nojekyll` | GitHub Pages 静态发布辅助文件，保留。 |
-| `.gitignore` | 当前忽略 `.DS_Store` 和 `index_qiushi.html`。 |
+| `.gitignore` | 忽略 `.DS_Store`、`index_qiushi.html`，以及本地调试模块、说明、测试页面和 `tests/`；这些测试文件不随仓库发布。 |
 
 **资料与实现冲突时，先检查当前代码。** README 中的“142 个节点”“不保存进度”“开始前输入姓名”“点击继续按钮”“暂无音乐”“尚未部署”等描述均不再适用于当前实现。当前为 184 个节点，已有地图、存档和配乐。上述旧文档没有在本次整理中改写。
 
@@ -47,7 +47,7 @@ python3 -m http.server 8000
 
 浏览器打开 <http://localhost:8000/>。Windows 可使用 `py -m http.server 8000`。
 
-- 不需要 `npm install` 或编译。没有 `package.json`；PWA 回归检查使用 Node 内置测试器：`node --test tests/pwa.test.cjs`，护书互动回归检查：`node --test tests/rescue.test.cjs`；互动 8—10：`node --test tests/study.test.cjs`，均无需安装依赖。
+- 不需要 `npm install` 或编译。没有 `package.json`。测试文件已改为本地保留并忽略，不是仓库运行依赖；若本机仍有 `tests/`，可用 `node --test tests/*.test.cjs` 执行回归检查，新检出仓库不保证存在这些文件。
 - 优先通过本地 HTTP 验证；双击 HTML 的 `file:` 环境在音频和本地存储行为上可能与线上不同。
 - GitHub Pages 使用 `main` 分支的根目录发布，根目录应直接包含 `index.html`、`assets/`、`qiushi_bgm/` 和 `.nojekyll`。
 - 音频已经接入，发布时必须同时保留 `qiushi_bgm/`，不能只上传 HTML 和图片。
@@ -68,9 +68,7 @@ python3 -m http.server 8000
 | `qiushi-audio` | 暴露 `globalThis.QiushiAudio`，管理素材映射、节点配乐、音效、音量和生命周期。 |
 | `game-engine` | 渲染剧情、处理互动、地图、回顾、存读档及输入事件；依赖前面的 Core 和 Audio。 |
 
-开发者选章工具通过 `?debug=1` 开启，左上角菜单由独立的 `dev-tools.js` 提供；普通入口不加载工具。引擎末尾的 `BEGIN/END OPTIONAL DEVELOPER TOOLS` 标记块负责接入和调试存档隔离（`qiushi-xixing:debug:save:v1:`）。跳章重置调试局，仅模拟前站完成，不补前章数值或历史。使用与完整移除方法见 `开发调试说明.md`。
-
-2026-10-26 调试缓存修复：`SHELL_VERSION` 为 `2026-10-26-16`。开发入口的 HTML 与调试窗口请求的脚本、图片、配乐均以 `no-store` 优先读取服务端文件，失败时回退离线包，不覆盖正式缓存；普通入口保持原缓存策略，音频缓存版本仍为 3。旧 worker 需关闭同一地址的全部游戏窗口后更新，也可用新端口即时隔离旧缓存；不同端口不共享存档。
+2026-10-29 已移除开发者选章接入及 Service Worker 的调试专用缓存分支；`?debug=1` 也按正式模式运行，不再加载 `dev-tools.js` 或使用调试存档。原调试模块、说明、`test.html`、`test.css` 和 `tests/` 仅保留在本机，取消 Git 跟踪并加入 `.gitignore`，不批量删除文件。既有正式及调试存档均不清理，正式存档键保持不变。`SHELL_VERSION` 为 `2026-10-29-1`，音频版本保持 3。下文历史记录中的测试脚本路径仅供已有本地副本参考。
 
 剧情 JSON 已格式化为多行缩进（2 空格），可直接按块编辑文字；配乐 `cues` 表仍为长行。局部修改时避免无关的整文件格式化，使差异易于检查。若调整脚本组织，保留依赖顺序和既有 DOM ID。
 
